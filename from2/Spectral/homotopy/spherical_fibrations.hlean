@@ -109,7 +109,7 @@ namespace spherical_fibrations
     variables {X : Type _} {n : ℕ} (α : X → BF n)
 
     -- the canonical section of an F-object
-    protected @[hott] def sec (x : X) : carrier (sigma.pr1 (α x)) :=
+    @[hott] protected def sec (x : X) : carrier (sigma.pr1 (α x)) :=
     Point _
 
     open pushout sigma

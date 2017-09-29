@@ -86,7 +86,7 @@ namespace category
   abbreviation coh  := @comma_morphism.p
   abbreviation coh' := @comma_morphism.p'
 
-  protected @[hott] def comma_morphism.mk [reducible]
+  @[hott] protected def comma_morphism.mk [reducible]
     {x y : comma_object S T} (g h p) : comma_morphism x y :=
   comma_morphism.mk' g h p p⁻¹
 

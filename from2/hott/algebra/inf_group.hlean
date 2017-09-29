@@ -457,7 +457,7 @@ section add_inf_group
   /- sub -/
 
   -- TODO: derive corresponding facts for div in a field
-  protected @[hott] def algebra.sub [reducible] (a b : A) : A := a + -b
+  @[hott] protected def algebra.sub [reducible] (a b : A) : A := a + -b
 
   @[hott] def add_inf_group_has_sub [instance] : has_sub A :=
   has_sub.mk algebra.sub

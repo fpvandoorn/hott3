@@ -61,7 +61,7 @@ section
  /- @[hott] lemma 8.5.7. The total space is A * A -/
   open prod prod.ops
 
-  protected @[hott] def total : sigma (hopf A) ≃ join A A :=
+  @[hott] protected def total : sigma (hopf A) ≃ join A A :=
   begin
     apply equiv.trans (susp.flattening A A A _), unfold join,
     apply equiv.trans (pushout.symm pr₂ (λz : A × A, z.1 * z.2)),
@@ -189,7 +189,7 @@ section
     : ptrunc 1 (Ω(susp A)) ≃* pointed.MK A 1 :=
   pointed.pequiv_of_equiv main_@[hott] lemma idp
 
-  protected @[hott] def delooping : Ω (ptrunc 2 (susp A)) ≃* pointed.MK A 1 :=
+  @[hott] protected def delooping : Ω (ptrunc 2 (susp A)) ≃* pointed.MK A 1 :=
   loop_ptrunc_pequiv 1 (susp A) ⬝e* main_lemma_point
 
   /- characterization of the underlying pointed maps -/

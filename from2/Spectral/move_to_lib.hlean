@@ -172,7 +172,7 @@ end eq open eq
 
 namespace nat
 
-  protected @[hott] def rec_down (P : ℕ → Type _) (s : ℕ) (H0 : P s) (Hs : Πn, P (n+1) → P n) : P 0 :=
+  @[hott] protected def rec_down (P : ℕ → Type _) (s : ℕ) (H0 : P s) (Hs : Πn, P (n+1) → P n) : P 0 :=
   have Hp : Πn, P n → P (pred n),
   begin
     intros n p, cases n with n,
@@ -195,7 +195,7 @@ namespace trunc_index
   @[hott] lemma minus_two_add_plus_two (n : ℕ₋₂) : -2+2+n = n :=
   by induction n with n p; reflexivity; exact ap succ p
 
-  protected @[hott] def of_nat_monotone {n k : ℕ} : n ≤ k → of_nat n ≤ of_nat k :=
+  @[hott] protected def of_nat_monotone {n k : ℕ} : n ≤ k → of_nat n ≤ of_nat k :=
   begin
     intro H, induction H with k H K,
     { apply le.tr_refl },

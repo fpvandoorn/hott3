@@ -16,7 +16,7 @@ namespace prod
 
   /- Paths in a product space -/
 
-  protected @[hott] def eta (u : A × B) : (pr₁ u, pr₂ u) = u :=
+  @[hott] protected def eta (u : A × B) : (pr₁ u, pr₂ u) = u :=
   by cases u; reflexivity
 
   @[hott] def pair_eq (pa : a = a') (pb : b = b') : (a, b) = (a', b') :=
@@ -37,8 +37,8 @@ namespace prod
   end ops
   open ops
 
-  protected @[hott] def ap_pr1 (p : u = v) : ap pr1 p = p..1 := idp
-  protected @[hott] def ap_pr2 (p : u = v) : ap pr2 p = p..2 := idp
+  @[hott] protected def ap_pr1 (p : u = v) : ap pr1 p = p..1 := idp
+  @[hott] protected def ap_pr2 (p : u = v) : ap pr2 p = p..2 := idp
 
   @[hott] def pair_prod_eq (p : u.1 = v.1) (q : u.2 = v.2)
     : ((prod_eq p q)..1, (prod_eq p q)..2) = (p, q) :=

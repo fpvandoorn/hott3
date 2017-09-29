@@ -40,7 +40,7 @@ namespace susp
   @[hott] def merid (a : A) : @north A = @south A :=
   glue a
 
-  protected @[hott] def rec {P : susp A → Type _} (PN : P north) (PS : P south)
+  @[hott] protected def rec {P : susp A → Type _} (PN : P north) (PS : P south)
     (Pm : Π(a : A), PN =[merid a] PS) (x : susp' A) : P x :=
   begin
     induction x with u u,
@@ -49,7 +49,7 @@ namespace susp
     { apply Pm},
   end
 
-  protected @[hott] def rec_on [reducible] {P : susp A → Type _} (y : susp' A)
+  @[hott] protected def rec_on [reducible] {P : susp A → Type _} (y : susp' A)
     (PN : P north) (PS : P south) (Pm : Π(a : A), PN =[merid a] PS) : P y :=
   susp.rec PN PS Pm y
 
@@ -58,11 +58,11 @@ namespace susp
       : apd (susp.rec PN PS Pm) (merid a) = Pm a :=
   !rec_glue
 
-  protected @[hott] def elim {P : Type _} (PN : P) (PS : P) (Pm : A → PN = PS)
+  @[hott] protected def elim {P : Type _} (PN : P) (PS : P) (Pm : A → PN = PS)
     (x : susp' A) : P :=
   susp.rec PN PS (λa, pathover_of_eq _ (Pm a)) x
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (x : susp' A)
+  @[hott] protected def elim_on [reducible] {P : Type _} (x : susp' A)
     (PN : P) (PS : P)  (Pm : A → PN = PS) : P :=
   susp.elim PN PS Pm x
 
@@ -73,11 +73,11 @@ namespace susp
     rewrite [▸*,-apd_eq_pathover_of_eq_ap,↑susp.elim,rec_merid],
   end
 
-  protected @[hott] def elim_type (PN : Type _) (PS : Type _) (Pm : A → PN ≃ PS)
+  @[hott] protected def elim_type (PN : Type _) (PS : Type _) (Pm : A → PN ≃ PS)
     (x : susp' A) : Type _ :=
   pushout.elim_type (λx, PN) (λx, PS) Pm x
 
-  protected @[hott] def elim_type_on [reducible] (x : susp' A)
+  @[hott] protected def elim_type_on [reducible] (x : susp' A)
     (PN : Type _) (PS : Type _)  (Pm : A → PN ≃ PS) : Type _ :=
   susp.elim_type PN PS Pm x
 
@@ -89,7 +89,7 @@ namespace susp
     (a : A) : transport (susp.elim_type PN PS Pm) (merid a)⁻¹ = to_inv (Pm a) :=
   !elim_type_glue_inv
 
-  protected @[hott] def merid_square {a a' : A} (p : a = a')
+  @[hott] protected def merid_square {a a' : A} (p : a = a')
     : square (merid a) (merid a') idp idp :=
   by cases p; apply vrefl
 
@@ -144,7 +144,7 @@ namespace susp
 
     local abbreviation G : A × PN → PS := λz, Pm z.1 z.2
 
-    protected @[hott] def flattening : sigma P ≃ pushout F G :=
+    @[hott] protected def flattening : sigma P ≃ pushout F G :=
     begin
       apply equiv.trans !pushout.flattening,
       fapply pushout.equiv,
@@ -175,7 +175,7 @@ namespace susp
   include Hf
 
   open is_equiv
-  protected @[hott] def is_equiv_functor [instance] : is_equiv (susp_functor' f) :=
+  @[hott] protected def is_equiv_functor [instance] : is_equiv (susp_functor' f) :=
   adjointify (susp_functor' f) (susp_functor' f⁻¹)
   abstract begin
     intro sb, induction sb with b, do 2 reflexivity,
@@ -198,7 +198,7 @@ end susp
 namespace susp
   variables {A B : Type _} (f : A ≃ B)
 
-  protected @[hott] def equiv : susp A ≃ susp B :=
+  @[hott] protected def equiv : susp A ≃ susp B :=
   equiv.mk (susp_functor' f) _
 end susp
 

@@ -17,7 +17,7 @@ namespace interval
   @[hott] def one  : interval := south
   @[hott] def seg  : zero = one := merid star
 
-  protected @[hott] def rec {P : interval → Type _} (P0 : P zero) (P1 : P one)
+  @[hott] protected def rec {P : interval → Type _} (P0 : P zero) (P1 : P one)
     (Ps : P0 =[seg] P1) (x : interval) : P x :=
   begin
     fapply susp.rec_on x,
@@ -26,7 +26,7 @@ namespace interval
     { intro x, cases x, exact Ps}
   end
 
-  protected @[hott] def rec_on [reducible] {P : interval → Type _} (x : interval)
+  @[hott] protected def rec_on [reducible] {P : interval → Type _} (x : interval)
     (P0 : P zero) (P1 : P one) (Ps : P0 =[seg] P1) : P x :=
   interval.rec P0 P1 Ps x
 
@@ -34,10 +34,10 @@ namespace interval
       : apd (interval.rec P0 P1 Ps) seg = Ps :=
   !rec_merid
 
-  protected @[hott] def elim {P : Type _} (P0 P1 : P) (Ps : P0 = P1) (x : interval) : P :=
+  @[hott] protected def elim {P : Type _} (P0 P1 : P) (Ps : P0 = P1) (x : interval) : P :=
   interval.rec P0 P1 (pathover_of_eq _ Ps) x
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (x : interval) (P0 P1 : P)
+  @[hott] protected def elim_on [reducible] {P : Type _} (x : interval) (P0 P1 : P)
     (Ps : P0 = P1) : P :=
   interval.elim P0 P1 Ps x
 
@@ -48,10 +48,10 @@ namespace interval
     rewrite [▸*,-apd_eq_pathover_of_eq_ap,↑interval.elim,rec_seg],
   end
 
-  protected @[hott] def elim_type (P0 P1 : Type _) (Ps : P0 ≃ P1) (x : interval) : Type _ :=
+  @[hott] protected def elim_type (P0 P1 : Type _) (Ps : P0 ≃ P1) (x : interval) : Type _ :=
   interval.elim P0 P1 (ua Ps) x
 
-  protected @[hott] def elim_type_on [reducible] (x : interval) (P0 P1 : Type _) (Ps : P0 ≃ P1)
+  @[hott] protected def elim_type_on [reducible] (x : interval) (P0 P1 : Type _) (Ps : P0 ≃ P1)
     : Type _ :=
   interval.elim_type P0 P1 Ps x
 

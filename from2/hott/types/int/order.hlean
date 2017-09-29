@@ -12,12 +12,12 @@ open nat decidable int unit algebra eq
 namespace int
 
 private @[hott] def nonneg (a : ℤ) : Type := int.cases_on a (take n, unit) (take n, empty)
-protected @[hott] def le (a b : ℤ) : Type := nonneg (b - a)
+@[hott] protected def le (a b : ℤ) : Type := nonneg (b - a)
 
 @[hott] def int_has_le [instance] [priority int.prio]: has_le int :=
 has_le.mk int.le
 
-protected @[hott] def lt (a b : ℤ) : Type := (a + 1) ≤ b
+@[hott] protected def lt (a b : ℤ) : Type := (a + 1) ≤ b
 
 @[hott] def int_has_lt [instance] [priority int.prio]: has_lt int :=
 has_lt.mk int.lt
@@ -41,7 +41,7 @@ show nonneg (b - a), from this ▸ star
 obtain (n : ℕ) (H1 : b - a = n), from nonneg.elim H,
 sigma.mk n (!add.comm ▸ iff.mpr !add_eq_iff_eq_add_neg (H1⁻¹))
 
-protected @[hott] theorem le_total (a b : ℤ) : a ≤ b ⊎ b ≤ a :=
+@[hott] protected theorem le_total (a b : ℤ) : a ≤ b ⊎ b ≤ a :=
 sum.imp_right
   (assume H : nonneg (-(b - a)),
    have -(b - a) = a - b, from !neg_sub,
@@ -93,10 +93,10 @@ iff.mpr !of_nat_lt_of_nat_iff H
 
 /- show that the integers form an ordered additive group -/
 
-protected @[hott] theorem le_refl (a : ℤ) : a ≤ a :=
+@[hott] protected theorem le_refl (a : ℤ) : a ≤ a :=
 le.intro (add_zero a)
 
-protected @[hott] theorem le_trans {a b c : ℤ} (H1 : a ≤ b) (H2 : b ≤ c) : a ≤ c :=
+@[hott] protected theorem le_trans {a b c : ℤ} (H1 : a ≤ b) (H2 : b ≤ c) : a ≤ c :=
 obtain (n : ℕ) (Hn : a + n = b), from le.elim H1,
 obtain (m : ℕ) (Hm : b + m = c), from le.elim H2,
 have a + of_nat (n + m) = c, from
@@ -107,7 +107,7 @@ have a + of_nat (n + m) = c, from
       ... = c : Hm,
 le.intro this
 
-protected @[hott] theorem le_antisymm : Π {a b : ℤ}, a ≤ b → b ≤ a → a = b :=
+@[hott] protected theorem le_antisymm : Π {a b : ℤ}, a ≤ b → b ≤ a → a = b :=
 take a b : ℤ, assume (H₁ : a ≤ b) (H₂ : b ≤ a),
 obtain (n : ℕ) (Hn : a + n = b), from le.elim H₁,
 obtain (m : ℕ) (Hm : b + m = a), from le.elim H₂,
@@ -127,21 +127,21 @@ show a = b, from
   ... = a + n    : by rewrite this
   ... = b        : Hn
 
-protected @[hott] theorem lt_irrefl (a : ℤ) : ¬ a < a :=
+@[hott] protected theorem lt_irrefl (a : ℤ) : ¬ a < a :=
 (suppose a < a,
   obtain (n : ℕ) (Hn : a + succ n = a), from lt.elim this,
   have a + succ n = a + 0, from
     Hn ⬝ !add_zero⁻¹,
   !succ_ne_zero (of_nat.inj (add.left_cancel this)))
 
-protected @[hott] theorem ne_of_lt {a b : ℤ} (H : a < b) : a ≠ b :=
+@[hott] protected theorem ne_of_lt {a b : ℤ} (H : a < b) : a ≠ b :=
 (suppose a = b, absurd (this ▸ H) (int.lt_irrefl b))
 
 @[hott] theorem le_of_lt {a b : ℤ} (H : a < b) : a ≤ b :=
 obtain (n : ℕ) (Hn : a + succ n = b), from lt.elim H,
 le.intro Hn
 
-protected @[hott] theorem lt_iff_le_prod_ne (a b : ℤ) : a < b ↔ (a ≤ b × a ≠ b) :=
+@[hott] protected theorem lt_iff_le_prod_ne (a b : ℤ) : a < b ↔ (a ≤ b × a ≠ b) :=
 iff.intro
   (assume H, pair (le_of_lt H) (int.ne_of_lt H))
   (assume H,
@@ -152,7 +152,7 @@ iff.intro
     obtain (k : ℕ) (Hk : n = nat.succ k), from nat.exists_eq_succ_of_ne_zero this,
     lt.intro (Hk ▸ Hn))
 
-protected @[hott] theorem le_iff_lt_sum_eq (a b : ℤ) : a ≤ b ↔ (a < b ⊎ a = b) :=
+@[hott] protected theorem le_iff_lt_sum_eq (a b : ℤ) : a ≤ b ↔ (a < b ⊎ a = b) :=
 iff.intro
   (assume H,
     by_cases
@@ -170,7 +170,7 @@ iff.intro
 @[hott] theorem lt_succ (a : ℤ) : a < a + 1 :=
 int.le_refl (a + 1)
 
-protected @[hott] theorem add_le_add_left {a b : ℤ} (H : a ≤ b) (c : ℤ) : c + a ≤ c + b :=
+@[hott] protected theorem add_le_add_left {a b : ℤ} (H : a ≤ b) (c : ℤ) : c + a ≤ c + b :=
 obtain (n : ℕ) (Hn : a + n = b), from le.elim H,
 have H2 : c + a + n = c + b, from
   calc
@@ -178,13 +178,13 @@ have H2 : c + a + n = c + b, from
       ... = c + b : {Hn},
 le.intro H2
 
-protected @[hott] theorem add_lt_add_left {a b : ℤ} (H : a < b) (c : ℤ) : c + a < c + b :=
+@[hott] protected theorem add_lt_add_left {a b : ℤ} (H : a < b) (c : ℤ) : c + a < c + b :=
 let H' := le_of_lt H in
 (iff.mpr (int.lt_iff_le_prod_ne _ _)) (pair (int.add_le_add_left H' _)
                                   (take Heq, let Heq' := add_left_cancel Heq in
                                    !int.lt_irrefl (Heq' ▸ H)))
 
-protected @[hott] theorem mul_nonneg {a b : ℤ} (Ha : 0 ≤ a) (Hb : 0 ≤ b) : 0 ≤ a * b :=
+@[hott] protected theorem mul_nonneg {a b : ℤ} (Ha : 0 ≤ a) (Hb : 0 ≤ b) : 0 ≤ a * b :=
 obtain (n : ℕ) (Hn : 0 + n = a), from le.elim Ha,
 obtain (m : ℕ) (Hm : 0 + m = b), from le.elim Hb,
 le.intro
@@ -196,7 +196,7 @@ le.intro
         ... = n * m       : by rewrite zero_add
         ... = 0 + n * m   : by rewrite zero_add))
 
-protected @[hott] theorem mul_pos {a b : ℤ} (Ha : 0 < a) (Hb : 0 < b) : 0 < a * b :=
+@[hott] protected theorem mul_pos {a b : ℤ} (Ha : 0 < a) (Hb : 0 < b) : 0 < a * b :=
 obtain (n : ℕ) (Hn : 0 + nat.succ n = a), from lt.elim Ha,
 obtain (m : ℕ) (Hm : 0 + nat.succ m = b), from lt.elim Hb,
 lt.intro
@@ -211,26 +211,26 @@ lt.intro
         ... = of_nat (nat.succ (nat.succ n * m + n))   : by rewrite nat.add_succ
         ... = 0 + nat.succ (nat.succ n * m + n)        : by rewrite zero_add))
 
-protected @[hott] theorem zero_lt_one : (0 : ℤ) < 1 := star
+@[hott] protected theorem zero_lt_one : (0 : ℤ) < 1 := star
 
-protected @[hott] theorem not_le_of_gt {a b : ℤ} (H : a < b) : ¬ b ≤ a :=
+@[hott] protected theorem not_le_of_gt {a b : ℤ} (H : a < b) : ¬ b ≤ a :=
   assume Hba,
   let Heq := int.le_antisymm (le_of_lt H) Hba in
   !int.lt_irrefl (Heq ▸ H)
 
-protected @[hott] theorem lt_of_lt_of_le {a b c : ℤ} (Hab : a < b) (Hbc : b ≤ c) : a < c :=
+@[hott] protected theorem lt_of_lt_of_le {a b c : ℤ} (Hab : a < b) (Hbc : b ≤ c) : a < c :=
   let Hab' := le_of_lt Hab in
   let Hac := int.le_trans Hab' Hbc in
   (iff.mpr !int.lt_iff_le_prod_ne) (pair Hac
     (assume Heq, int.not_le_of_gt (Heq ▸ Hab) Hbc))
 
-protected @[hott] theorem lt_of_le_of_lt  {a b c : ℤ} (Hab : a ≤ b) (Hbc : b < c) : a < c :=
+@[hott] protected theorem lt_of_le_of_lt  {a b c : ℤ} (Hab : a ≤ b) (Hbc : b < c) : a < c :=
   let Hbc' := le_of_lt Hbc in
   let Hac := int.le_trans Hab Hbc' in
   (iff.mpr !int.lt_iff_le_prod_ne) (pair Hac
     (assume Heq, int.not_le_of_gt (Heq⁻¹ ▸ Hbc) Hab))
 
-protected @[hott] def linear_ordered_comm_ring [trans_instance] :
+@[hott] protected def linear_ordered_comm_ring [trans_instance] :
     linear_ordered_comm_ring int :=
 ⦃linear_ordered_comm_ring, int.integral_domain,
   le               := int.le,
@@ -251,7 +251,7 @@ protected @[hott] def linear_ordered_comm_ring [trans_instance] :
   zero_lt_one      := int.zero_lt_one,
   add_lt_add_left  := @int.add_lt_add_left⦄
 
-protected @[hott] def decidable_linear_ordered_comm_ring [instance] :
+@[hott] protected def decidable_linear_ordered_comm_ring [instance] :
     decidable_linear_ordered_comm_ring int :=
 ⦃decidable_linear_ordered_comm_ring,
  int.linear_ordered_comm_ring,

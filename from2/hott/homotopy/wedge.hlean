@@ -16,24 +16,24 @@ infixr ` ∨ ` := wedge
 
 namespace wedge
 
-  protected @[hott] def glue {A B : Type*} : inl pt = inr pt :> wedge A B :=
+  @[hott] protected def glue {A B : Type*} : inl pt = inr pt :> wedge A B :=
   pushout.glue ⋆
 
-  protected @[hott] def rec {A B : Type*} {P : wedge A B → Type _} (Pinl : Π(x : A), P (inl x))
+  @[hott] protected def rec {A B : Type*} {P : wedge A B → Type _} (Pinl : Π(x : A), P (inl x))
     (Pinr : Π(x : B), P (inr x)) (Pglue : pathover P (Pinl pt) wedge.glue (Pinr pt))
     (y : wedge' A B) : P y :=
   by induction y; apply Pinl; apply Pinr; induction x; exact Pglue
 
-  protected @[hott] def elim {A B : Type*} {P : Type _} (Pinl : A → P)
+  @[hott] protected def elim {A B : Type*} {P : Type _} (Pinl : A → P)
     (Pinr : B → P) (Pglue : Pinl pt = Pinr pt) (y : wedge' A B) : P :=
   by induction y with a b x; exact Pinl a; exact Pinr b; induction x; exact Pglue
 
-  protected @[hott] def rec_glue {A B : Type*} {P : wedge A B → Type _} (Pinl : Π(x : A), P (inl x))
+  @[hott] protected def rec_glue {A B : Type*} {P : wedge A B → Type _} (Pinl : Π(x : A), P (inl x))
     (Pinr : Π(x : B), P (inr x)) (Pglue : pathover P (Pinl pt) wedge.glue (Pinr pt)) :
     apd (wedge.rec Pinl Pinr Pglue) wedge.glue = Pglue :=
   !pushout.rec_glue
 
-  protected @[hott] def elim_glue {A B : Type*} {P : Type _} (Pinl : A → P) (Pinr : B → P)
+  @[hott] protected def elim_glue {A B : Type*} {P : Type _} (Pinl : A → P) (Pinr : B → P)
     (Pglue : Pinl pt = Pinr pt) : ap (wedge.elim Pinl Pinr Pglue) wedge.glue = Pglue :=
   !pushout.elim_glue
 
@@ -44,7 +44,7 @@ attribute wedge.rec wedge.elim [recursor 7]
 namespace wedge
 
   -- TODO maybe find a cleaner proof
-  protected @[hott] def unit (A : Type*) : A ≃* wedge punit A :=
+  @[hott] protected def unit (A : Type*) : A ≃* wedge punit A :=
   begin
     fapply pequiv_of_pmap,
     { fapply pmap.mk, intro a, apply pinr a, apply respect_pt },
@@ -86,10 +86,10 @@ section
   private @[hott] def Q_sec : Πa : A, Q a :=
   is_conn.elim (n.-1) Q (fiber.mk g p⁻¹)
 
-  protected @[hott] def ext : Π(a : A)(b : B), P a b :=
+  @[hott] protected def ext : Π(a : A)(b : B), P a b :=
   λa, fiber.point (Q_sec a)
 
-  protected @[hott] def β_left (a : A) : ext a (Point B) = f a :=
+  @[hott] protected def β_left (a : A) : ext a (Point B) = f a :=
   fiber.point_eq (Q_sec a)
 
   private @[hott] def coh_aux : Σq : ext (Point A) = g,
@@ -97,7 +97,7 @@ section
   equiv.to_fun (fiber.fiber_eq_equiv (Q_sec (Point A)) (fiber.mk g p⁻¹))
                (is_conn.elim_β (n.-1) Q (fiber.mk g p⁻¹))
 
-  protected @[hott] def β_right (b : B) : ext (Point A) b = g b :=
+  @[hott] protected def β_right (b : B) : ext (Point A) b = g b :=
   apd10 (sigma.pr1 coh_aux) b
 
   private @[hott] def lem : β_left (Point A) = β_right (Point B) ⬝ p⁻¹ :=
@@ -107,7 +107,7 @@ section
     exact sigma.pr2 coh_aux,
   end
 
-  protected @[hott] def coh
+  @[hott] protected def coh
     : (β_left (Point A))⁻¹ ⬝ β_right (Point B) = p :=
   by rewrite [lem,con_inv,inv_inv,con.assoc,con.left_inv]
 

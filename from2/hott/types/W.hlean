@@ -19,10 +19,10 @@ namespace Wtype
   variables {A A' : Type u} {B B' : A → Type v} {C : Π(a : A), B a → Type _}
             {a a' : A} {f : B a → W a, B a} {f' : B a' → W a, B a} {w w' : W(a : A), B a}
 
-  protected @[hott] def pr1 (w : W(a : A), B a) : A :=
+  @[hott] protected def pr1 (w : W(a : A), B a) : A :=
   by cases w with a f; exact a
 
-  protected @[hott] def pr2 (w : W(a : A), B a) : B (Wtype.pr1 w) → W(a : A), B a :=
+  @[hott] protected def pr2 (w : W(a : A), B a) : B (Wtype.pr1 w) → W(a : A), B a :=
   by cases w with a f; exact f
 
   namespace ops
@@ -32,7 +32,7 @@ namespace Wtype
   end ops
   open ops
 
-  protected @[hott] def eta (w : W a, B a) : ⟨w.1 , w.2⟩ = w :=
+  @[hott] protected def eta (w : W a, B a) : ⟨w.1 , w.2⟩ = w :=
   by cases w; exact idp
 
   @[hott] def sup_eq_sup (p : a = a') (q : f =[p] f') : ⟨a, f⟩ = ⟨a', f'⟩ :=

@@ -19,7 +19,7 @@ attribute fin.val [coercion]
 section def_equal
 variable {n : nat}
 
-protected @[hott] def sigma_char : fin n ≃ Σ (val : nat), val < n :=
+@[hott] protected def sigma_char : fin n ≃ Σ (val : nat), val < n :=
 begin
   fapply equiv.MK,
     intro i, cases i with i ilt, apply dpair i ilt,
@@ -59,7 +59,7 @@ end def_equal
 section decidable
 open decidable
 
-protected @[hott] def has_decidable_eq [instance] (n : nat) :
+@[hott] protected def has_decidable_eq [instance] (n : nat) :
   Π (i j : fin n), decidable (i = j) :=
 begin
   intros i j, apply decidable_of_decidable_of_iff,
@@ -113,7 +113,7 @@ assume Pex, absurd Pmltn (not_lt_of_ge
 
 end pigeonhole-/
 
-protected @[hott] def zero (n : nat) : fin (succ n) :=
+@[hott] protected def zero (n : nat) : fin (succ n) :=
 mk 0 !zero_lt_succ
 
 @[hott] def fin_has_zero [instance] (n : nat) : has_zero (fin (succ n)) :=
@@ -616,7 +616,7 @@ end
   -/
 
   /- this is a version of `madd` which might compute better -/
-  protected @[hott] def add {n : ℕ} (x y : fin n) : fin n :=
+  @[hott] protected def add {n : ℕ} (x y : fin n) : fin n :=
   iterate cyclic_succ (val y) x
 
   @[hott] def has_zero_fin [instance] (n : ℕ) [H : is_succ n] : has_zero (fin n) :=

@@ -10,7 +10,7 @@ open is_equiv equiv option eq pointed is_trunc function
 
 namespace unit
 
-  protected @[hott] def eta : Π(u : unit), ⋆ = u
+  @[hott] protected def eta : Π(u : unit), ⋆ = u
   | eta ⋆ := idp
 
   @[hott] def unit_equiv_option_empty : unit ≃ option empty :=

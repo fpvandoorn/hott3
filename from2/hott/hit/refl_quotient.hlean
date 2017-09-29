@@ -29,7 +29,7 @@ section
   @[hott] def pρ (a : A) : req_of_rel (ρ a) = idp :=
   incl2 R Q (Qmk a)
 
-  protected @[hott] def rec {P : refl_quotient → Type _} (Pc : Π(a : A), P (rclass_of a))
+  @[hott] protected def rec {P : refl_quotient → Type _} (Pc : Π(a : A), P (rclass_of a))
     (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a =[req_of_rel H] Pc a')
     (Pr : Π(a : A), change_path (pρ a) (Pp (ρ a)) = idpo) (x : refl_quotient) : P x :=
   begin
@@ -39,7 +39,7 @@ section
       induction q, apply Pr
   end
 
-  protected @[hott] def rec_on [reducible] {P : refl_quotient → Type _} (x : refl_quotient)
+  @[hott] protected def rec_on [reducible] {P : refl_quotient → Type _} (x : refl_quotient)
     (Pc : Π(a : A), P (rclass_of a)) (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a =[req_of_rel H] Pc a')
     (Pr : Π(a : A), change_path (pρ a) (Pp (ρ a)) = idpo) : P x :=
   rec Pc Pp Pr x
@@ -50,7 +50,7 @@ section
     : apd (rec Pc Pp Pr) (req_of_rel r) = Pp r :=
   !rec_incl1
 
-  protected @[hott] def elim {P : Type _} (Pc : Π(a : A), P)
+  @[hott] protected def elim {P : Type _} (Pc : Π(a : A), P)
     (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a = Pc a') (Pr : Π(a : A), Pp (ρ a) = idp)
     (x : refl_quotient) : P :=
   begin
@@ -60,7 +60,7 @@ section
       induction q, apply Pr
   end
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (x : refl_quotient) (Pc : Π(a : A), P)
+  @[hott] protected def elim_on [reducible] {P : Type _} (x : refl_quotient) (Pc : Π(a : A), P)
     (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a = Pc a') (Pr : Π(a : A), Pp (ρ a) = idp) : P :=
   elim Pc Pp Pr x
 

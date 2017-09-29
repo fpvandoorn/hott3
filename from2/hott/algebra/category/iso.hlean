@@ -142,7 +142,7 @@ namespace iso
 
   attribute to_hom [coercion]
 
-  protected @[hott] def MK (f : a ⟶ b) (g : b ⟶ a)
+  @[hott] protected def MK (f : a ⟶ b) (g : b ⟶ a)
     (H1 : g ∘ f = id) (H2 : f ∘ g = id) :=
   @(mk f) (is_iso.mk _ H1 H2)
 
@@ -154,13 +154,13 @@ namespace iso
   right_inverse (to_hom f)
 
   variable [C]
-  protected @[hott] def refl (a : ob) : a ≅ a :=
+  @[hott] protected def refl (a : ob) : a ≅ a :=
   mk (ID a) _
 
-  protected @[hott] def symm ⦃a b : ob⦄ (H : a ≅ b) : b ≅ a :=
+  @[hott] protected def symm ⦃a b : ob⦄ (H : a ≅ b) : b ≅ a :=
   mk (to_hom H)⁻¹ _
 
-  protected @[hott] def trans ⦃a b c : ob⦄ (H1 : a ≅ b) (H2 : b ≅ c) : a ≅ c :=
+  @[hott] protected def trans ⦃a b c : ob⦄ (H1 : a ≅ b) (H2 : b ≅ c) : a ≅ c :=
   mk (to_hom H2 ∘ to_hom H1) _
 
   infixl ` ⬝i `:75 := iso.trans
@@ -189,7 +189,7 @@ namespace iso
   variable [C]
 
   -- The structure for isomorphism can be characterized up to equivalence by a sigma type.
-  protected @[hott] def sigma_char ⦃a b : ob⦄ : (Σ (f : hom a b), is_iso f) ≃ (a ≅ b) :=
+  @[hott] protected def sigma_char ⦃a b : ob⦄ : (Σ (f : hom a b), is_iso f) ≃ (a ≅ b) :=
   begin
     fapply (equiv.mk),
       {intro S, apply iso.mk, apply (S.2)},

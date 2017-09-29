@@ -237,17 +237,17 @@ namespace eq
 
   infix ~ := homotopy
 
-  protected @[hott] def homotopy.refl [refl] [reducible] (f : Πx, P x) : f ~ f :=
+  @[hott] protected def homotopy.refl [refl] [reducible] (f : Πx, P x) : f ~ f :=
   λ x, idp
 
-  protected @[hott] def homotopy.rfl [reducible] {f : Πx, P x} : f ~ f :=
+  @[hott] protected def homotopy.rfl [reducible] {f : Πx, P x} : f ~ f :=
   homotopy.refl f
 
-  protected @[hott] def homotopy.symm [symm] [reducible] {f g : Πx, P x} (H : f ~ g)
+  @[hott] protected def homotopy.symm [symm] [reducible] {f g : Πx, P x} (H : f ~ g)
     : g ~ f :=
   λ x, (H x)⁻¹
 
-  protected @[hott] def homotopy.trans [trans] [reducible] {f g h : Πx, P x}
+  @[hott] protected def homotopy.trans [trans] [reducible] {f g h : Πx, P x}
     (H1 : f ~ g) (H2 : g ~ h) : f ~ h :=
   λ x, H1 x ⬝ H2 x
 

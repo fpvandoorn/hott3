@@ -59,11 +59,11 @@ namespace pushout
 
   section
   open sigma.ops
-  protected @[hott] def inv_left (H : is_pushout2 p) {X : Type _} (v : cocone p X) :
+  @[hott] protected def inv_left (H : is_pushout2 p) {X : Type _} (v : cocone p X) :
     (cocone_of_map p X)⁻¹ᶠ v ∘ h ~ prod.pr1 v.1 :=
   ap10 (ap prod.pr1 (right_inv (cocone_of_map p X) v)..1)
 
-  protected @[hott] def inv_right (H : is_pushout2 p) {X : Type _} (v : cocone p X) :
+  @[hott] protected def inv_right (H : is_pushout2 p) {X : Type _} (v : cocone p X) :
     (cocone_of_map p X)⁻¹ᶠ v ∘ k ~ prod.pr2 v.1 :=
   ap10 (ap prod.pr2 (right_inv (cocone_of_map p X) v)..1)
   end
@@ -682,7 +682,7 @@ end
     (g ∘* pcod f) ∘* f ~* pconst X Z :=
   !passoc ⬝* pwhisker_left _ !pcod_pcompose ⬝* !pcompose_pconst
 
-  protected @[hott] def pcofiber.elim {X Y Z : Type*} {f : X →* Y} (g : Y →* Z)
+  @[hott] protected def pcofiber.elim {X Y Z : Type*} {f : X →* Y} (g : Y →* Z)
     (p : g ∘* f ~* pconst X Z) : pcofiber f →* Z :=
   begin
     fapply pmap.mk,
@@ -690,7 +690,7 @@ end
     { reflexivity }
   end
 
-  protected @[hott] def pcofiber.elim_pcod {X Y Z : Type*} {f : X →* Y} {g : Y →* Z}
+  @[hott] protected def pcofiber.elim_pcod {X Y Z : Type*} {f : X →* Y} {g : Y →* Z}
     (p : g ∘* f ~* pconst X Z) : pcofiber.elim g p ∘* pcod f ~* g :=
   begin
     fapply phomotopy.mk,

@@ -30,7 +30,7 @@ namespace EM
   resp_inv g
 
   local attribute pointed.MK pointed.carrier EM1 EM1' [reducible]
-  protected @[hott] def rec {P : EM1' G → Type _} [H : Π(x : EM1' G), is_trunc 1 (P x)]
+  @[hott] protected def rec {P : EM1' G → Type _} [H : Π(x : EM1' G), is_trunc 1 (P x)]
     (Pb : P base) (Pp : Π(g : G), Pb =[pth g] Pb)
     (Pmul : Π(g h : G), change_path (resp_mul g h) (Pp (g * h)) = Pp g ⬝o Pp h) (x : EM1' G) :
     P x :=
@@ -41,16 +41,16 @@ namespace EM
     { induction a, induction b, induction c, exact Pmul f g}
   end
 
-  protected @[hott] def rec_on {P : EM1' G → Type _} [H : Π(x : EM1' G), is_trunc 1 (P x)]
+  @[hott] protected def rec_on {P : EM1' G → Type _} [H : Π(x : EM1' G), is_trunc 1 (P x)]
     (x : EM1' G) (Pb : P base) (Pp : Π(g : G), Pb =[pth g] Pb)
     (Pmul : Π(g h : G), change_path (resp_mul g h) (Pp (g * h)) = Pp g ⬝o Pp h) : P x :=
   EM.rec Pb Pp Pmul x
 
-  protected @[hott] def set_rec {P : EM1' G → Type _} [H : Π(x : EM1' G), is_set (P x)]
+  @[hott] protected def set_rec {P : EM1' G → Type _} [H : Π(x : EM1' G), is_set (P x)]
     (Pb : P base) (Pp : Π(g : G), Pb =[pth g] Pb) (x : EM1' G) : P x :=
   EM.rec Pb Pp !center x
 
-  protected @[hott] def prop_rec {P : EM1' G → Type _} [H : Π(x : EM1' G), is_prop (P x)]
+  @[hott] protected def prop_rec {P : EM1' G → Type _} [H : Π(x : EM1' G), is_prop (P x)]
     (Pb : P base) (x : EM1' G) : P x :=
   EM.rec Pb !center !center x
 
@@ -60,7 +60,7 @@ namespace EM
     (g : G) : apd (EM.rec Pb Pp Pmul) (pth g) = Pp g :=
   proof !rec_pth qed
 
-  protected @[hott] def elim {P : Type _} [is_trunc 1 P] (Pb : P) (Pp : Π(g : G), Pb = Pb)
+  @[hott] protected def elim {P : Type _} [is_trunc 1 P] (Pb : P) (Pp : Π(g : G), Pb = Pb)
     (Pmul : Π(g h : G), Pp (g * h) = Pp g ⬝ Pp h) (x : EM1' G) : P :=
   begin
     induction x,
@@ -69,22 +69,22 @@ namespace EM
     { exact Pmul f g}
   end
 
-  protected @[hott] def elim_on [reducible] {P : Type _} [is_trunc 1 P] (x : EM1' G)
+  @[hott] protected def elim_on [reducible] {P : Type _} [is_trunc 1 P] (x : EM1' G)
     (Pb : P) (Pp : G → Pb = Pb) (Pmul : Π(g h : G), Pp (g * h) = Pp g ⬝ Pp h) : P :=
   EM.elim Pb Pp Pmul x
 
-  protected @[hott] def set_elim [reducible] {P : Type _} [is_set P] (Pb : P) (Pp : G → Pb = Pb)
+  @[hott] protected def set_elim [reducible] {P : Type _} [is_set P] (Pb : P) (Pp : G → Pb = Pb)
     (x : EM1' G) : P :=
   EM.elim Pb Pp !center x
 
-  protected @[hott] def prop_elim [reducible] {P : Type _} [is_prop P] (Pb : P) (x : EM1' G) : P :=
+  @[hott] protected def prop_elim [reducible] {P : Type _} [is_prop P] (Pb : P) (x : EM1' G) : P :=
   EM.elim Pb !center !center x
 
   @[hott] def elim_pth {P : Type _} [is_trunc 1 P] {Pb : P} {Pp : G → Pb = Pb}
     (Pmul : Π(g h : G), Pp (g * h) = Pp g ⬝ Pp h) (g : G) : ap (EM.elim Pb Pp Pmul) (pth g) = Pp g :=
   proof !elim_pth qed
 
-  protected @[hott] def elim_set.{u} (Pb : Set.{u}) (Pp : Π(g : G), Pb ≃ Pb)
+  @[hott] protected def elim_set.{u} (Pb : Set.{u}) (Pp : Π(g : G), Pb ≃ Pb)
     (Pmul : Π(g h : G) (x : Pb), Pp (g * h) x = Pp h (Pp g x)) (x : EM1' G) : Set.{u} :=
   groupoid_quotient.elim_set (λu, Pb) (λu v, Pp) (λu v w g h, proof Pmul h g qed) x
 

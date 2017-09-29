@@ -12,13 +12,13 @@ namespace nat
 
 /- subtraction -/
 
-protected @[hott] theorem sub_zero (n : ℕ) : n - 0 = n :=
+@[hott] protected theorem sub_zero (n : ℕ) : n - 0 = n :=
 rfl
 
 @[hott] theorem sub_succ (n m : ℕ) : n - succ m = pred (n - m) :=
 rfl
 
-protected @[hott] theorem zero_sub (n : ℕ) : 0 - n = 0 :=
+@[hott] protected theorem zero_sub (n : ℕ) : 0 - n = 0 :=
 nat.rec_on n !nat.sub_zero
   (take k : nat,
     assume IH : 0 - k = 0,
@@ -30,10 +30,10 @@ nat.rec_on n !nat.sub_zero
 @[hott] theorem succ_sub_succ (n m : ℕ) : succ n - succ m = n - m :=
 succ_sub_succ_eq_sub n m
 
-protected @[hott] theorem sub_self (n : ℕ) : n - n = 0 :=
+@[hott] protected theorem sub_self (n : ℕ) : n - n = 0 :=
 nat.rec_on n !nat.sub_zero (take k IH, !succ_sub_succ ⬝ IH)
 
-protected @[hott] theorem add_sub_add_right (n k m : ℕ) : (n + k) - (m + k) = n - m :=
+@[hott] protected theorem add_sub_add_right (n k m : ℕ) : (n + k) - (m + k) = n - m :=
 nat.rec_on k
   (calc
     (n + 0) - (m + 0) = n - (m + 0) : {!add_zero}
@@ -45,10 +45,10 @@ nat.rec_on k
                               ... = succ (n + l) - succ (m + l) : {!add_succ}
                               ... = (n + l) - (m + l)           : !succ_sub_succ
                               ... =  n - m                      : IH)
-protected @[hott] theorem add_sub_add_left (k n m : ℕ) : (k + n) - (k + m) = n - m :=
+@[hott] protected theorem add_sub_add_left (k n m : ℕ) : (k + n) - (k + m) = n - m :=
 add.comm n k ▸ add.comm m k ▸ nat.add_sub_add_right n k m
 
-protected @[hott] theorem add_sub_cancel (n m : ℕ) : n + m - m = n :=
+@[hott] protected theorem add_sub_cancel (n m : ℕ) : n + m - m = n :=
 nat.rec_on m
   (begin rewrite add_zero end)
   (take k : ℕ,
@@ -58,10 +58,10 @@ nat.rec_on m
                       ... = n + k - k             : succ_sub_succ
                       ... = n                     : IH)
 
-protected @[hott] theorem add_sub_cancel_left (n m : ℕ) : n + m - n = m :=
+@[hott] protected theorem add_sub_cancel_left (n m : ℕ) : n + m - n = m :=
 !add.comm ▸ !nat.add_sub_cancel
 
-protected @[hott] theorem sub_sub (n m k : ℕ) : n - m - k = n - (m + k) :=
+@[hott] protected theorem sub_sub (n m k : ℕ) : n - m - k = n - (m + k) :=
 nat.rec_on k
   (calc
     n - m - 0 = n - m        : nat.sub_zero
@@ -87,7 +87,7 @@ calc
           ... = 0 - m     : nat.sub_self
           ... = 0         : nat.zero_sub
 
-protected @[hott] theorem sub.right_comm (m n k : ℕ) : m - n - k = m - k - n :=
+@[hott] protected theorem sub.right_comm (m n k : ℕ) : m - n - k = m - k - n :=
 calc
   m - n - k = m - (n + k) : !nat.sub_sub
         ... = m - (k + n) : by rewrite add.comm
@@ -121,7 +121,7 @@ calc
          ... = m * n - n  : mul_pred_left
          ... = n * m - n  : mul.comm
 
-protected @[hott] theorem mul_sub_right_distrib (n m k : ℕ) : (n - m) * k = n * k - m * k :=
+@[hott] protected theorem mul_sub_right_distrib (n m k : ℕ) : (n - m) * k = n * k - m * k :=
 nat.rec_on m
   (calc
     (n - 0) * k = n * k         : nat.sub_zero
@@ -136,14 +136,14 @@ nat.rec_on m
                    ... = n * k - (l * k + k)  : nat.sub_sub
                    ... = n * k - (succ l * k) : by rewrite succ_mul)
 
-protected @[hott] theorem mul_sub_left_distrib (n m k : ℕ) : n * (m - k) = n * m - n * k :=
+@[hott] protected theorem mul_sub_left_distrib (n m k : ℕ) : n * (m - k) = n * m - n * k :=
 calc
   n * (m - k) = (m - k) * n   : !mul.comm
           ... = m * n - k * n : !nat.mul_sub_right_distrib
           ... = n * m - k * n : {!mul.comm}
           ... = n * m - n * k : {!mul.comm}
 
-protected @[hott] theorem mul_self_sub_mul_self_eq (a b : nat) : a * a - b * b = (a + b) * (a - b) :=
+@[hott] protected theorem mul_self_sub_mul_self_eq (a b : nat) : a * a - b * b = (a + b) * (a - b) :=
 begin
   rewrite [nat.mul_sub_left_distrib, *right_distrib, mul.comm b a],
   xrewrite [add.comm (a*a) (a*b)],
@@ -194,7 +194,7 @@ calc
   n + (m - n) = n + 0 : sub_eq_zero_of_le H
           ... = n     : add_zero
 
-protected @[hott] theorem sub_add_cancel {n m : ℕ} : n ≥ m → n - m + m = n :=
+@[hott] protected theorem sub_add_cancel {n m : ℕ} : n ≥ m → n - m + m = n :=
 !add.comm ▸ !add_sub_of_le
 
 @[hott] theorem sub_add_of_le {n m : ℕ} : n ≤ m → n - m + m = m :=
@@ -213,7 +213,7 @@ sigma.mk k
     m - k = n + k - k : by xrewrite Hk
       ... = n         : nat.add_sub_cancel)
 
-protected @[hott] theorem add_sub_assoc {m k : ℕ} (H : k ≤ m) (n : ℕ) : n + m - k = n + (m - k) :=
+@[hott] protected theorem add_sub_assoc {m k : ℕ} (H : k ≤ m) (n : ℕ) : n + m - k = n + (m - k) :=
 have l1 : k ≤ m → n + m - k = n + (m - k), from
   sub_induction k m
     (take m : ℕ,
@@ -249,7 +249,7 @@ sum.elim !le.total
   (assume H3 : m ≤ n,
     (sub_eq_zero_of_le H3)⁻¹ ▸ (H1 (n - m) (add_sub_of_le H3)⁻¹))
 
-protected @[hott] theorem sub_eq_of_add_eq {n m k : ℕ} (H : n + m = k) : k - n = m :=
+@[hott] protected theorem sub_eq_of_add_eq {n m k : ℕ} (H : n + m = k) : k - n = m :=
 have H2 : k - n + n = m + n, from
   calc
     k - n + n = k     : nat.sub_add_cancel (le.intro H)
@@ -257,13 +257,13 @@ have H2 : k - n + n = m + n, from
           ... = m + n : !add.comm,
 add.right_cancel H2
 
-protected @[hott] theorem eq_sub_of_add_eq {a b c : ℕ} (H : a + c = b) : a = b - c :=
+@[hott] protected theorem eq_sub_of_add_eq {a b c : ℕ} (H : a + c = b) : a = b - c :=
 (nat.sub_eq_of_add_eq (!add.comm ▸ H))⁻¹
 
-protected @[hott] theorem sub_eq_of_eq_add {a b c : ℕ} (H : a = c + b) : a - b = c :=
+@[hott] protected theorem sub_eq_of_eq_add {a b c : ℕ} (H : a = c + b) : a - b = c :=
 nat.sub_eq_of_add_eq (!add.comm ▸ H⁻¹)
 
-protected @[hott] theorem sub_le_sub_right {n m : ℕ} (H : n ≤ m) (k : ℕ) : n - k ≤ m - k :=
+@[hott] protected theorem sub_le_sub_right {n m : ℕ} (H : n ≤ m) (k : ℕ) : n - k ≤ m - k :=
 obtain (l : ℕ) (Hl : n + l = m), from le.elim H,
 sum.elim !le.total
   (assume H2 : n ≤ k, (sub_eq_zero_of_le H2)⁻¹ ▸ !zero_le)
@@ -276,7 +276,7 @@ sum.elim !le.total
               ... = m - k       : by xrewrite Hl,
     le.intro H3)
 
-protected @[hott] theorem sub_le_sub_left {n m : ℕ} (H : n ≤ m) (k : ℕ) : k - m ≤ k - n :=
+@[hott] protected theorem sub_le_sub_left {n m : ℕ} (H : n ≤ m) (k : ℕ) : k - m ≤ k - n :=
 obtain (l : ℕ) (Hl : n + l = m), from le.elim H,
 sub.cases
   (assume H2 : k ≤ m, !zero_le)
@@ -293,30 +293,30 @@ sub.cases
                ... = k - n + n    : nat.sub_add_cancel H3,
     le.intro (add.right_cancel H4))
 
-protected @[hott] theorem sub_pos_of_lt {m n : ℕ} (H : m < n) : n - m > 0 :=
+@[hott] protected theorem sub_pos_of_lt {m n : ℕ} (H : m < n) : n - m > 0 :=
 have H1 : n = n - m + m, from (nat.sub_add_cancel (le_of_lt H))⁻¹,
 have   H2 : 0 + m < n - m + m, begin rewrite [zero_add, -H1], exact H end,
 !lt_of_add_lt_add_right H2
 
-protected @[hott] theorem lt_of_sub_pos {m n : ℕ} (H : n - m > 0) : m < n :=
+@[hott] protected theorem lt_of_sub_pos {m n : ℕ} (H : n - m > 0) : m < n :=
 lt_of_not_ge
   (take H1 : m ≥ n,
     have H2 : n - m = 0, from sub_eq_zero_of_le H1,
     !lt.irrefl (H2 ▸ H))
 
-protected @[hott] theorem lt_of_sub_lt_sub_right {n m k : ℕ} (H : n - k < m - k) : n < m :=
+@[hott] protected theorem lt_of_sub_lt_sub_right {n m k : ℕ} (H : n - k < m - k) : n < m :=
 lt_of_not_ge
   (assume H1 : m ≤ n,
     have H2 : m - k ≤ n - k, from nat.sub_le_sub_right H1 _,
     not_le_of_gt H H2)
 
-protected @[hott] theorem lt_of_sub_lt_sub_left {n m k : ℕ} (H : n - m < n - k) : k < m :=
+@[hott] protected theorem lt_of_sub_lt_sub_left {n m k : ℕ} (H : n - m < n - k) : k < m :=
 lt_of_not_ge
   (assume H1 : m ≤ k,
     have H2 : n - k ≤ n - m, from nat.sub_le_sub_left H1 _,
     not_le_of_gt H H2)
 
-protected @[hott] theorem sub_lt_sub_add_sub (n m k : ℕ) : n - k ≤ (n - m) + (m - k) :=
+@[hott] protected theorem sub_lt_sub_add_sub (n m k : ℕ) : n - k ≤ (n - m) + (m - k) :=
 sub.cases
   (assume H : n ≤ m, (zero_add (m - k))⁻¹ ▸ nat.sub_le_sub_right H k)
   (take mn : ℕ,
@@ -337,7 +337,7 @@ sub.cases
         have H2 : n - k = mn + km, from nat.sub_eq_of_add_eq H,
         H2 ▸ !le.refl))
 
-protected @[hott] theorem sub_lt_self {m n : ℕ} (H1 : m > 0) (H2 : n > 0) : m - n < m :=
+@[hott] protected theorem sub_lt_self {m n : ℕ} (H1 : m > 0) (H2 : n > 0) : m - n < m :=
 calc
   m - n = succ (pred m) - n             : succ_pred_of_pos H1
     ... = succ (pred m) - succ (pred n) : succ_pred_of_pos H2
@@ -346,17 +346,17 @@ calc
     ... < succ (pred m)                 : lt_succ_self
     ... = m                             : succ_pred_of_pos H1
 
-protected @[hott] theorem le_sub_of_add_le {m n k : ℕ} (H : m + k ≤ n) : m ≤ n - k :=
+@[hott] protected theorem le_sub_of_add_le {m n k : ℕ} (H : m + k ≤ n) : m ≤ n - k :=
 calc
   m = m + k - k : nat.add_sub_cancel
     ... ≤ n - k : nat.sub_le_sub_right H k
 
-protected @[hott] theorem lt_sub_of_add_lt {m n k : ℕ} (H : m + k < n) (H2 : k ≤ n) : m < n - k :=
+@[hott] protected theorem lt_sub_of_add_lt {m n k : ℕ} (H : m + k < n) (H2 : k ≤ n) : m < n - k :=
 lt_of_succ_le (nat.le_sub_of_add_le (calc
     succ m + k = succ (m + k) : succ_add_eq_succ_add
            ... ≤ n            : succ_le_of_lt H))
 
-protected @[hott] theorem sub_lt_of_lt_add {v n m : nat} (h₁ : v < n + m) (h₂ : n ≤ v) : v - n < m :=
+@[hott] protected theorem sub_lt_of_lt_add {v n m : nat} (h₁ : v < n + m) (h₂ : n ≤ v) : v - n < m :=
 have succ v ≤ n + m,   from succ_le_of_lt h₁,
 have succ (v - n) ≤ m, from
   calc succ (v - n) = succ v - n : succ_sub h₂

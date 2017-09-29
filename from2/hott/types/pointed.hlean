@@ -70,7 +70,7 @@ namespace pointed
     : Σ(p : carrier A = carrier B :> Type _), Point A =[p] Point B :=
   by induction p; exact ⟨idp, idpo⟩
 
-  protected @[hott] def pType.sigma_char.{u} : pType.{u} ≃ Σ(X : Type u), X :=
+  @[hott] protected def pType.sigma_char.{u} : pType.{u} ≃ Σ(X : Type u), X :=
   begin
     fapply equiv.MK,
     { intro x, induction x with X x, exact ⟨X, x⟩},
@@ -152,7 +152,7 @@ namespace pointed
 
   /- equivalences and equalities -/
 
-  protected @[hott] def ppi.sigma_char {A : Type*} (B : A → Type _) (b₀ : B pt) :
+  @[hott] protected def ppi.sigma_char {A : Type*} (B : A → Type _) (b₀ : B pt) :
     ppi B b₀ ≃ Σ(k : Πa, B a), k pt = b₀ :=
   begin
     fapply equiv.MK: intro x,
@@ -320,16 +320,16 @@ namespace pointed
   /- categorical properties of pointed homotopies -/
 
   variable (k)
-  protected @[hott] def phomotopy.refl : k ~* k :=
+  @[hott] protected def phomotopy.refl : k ~* k :=
   phomotopy.mk homotopy.rfl !idp_con
   variable {k}
-  protected @[hott] def phomotopy.rfl [reducible] [refl] : k ~* k :=
+  @[hott] protected def phomotopy.rfl [reducible] [refl] : k ~* k :=
   phomotopy.refl k
 
-  protected @[hott] def phomotopy.symm [symm] (p : k ~* l) : l ~* k :=
+  @[hott] protected def phomotopy.symm [symm] (p : k ~* l) : l ~* k :=
   phomotopy.mk p⁻¹ʰᵗʸ (inv_con_eq_of_eq_con (to_homotopy_pt p)⁻¹)
 
-  protected @[hott] def phomotopy.trans [trans] (p : k ~* l) (q : l ~* m) :
+  @[hott] protected def phomotopy.trans [trans] (p : k ~* l) (q : l ~* m) :
     k ~* m :=
   phomotopy.mk (λa, p a ⬝ q a) (!con.assoc ⬝ whisker_left (p pt) (to_homotopy_pt q) ⬝ to_homotopy_pt p)
 
@@ -770,7 +770,7 @@ namespace pointed
     is_equiv (pointed._trans_of_pmap_of_pequiv f) :=
   pequiv.to_is_equiv f
 
-  protected @[hott] def pequiv.MK (f : A →* B) (g : B →* A)
+  @[hott] protected def pequiv.MK (f : A →* B) (g : B →* A)
     (gf : g ∘* f ~* !pid) (fg : f ∘* g ~* !pid) : A ≃* B :=
   pequiv.mk' f g g fg gf
 
@@ -796,19 +796,19 @@ namespace pointed
   @[hott] def pequiv_of_equiv (f : A ≃ B) (H : f pt = pt) : A ≃* B :=
   pequiv.mk f _ H
 
-  protected @[hott] def pequiv.MK' (f : A →* B) (g : B → A)
+  @[hott] protected def pequiv.MK' (f : A →* B) (g : B → A)
     (gf : Πa, g (f a) = a) (fg : Πb, f (g b) = b) : A ≃* B :=
   pequiv.mk f (adjointify f g fg gf) (respect_pt f)
 
   /- reflexivity and symmetry (transitivity is below) -/
 
-  protected @[hott] def pequiv.refl [refl] (A : Type*) : A ≃* A :=
+  @[hott] protected def pequiv.refl [refl] (A : Type*) : A ≃* A :=
   pequiv.mk' (pid A) (pid A) (pid A) !pid_pcompose !pcompose_pid
 
-  protected @[hott] def pequiv.rfl : A ≃* A :=
+  @[hott] protected def pequiv.rfl : A ≃* A :=
   pequiv.refl A
 
-  protected @[hott] def pequiv.symm [symm] (f : A ≃* B) : B ≃* A :=
+  @[hott] protected def pequiv.symm [symm] (f : A ≃* B) : B ≃* A :=
   pequiv.MK (to_pinv f) f (pequiv.pright_inv f) (pleft_inv' f)
 
   postfix `⁻¹ᵉ*`:(max + 1) := pequiv.symm
@@ -988,7 +988,7 @@ namespace pointed
 
   postfix [parsing_only] `⁻²*`:(max+10) := pinv2
 
-  protected @[hott] def pequiv.trans [trans] (f : A ≃* B) (g : B ≃* C) : A ≃* C :=
+  @[hott] protected def pequiv.trans [trans] (f : A ≃* B) (g : B ≃* C) : A ≃* C :=
   pequiv.MK (g ∘* f) (f⁻¹ᵉ* ∘* g⁻¹ᵉ*)
     abstract !passoc ⬝* pwhisker_left _ (pinv_pcompose_cancel_left g f) ⬝* pleft_inv f end
     abstract !passoc ⬝* pwhisker_left _ (pcompose_pinv_cancel_left f g⁻¹ᵉ*) ⬝* pright_inv g end

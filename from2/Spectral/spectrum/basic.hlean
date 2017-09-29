@@ -114,7 +114,7 @@ namespace spectrum
     cases n with n: apply is_equiv_id
   end
 
-  protected @[hott] def of_nat_indexed (E : gen_prespectrum +ℕ) [H : is_spectrum E] : spectrum
+  @[hott] protected def of_nat_indexed (E : gen_prespectrum +ℕ) [H : is_spectrum E] : spectrum
   := spectrum.mk (psp_of_nat_indexed E) (is_spectrum_of_nat_indexed E)
 
   -- In fact, a (pre)spectrum indexed on any pointed successor structure
@@ -134,12 +134,12 @@ namespace spectrum
     apply is_spectrum_of_nat_indexed, apply is_spectrum.mk, intros n, esimp, apply is_spectrum.is_equiv_glue
   end
 
-  protected @[hott] def of_gen_indexed {N : succ_str} (z : N) (E : gen_spectrum N) : spectrum :=
+  @[hott] protected def of_gen_indexed {N : succ_str} (z : N) (E : gen_spectrum N) : spectrum :=
     gen_spectrum.mk (psp_of_gen_indexed z E) (is_spectrum_of_gen_indexed z E)
 
   -- Generally it's easiest to define a spectrum by giving 'equiv's
   -- directly.  This works for any indexing succ_str.
-  protected @[hott] def MK {N : succ_str} (deloop : N → Type*)
+  @[hott] protected def MK {N : succ_str} (deloop : N → Type*)
     (glue : Π(n:N), (deloop n) ≃* (Ω (deloop (S n)))) : gen_spectrum N :=
     gen_spectrum.mk (gen_prespectrum.mk deloop (λ(n:N), glue n))
     (begin
@@ -148,7 +148,7 @@ namespace spectrum
     end)
 
   -- Finally, we combine them and give a way to produce a (ℤ-)spectrum from a ℕ-indexed family of 'equiv's.
-  protected @[hott] def Mk (deloop : ℕ → Type*)
+  @[hott] protected def Mk (deloop : ℕ → Type*)
     (glue : Π(n:ℕ), (deloop n) ≃* (Ω (deloop (nat.succ n)))) : spectrum :=
     spectrum.of_nat_indexed (spectrum.MK deloop glue)
 

@@ -66,7 +66,7 @@ namespace sphere
         exact !loopn_succ_in_inv_natural⁻¹* _ }}
   end
 
-  protected @[hott] def elim {n : ℕ} {P : Type*} (p : Ω[n] P) : S n →* P :=
+  @[hott] protected def elim {n : ℕ} {P : Type*} (p : Ω[n] P) : S n →* P :=
   !sphere_pmap_pequiv⁻¹ᵉ* p
 
   -- @[hott] def elim_surf {n : ℕ} {P : Type*} (p : Ω[n] P) : apn n (sphere.elim p) surf = p :=

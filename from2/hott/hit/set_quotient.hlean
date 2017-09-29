@@ -26,7 +26,7 @@ section
   @[hott] theorem is_set_set_quotient [instance] : is_set set_quotient :=
   begin unfold set_quotient, exact _ end
 
-  protected @[hott] def rec {P : set_quotient → Type _} [Pt : Πaa, is_set (P aa)]
+  @[hott] protected def rec {P : set_quotient → Type _} [Pt : Πaa, is_set (P aa)]
     (Pc : Π(a : A), P (class_of a)) (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a =[eq_of_rel H] Pc a')
     (x : set_quotient) : P x :=
   begin
@@ -37,7 +37,7 @@ section
       { exact pathover_of_pathover_ap P tr (Pp H)}}
   end
 
-  protected @[hott] def rec_on [reducible] {P : set_quotient → Type _} (x : set_quotient)
+  @[hott] protected def rec_on [reducible] {P : set_quotient → Type _} (x : set_quotient)
     [Pt : Πaa, is_set (P aa)] (Pc : Π(a : A), P (class_of a))
     (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a =[eq_of_rel H] Pc a') : P x :=
   rec Pc Pp x
@@ -47,11 +47,11 @@ section
     {a a' : A} (H : R a a') : apd (rec Pc Pp) (eq_of_rel H) = Pp H :=
   !is_set.elimo
 
-  protected @[hott] def elim {P : Type _} [Pt : is_set P] (Pc : A → P)
+  @[hott] protected def elim {P : Type _} [Pt : is_set P] (Pc : A → P)
     (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a = Pc a') (x : set_quotient) : P :=
   rec Pc (λa a' H, pathover_of_eq _ (Pp H)) x
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (x : set_quotient) [Pt : is_set P]
+  @[hott] protected def elim_on [reducible] {P : Type _} (x : set_quotient) [Pt : is_set P]
     (Pc : A → P) (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a = Pc a')  : P :=
   elim Pc Pp x
 
@@ -63,11 +63,11 @@ section
     rewrite [▸*,-apd_eq_pathover_of_eq_ap,↑elim,rec_eq_of_rel],
   end
 
-  protected @[hott] def rec_prop {P : set_quotient → Type _} [Pt : Πaa, is_prop (P aa)]
+  @[hott] protected def rec_prop {P : set_quotient → Type _} [Pt : Πaa, is_prop (P aa)]
     (Pc : Π(a : A), P (class_of a)) (x : set_quotient) : P x :=
   rec Pc (λa a' H, !is_prop.elimo) x
 
-  protected @[hott] def elim_prop {P : Type _} [Pt : is_prop P] (Pc : A → P) (x : set_quotient)
+  @[hott] protected def elim_prop {P : Type _} [Pt : is_prop P] (Pc : A → P) (x : set_quotient)
     : P :=
   elim Pc (λa a' H, !is_prop.elim) x
 
@@ -131,7 +131,7 @@ namespace set_quotient
         intros a a' r, apply eq_pathover, apply hdeg_square, apply elim_eq_of_rel}
   end
 
-  protected @[hott] def code (a : A) (x : set_quotient R) [H : is_equivalence R]
+  @[hott] protected def code (a : A) (x : set_quotient R) [H : is_equivalence R]
     : Prop :=
   set_quotient.elim_on x (R a)
     begin
@@ -143,7 +143,7 @@ namespace set_quotient
       { intro H2, apply is_transitive.trans R H2, exact is_symmetric.symm R H1}
     end
 
-  protected @[hott] def encode {a : A} {x : set_quotient R} (p : class_of a = x)
+  @[hott] protected def encode {a : A} {x : set_quotient R} (p : class_of a = x)
     [H : is_equivalence R] : set_quotient.code R a x :=
   begin
     induction p, esimp, apply is_reflexive.refl R

@@ -17,7 +17,7 @@ structure fiber {A B : Type _} (f : A → B) (b : B) :=
 namespace fiber
   variables {A B : Type _} {f : A → B} {b : B}
 
-  protected @[hott] def sigma_char
+  @[hott] protected def sigma_char
     (f : A → B) (b : B) : fiber f b ≃ (Σ(a : A), f a = b) :=
   begin
   fapply equiv.MK,
@@ -87,7 +87,7 @@ namespace fiber
   -- pre and post composition with equivalences
   open function
   variable (f)
-  protected @[hott] def equiv_postcompose {B' : Type _} (g : B ≃ B') --[H : is_equiv g]
+  @[hott] protected def equiv_postcompose {B' : Type _} (g : B ≃ B') --[H : is_equiv g]
     (b : B) : fiber (g ∘ f) (g b) ≃ fiber f b :=
   calc
     fiber (g ∘ f) (g b) ≃ Σa : A, g (f a) = g b : fiber.sigma_char
@@ -97,7 +97,7 @@ namespace fiber
                                                   end
                     ... ≃ fiber f b             : fiber.sigma_char
 
-  protected @[hott] def equiv_precompose {A' : Type _} (g : A' ≃ A) --[H : is_equiv g]
+  @[hott] protected def equiv_precompose {A' : Type _} (g : A' ≃ A) --[H : is_equiv g]
     (b : B) : fiber (f ∘ g) b ≃ fiber f b :=
   calc
     fiber (f ∘ g) b ≃ Σa' : A', f (g a') = b   : fiber.sigma_char

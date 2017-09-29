@@ -30,7 +30,7 @@ namespace pushout
   local attribute is_trunc_equiv [instance]
 
   open category.bpushout_prehom_index category.bpushout_hom_rel_index paths.paths_rel
-  protected @[hott] def code_equiv_pt (x : BL + TR) {y : TL} {s : S} (p : k s = y) :
+  @[hott] protected def code_equiv_pt (x : BL + TR) {y : TL} {s : S} (p : k s = y) :
     @hom C _ x (sum.inl (f y)) ≃ @hom C _ x (sum.inr (g y)) :=
   begin
     fapply equiv_postcompose,
@@ -39,7 +39,7 @@ namespace pushout
     refine all_iso _
   end
 
-  protected @[hott] def code_equiv_pt_constant (x : BL + TR) {y : TL} {s s' : S}
+  @[hott] protected def code_equiv_pt_constant (x : BL + TR) {y : TL} {s s' : S}
     (p : k s = y) (p' : k s' = y) : code_equiv_pt x p = code_equiv_pt x p' :=
   begin
     apply equiv_eq, intro g,
@@ -56,7 +56,7 @@ namespace pushout
     exact rcons _ (rel [] !idD)
   end
 
-  protected @[hott] def code_equiv (x : BL + TR) (y : TL) :
+  @[hott] protected def code_equiv (x : BL + TR) (y : TL) :
     @hom C _ x (sum.inl (f y)) ≃ @hom C _ x (sum.inr (g y)) :=
   begin
     refine @prop_trunc.elim_set _ _ _ _ _ (ksurj y), { apply @is_trunc_equiv: apply is_set_hom},
@@ -90,7 +90,7 @@ namespace pushout
     (to_fun (code_equiv x (k s)) h) = @comp C _ _ _ _ (class_of [DE k F G s]) h :=
   ap010 to_fun !code_equiv_eq h
 
-  protected @[hott] def code (x : BL + TR) (y : pushout f g) : Type max u v w :=
+  @[hott] protected def code (x : BL + TR) (y : pushout f g) : Type max u v w :=
   begin
     refine quotient.elim_type _ _ y,
     { clear y, intro y, exact @hom C _ x y},
@@ -243,7 +243,7 @@ namespace pushout
 --   end
 
   -- decode-encode is easy
-  protected @[hott] theorem decode_encode {x : BL + TR} {y : pushout f g}
+  @[hott] protected theorem decode_encode {x : BL + TR} {y : pushout f g}
     (p : trunc 0 (pushout_of_sum x = y)) : decode (encode p) = p :=
   begin
     induction p with p, induction p, reflexivity
@@ -300,7 +300,7 @@ namespace pushout
   end
 
   local attribute pushout [reducible]
-  protected @[hott] theorem encode_decode {x : BL + TR} {y : pushout f g} (c : code x y) :
+  @[hott] protected theorem encode_decode {x : BL + TR} {y : pushout f g} (c : code x y) :
     encode (decode c) = c :=
   begin
     induction y using quotient.rec_prop with y,

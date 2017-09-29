@@ -36,7 +36,7 @@ namespace module_chain_complex
   mcc_hom C (mcc_hom C x) = 0 :=
   module_chain_complex.is_chain_complex C n x
 
-  protected @[hott] def to_chain_complex [coercion] (C : module_chain_complex R N) :
+  @[hott] protected def to_chain_complex [coercion] (C : module_chain_complex R N) :
   chain_complex N :=
     chain_complex.mk
   (λ n, mcc_pcarr C n)

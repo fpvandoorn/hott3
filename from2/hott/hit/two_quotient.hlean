@@ -58,15 +58,15 @@ namespace simple_two_quotient
 
   open pre_two_quotient_rel
   local abbreviation C := quotient pre_two_quotient_rel
-  protected @[hott] def j (a : A) : C := class_of pre_two_quotient_rel (inl a)
-  protected @[hott] def pre_aux (q : Q r) : C :=
+  @[hott] protected def j (a : A) : C := class_of pre_two_quotient_rel (inl a)
+  @[hott] protected def pre_aux (q : Q r) : C :=
   class_of pre_two_quotient_rel (inr ⟨a, r, q⟩)
-  protected @[hott] def e (s : R a a') : j a = j a' := eq_of_rel _ (pre_Rmk s)
-  protected @[hott] def et (t : T a a') : j a = j a' := e_closure.elim e t
-  protected @[hott] def f (q : Q r) : S¹ → C :=
+  @[hott] protected def e (s : R a a') : j a = j a' := eq_of_rel _ (pre_Rmk s)
+  @[hott] protected def et (t : T a a') : j a = j a' := e_closure.elim e t
+  @[hott] protected def f (q : Q r) : S¹ → C :=
   circle.elim (j a) (et r)
 
-  protected @[hott] def pre_rec {P : C → Type _}
+  @[hott] protected def pre_rec {P : C → Type _}
     (Pj : Πa, P (j a)) (Pa : Π⦃a : A⦄ ⦃r : T a a⦄ (q : Q r), P (pre_aux q))
     (Pe : Π⦃a a' : A⦄ (s : R a a'), Pj a =[e s] Pj a') (x : C) : P x :=
   begin
@@ -77,18 +77,18 @@ namespace simple_two_quotient
     { induction H, esimp, apply Pe},
   end
 
-  protected @[hott] def pre_elim {P : Type _} (Pj : A → P)
+  @[hott] protected def pre_elim {P : Type _} (Pj : A → P)
     (Pa : Π⦃a : A⦄ ⦃r : T a a⦄, Q r → P) (Pe : Π⦃a a' : A⦄ (s : R a a'), Pj a = Pj a') (x : C)
     : P :=
   pre_rec Pj Pa (λa a' s, pathover_of_eq _ (Pe s)) x
 
-  protected @[hott] theorem rec_e {P : C → Type _}
+  @[hott] protected theorem rec_e {P : C → Type _}
     (Pj : Πa, P (j a)) (Pa : Π⦃a : A⦄ ⦃r : T a a⦄ (q : Q r), P (pre_aux q))
     (Pe : Π⦃a a' : A⦄ (s : R a a'), Pj a =[e s] Pj a') ⦃a a' : A⦄ (s : R a a')
     : apd (pre_rec Pj Pa Pe) (e s) = Pe s :=
   !rec_eq_of_rel
 
-  protected @[hott] theorem elim_e {P : Type _} (Pj : A → P) (Pa : Π⦃a : A⦄ ⦃r : T a a⦄, Q r → P)
+  @[hott] protected theorem elim_e {P : Type _} (Pj : A → P) (Pa : Π⦃a : A⦄ ⦃r : T a a⦄, Q r → P)
     (Pe : Π⦃a a' : A⦄ (s : R a a'), Pj a = Pj a') ⦃a a' : A⦄ (s : R a a')
     : ap (pre_elim Pj Pa Pe) (e s) = Pe s :=
   begin
@@ -96,12 +96,12 @@ namespace simple_two_quotient
     rewrite [▸*,-apd_eq_pathover_of_eq_ap,↑pre_elim,rec_e],
   end
 
-  protected @[hott] def elim_et {P : Type _} (Pj : A → P) (Pa : Π⦃a : A⦄ ⦃r : T a a⦄, Q r → P)
+  @[hott] protected def elim_et {P : Type _} (Pj : A → P) (Pa : Π⦃a : A⦄ ⦃r : T a a⦄, Q r → P)
     (Pe : Π⦃a a' : A⦄ (s : R a a'), Pj a = Pj a') ⦃a a' : A⦄ (t : T a a')
     : ap (pre_elim Pj Pa Pe) (et t) = e_closure.elim Pe t :=
   ap_e_closure_elim_h e (elim_e Pj Pa Pe) t
 
-  protected @[hott] def rec_et {P : C → Type _}
+  @[hott] protected def rec_et {P : C → Type _}
     (Pj : Πa, P (j a)) (Pa : Π⦃a : A⦄ ⦃r : T a a⦄ (q : Q r), P (pre_aux q))
     (Pe : Π⦃a a' : A⦄ (s : R a a'), Pj a =[e s] Pj a') ⦃a a' : A⦄ (t : T a a')
     : apd (pre_rec Pj Pa Pe) (et t) = e_closure.elimo e Pe t :=
@@ -116,21 +116,21 @@ namespace simple_two_quotient
   local abbreviation D := simple_two_quotient
   local abbreviation i := class_of simple_two_quotient_rel
   @[hott] def incl0 (a : A) : D := i (j a)
-  protected @[hott] def aux (q : Q r) : D := i (pre_aux q)
+  @[hott] protected def aux (q : Q r) : D := i (pre_aux q)
   @[hott] def incl1 (s : R a a') : incl0 a = incl0 a' := ap i (e s)
   @[hott] def inclt (t : T a a') : incl0 a = incl0 a' := e_closure.elim incl1 t
 
   -- "wrong" version inclt, which is ap i (p ⬝ q) instead of ap i p ⬝ ap i q
   -- it is used in the proof, because incltw is easier to work with
-  protected @[hott] def incltw (t : T a a') : incl0 a = incl0 a' := ap i (et t)
+  @[hott] protected def incltw (t : T a a') : incl0 a = incl0 a' := ap i (et t)
 
-  protected @[hott] def inclt_eq_incltw (t : T a a') : inclt t = incltw t :=
+  @[hott] protected def inclt_eq_incltw (t : T a a') : inclt t = incltw t :=
   (ap_e_closure_elim i e t)⁻¹
 
   @[hott] def incl2' (q : Q r) (x : S¹) : i (f q x) = aux q :=
   eq_of_rel simple_two_quotient_rel (Rmk q x)
 
-  protected @[hott] def incl2w (q : Q r) : incltw r = idp :=
+  @[hott] protected def incl2w (q : Q r) : incltw r = idp :=
   (ap02 i (elim_loop (j a) (et r))⁻¹) ⬝
   (ap_compose i (f q) loop)⁻¹ ⬝
   ap_is_constant (incl2' q) loop ⬝
@@ -143,7 +143,7 @@ namespace simple_two_quotient
   local attribute i aux incl0
 
   parameters {R Q}
-  protected @[hott] def rec {P : D → Type _} (P0 : Π(a : A), P (incl0 a))
+  @[hott] protected def rec {P : D → Type _} (P0 : Π(a : A), P (incl0 a))
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a =[incl1 s] P0 a')
     (P2 : Π⦃a : A⦄ ⦃r : T a a⦄ (q : Q r),
       change_path (incl2 q) (e_closure.elimo incl1 P1 r) = idpo) (x : D) : P x :=
@@ -188,7 +188,7 @@ namespace simple_two_quotient
         apply whisker_bl_whisker_tl_eq} end end},
   end
 
-  protected @[hott] def rec_on [reducible] {P : D → Type _} (x : D) (P0 : Π(a : A), P (incl0 a))
+  @[hott] protected def rec_on [reducible] {P : D → Type _} (x : D) (P0 : Π(a : A), P (incl0 a))
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a =[incl1 s] P0 a')
     (P2 : Π⦃a : A⦄ ⦃r : T a a⦄ (q : Q r),
       change_path (incl2 q) (e_closure.elimo incl1 P1 r) = idpo) : P x :=
@@ -211,7 +211,7 @@ namespace simple_two_quotient
     : apd (rec P0 P1 P2) (inclt t) = e_closure.elimo incl1 P1 t :=
   ap_e_closure_elimo_h incl1 P1 (rec_incl1 P0 P1 P2) t
 
-  protected @[hott] def elim {P : Type _} (P0 : A → P)
+  @[hott] protected def elim {P : Type _} (P0 : A → P)
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a = P0 a')
     (P2 : Π⦃a : A⦄ ⦃r : T a a⦄ (q : Q r), e_closure.elim P1 r = idp)
     (x : D) : P :=
@@ -232,7 +232,7 @@ namespace simple_two_quotient
   end
   local attribute elim
 
-  protected @[hott] def elim_on {P : Type _} (x : D) (P0 : A → P)
+  @[hott] protected def elim_on {P : Type _} (x : D) (P0 : A → P)
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a = P0 a')
     (P2 : Π⦃a : A⦄ ⦃r : T a a⦄ (q : Q r), e_closure.elim P1 r = idp)
      : P :=
@@ -250,13 +250,13 @@ namespace simple_two_quotient
     ⦃a a' : A⦄ (t : T a a') : ap (elim P0 P1 P2) (inclt t) = e_closure.elim P1 t :=
   ap_e_closure_elim_h incl1 (elim_incl1 P2) t
 
-  protected @[hott] def elim_incltw {P : Type _} {P0 : A → P}
+  @[hott] protected def elim_incltw {P : Type _} {P0 : A → P}
     {P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a = P0 a'}
     (P2 : Π⦃a : A⦄ ⦃r : T a a⦄ (q : Q r), e_closure.elim P1 r = idp)
     ⦃a a' : A⦄ (t : T a a') : ap (elim P0 P1 P2) (incltw t) = e_closure.elim P1 t :=
   (ap_compose (elim P0 P1 P2) i (et t))⁻¹ ⬝ !elim_et
 
-  protected @[hott] theorem elim_inclt_eq_elim_incltw {P : Type _} {P0 : A → P}
+  @[hott] protected theorem elim_inclt_eq_elim_incltw {P : Type _} {P0 : A → P}
     {P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a = P0 a'}
     (P2 : Π⦃a : A⦄ ⦃r : T a a⦄ (q : Q r), e_closure.elim P1 r = idp)
     ⦃a a' : A⦄ (t : T a a')
@@ -280,7 +280,7 @@ namespace simple_two_quotient
   !elim_eq_of_rel
 
   local attribute whisker_right [reducible]
-  protected @[hott] theorem elim_incl2w {P : Type _} (P0 : A → P)
+  @[hott] protected theorem elim_incl2w {P : Type _} (P0 : A → P)
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a = P0 a')
     (P2 : Π⦃a : A⦄ ⦃r : T a a⦄ (q : Q r), e_closure.elim P1 r = idp)
     ⦃a : A⦄ ⦃r : T a a⦄ (q : Q r)
@@ -371,7 +371,7 @@ namespace two_quotient
   eq_of_con_inv_eq_idp (incl2 _ _ (Qmk R q))
 
   parameters {R Q}
-  protected @[hott] def rec {P : two_quotient → Type _} (P0 : Π(a : A), P (incl0 a))
+  @[hott] protected def rec {P : two_quotient → Type _} (P0 : Π(a : A), P (incl0 a))
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a =[incl1 s] P0 a')
     (P2 : Π⦃a a' : A⦄ ⦃t t' : T a a'⦄ (q : Q t t'),
       change_path (incl2 q) (e_closure.elimo incl1 P1 t) = e_closure.elimo incl1 P1 t')
@@ -390,7 +390,7 @@ namespace two_quotient
       apply cono_invo_eq_idpo, apply P2 end end}
   end
 
-  protected @[hott] def rec_on [reducible] {P : two_quotient → Type _} (x : two_quotient)
+  @[hott] protected def rec_on [reducible] {P : two_quotient → Type _} (x : two_quotient)
     (P0 : Π(a : A), P (incl0 a))
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a =[incl1 s] P0 a')
     (P2 : Π⦃a a' : A⦄ ⦃t t' : T a a'⦄ (q : Q t t'),
@@ -411,7 +411,7 @@ namespace two_quotient
     ⦃a a' : A⦄ (t : T a a') : apd (rec P0 P1 P2) (inclt t) = e_closure.elimo incl1 P1 t :=
   rec_inclt _ _ _ t
 
-  protected @[hott] def elim {P : Type _} (P0 : A → P)
+  @[hott] protected def elim {P : Type _} (P0 : A → P)
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a = P0 a')
     (P2 : Π⦃a a' : A⦄ ⦃t t' : T a a'⦄ (q : Q t t'), e_closure.elim P1 t = e_closure.elim P1 t')
     (x : two_quotient) : P :=
@@ -425,7 +425,7 @@ namespace two_quotient
   end
   local attribute elim
 
-  protected @[hott] def elim_on {P : Type _} (x : two_quotient) (P0 : A → P)
+  @[hott] protected def elim_on {P : Type _} (x : two_quotient) (P0 : A → P)
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a = P0 a')
     (P2 : Π⦃a a' : A⦄ ⦃t t' : T a a'⦄ (q : Q t t'), e_closure.elim P1 t = e_closure.elim P1 t')
      : P :=
@@ -526,7 +526,7 @@ namespace trunc_two_quotient
   local attribute trunc_two_quotient incl0 [reducible]
   @[hott] def is_trunc_trunc_two_quotient [instance] : is_trunc n trunc_two_quotient := _
 
-  protected @[hott] def rec {P : trunc_two_quotient → Type _} [H : Πx, is_trunc n (P x)]
+  @[hott] protected def rec {P : trunc_two_quotient → Type _} [H : Πx, is_trunc n (P x)]
     (P0 : Π(a : A), P (incl0 a))
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a =[incl1 s] P0 a')
     (P2 : Π⦃a a' : A⦄ ⦃t t' : T a a'⦄ (q : Q t t'),
@@ -542,7 +542,7 @@ namespace trunc_two_quotient
                   - + change_path_con, ↑incl2, con_inv_cancel_right] end}
   end
 
-  protected @[hott] def rec_on [reducible] {P : trunc_two_quotient → Type _} [H : Πx, is_trunc n (P x)]
+  @[hott] protected def rec_on [reducible] {P : trunc_two_quotient → Type _} [H : Πx, is_trunc n (P x)]
     (x : trunc_two_quotient)
     (P0 : Π(a : A), P (incl0 a))
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a =[incl1 s] P0 a')
@@ -566,7 +566,7 @@ namespace trunc_two_quotient
     ⦃a a' : A⦄ (t : T a a') : apd (rec P0 P1 P2) (inclt t) = e_closure.elimo incl1 P1 t :=
   ap_e_closure_elimo_h incl1 P1 (rec_incl1 P0 P1 P2) t
 
-  protected @[hott] def elim {P : Type _} (P0 : A → P) [H : is_trunc n P]
+  @[hott] protected def elim {P : Type _} (P0 : A → P) [H : is_trunc n P]
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a = P0 a')
     (P2 : Π⦃a a' : A⦄ ⦃t t' : T a a'⦄ (q : Q t t'), e_closure.elim P1 t = e_closure.elim P1 t')
     (x : trunc_two_quotient) : P :=
@@ -579,7 +579,7 @@ namespace trunc_two_quotient
   end
   local attribute elim
 
-  protected @[hott] def elim_on {P : Type _} [H : is_trunc n P] (x : trunc_two_quotient) (P0 : A → P)
+  @[hott] protected def elim_on {P : Type _} [H : is_trunc n P] (x : trunc_two_quotient) (P0 : A → P)
     (P1 : Π⦃a a' : A⦄ (s : R a a'), P0 a = P0 a')
     (P2 : Π⦃a a' : A⦄ ⦃t t' : T a a'⦄ (q : Q t t'), e_closure.elim P1 t = e_closure.elim P1 t')
      : P :=

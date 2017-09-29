@@ -2,12 +2,12 @@ add @[hott] before definition, lemma, proposition, theorem
 shorten definition to def
 change `intro x y` to `intros x y`
 remove [constructor] [unfold_full] and [unfold *] attributes
-change `Type` to `Type _`.  
+change `Type` to `Type _`.
 \([^0-9a-z*._₀₁₂₃₄]\)Type\([^0-9a-z*._₀₁₂₃₄]\) -> \1Type _\2, (also avoid `-[`)
 Type₀ -> Type
 Type₁ -> Type 1
 \([^0-9a-z*._₀₁₂₃₄]\)Type.{\([^\}]*\)} -> \1Type \2
-
+protected @[hott] -> @[hott] protected
 
 
 Manual changes:

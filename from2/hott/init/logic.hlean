@@ -158,7 +158,7 @@ variables {a b c d : Type _}
 attribute prod.rec [elim]
 attribute prod.mk [intro!]
 
-protected @[hott] def prod.elim (H₁ : a × b) (H₂ : a → b → c) : c :=
+@[hott] protected def prod.elim (H₁ : a × b) (H₂ : a → b → c) : c :=
 prod.rec H₂ H₁
 
 @[hott] def prod.swap : a × b → b × a :=
@@ -170,7 +170,7 @@ infixr ⊎ := sum
 
 attribute sum.rec [elim]
 
-protected @[hott] def sum.elim (H₁ : a ⊎ b) (H₂ : a → c) (H₃ : b → c) : c :=
+@[hott] protected def sum.elim (H₁ : a ⊎ b) (H₂ : a → c) (H₃ : b → c) : c :=
 sum.rec H₂ H₃ H₁
 
 @[hott] def non_contradictory_em (a : Type _) : ¬¬(a ⊎ ¬a) :=
@@ -455,7 +455,7 @@ section
     : decidable q :=
   decidable_of_decidable_of_iff Hp (iff.of_eq H)
 
-  protected @[hott] def sum.by_cases [Hp : decidable p] [Hq : decidable q] {A : Type _}
+  @[hott] protected def sum.by_cases [Hp : decidable p] [Hq : decidable q] {A : Type _}
                                    (h : p ⊎ q) (h₁ : p → A) (h₂ : q → A) : A :=
   if hp : p then h₁ hp else
     if hq : q then h₂ hq else
@@ -507,7 +507,7 @@ open bool
 @[hott] def is_dec_refl {A : Type _} (p : A → A → bool) : Type _ := Πx, p x x = tt
 
 open decidable
-protected @[hott] def bool.has_decidable_eq [instance] : Πa b : bool, decidable (a = b)
+@[hott] protected def bool.has_decidable_eq [instance] : Πa b : bool, decidable (a = b)
 | ff ff := inl rfl
 | ff tt := inr ff_ne_tt
 | tt ff := inr (ne.symm ff_ne_tt)
@@ -522,10 +522,10 @@ take x y : A, if Hp : p x y = tt then inl (H₁ Hp)
 inductive inhabited [class] (A : Type _) : Type _ :=
 mk : A → inhabited A
 
-protected @[hott] def inhabited.value {A : Type _} : inhabited A → A :=
+@[hott] protected def inhabited.value {A : Type _} : inhabited A → A :=
 inhabited.rec (λa, a)
 
-protected @[hott] def inhabited.destruct {A : Type _} {B : Type _} (H1 : inhabited A) (H2 : A → B) : B :=
+@[hott] protected def inhabited.destruct {A : Type _} {B : Type _} (H1 : inhabited A) (H2 : A → B) : B :=
 inhabited.rec H2 H1
 
 @[hott] def default (A : Type _) [H : inhabited A] : A :=
@@ -544,19 +544,19 @@ inhabited.rec_on H (λb, inhabited.mk (λa, b))
   inhabited (Πx, B x) :=
 inhabited.mk (λa, !default)
 
-protected @[hott] def bool.is_inhabited [instance] : inhabited bool :=
+@[hott] protected def bool.is_inhabited [instance] : inhabited bool :=
 inhabited.mk ff
 
-protected @[hott] def pos_num.is_inhabited [instance] : inhabited pos_num :=
+@[hott] protected def pos_num.is_inhabited [instance] : inhabited pos_num :=
 inhabited.mk pos_num.one
 
-protected @[hott] def num.is_inhabited [instance] : inhabited num :=
+@[hott] protected def num.is_inhabited [instance] : inhabited num :=
 inhabited.mk num.zero
 
 inductive nonempty [class] (A : Type _) : Type _ :=
 intro : A → nonempty A
 
-protected @[hott] def nonempty.elim {A : Type _} {B : Type _} (H1 : nonempty A) (H2 : A → B) : B :=
+@[hott] protected def nonempty.elim {A : Type _} {B : Type _} (H1 : nonempty A) (H2 : A → B) : B :=
 nonempty.rec H2 H1
 
 @[hott] theorem nonempty_of_inhabited [instance] {A : Type _} [H : inhabited A] : nonempty A :=
@@ -570,10 +570,10 @@ sigma.rec (λw H, nonempty.intro w)
 inductive subsingleton [class] (A : Type _) : Type _ :=
 intro : (Π a b : A, a = b) → subsingleton A
 
-protected @[hott] def subsingleton.elim {A : Type _} [H : subsingleton A] : Π(a b : A), a = b :=
+@[hott] protected def subsingleton.elim {A : Type _} [H : subsingleton A] : Π(a b : A), a = b :=
 subsingleton.rec (λp, p) H
 
-protected @[hott] theorem rec_subsingleton {p : Type _} [H : decidable p]
+@[hott] protected theorem rec_subsingleton {p : Type _} [H : decidable p]
     {H1 : p → Type _} {H2 : ¬p → Type _}
     [H3 : Π(h : p), subsingleton (H1 h)] [H4 : Π(h : ¬p), subsingleton (H2 h)]
   : subsingleton (decidable.rec_on H H1 H2) :=

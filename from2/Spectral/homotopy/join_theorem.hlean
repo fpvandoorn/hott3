@@ -48,7 +48,7 @@ section
 
     include sec
 
-    protected @[hott] def intro : is_conn n A :=
+    @[hott] protected def intro : is_conn n A :=
     begin
       apply is_conn_of_map_to_unit,
       apply is_conn_fun.intro,

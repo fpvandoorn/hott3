@@ -2,7 +2,7 @@ import homotopy.sphere2 ..move_to_lib
 
 open fin eq equiv group algebra sphere.ops pointed nat int trunc is_equiv function circle
 
-  protected @[hott] def nat.eq_one_of_mul_eq_one {n : ℕ} (m : ℕ) (q : n * m = 1) : n = 1 :=
+  @[hott] protected def nat.eq_one_of_mul_eq_one {n : ℕ} (m : ℕ) (q : n * m = 1) : n = 1 :=
   begin
     cases n with n,
     { exact empty.elim (succ_ne_zero 0 ((nat.zero_mul m)⁻¹ ⬝ q)⁻¹) },

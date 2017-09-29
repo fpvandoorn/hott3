@@ -33,7 +33,7 @@ section
   @[hott] def seg (a : A) : base (f a) = top a :=
   eq_of_rel cylinder_rel (Rmk f a)
 
-  protected @[hott] def rec {P : cylinder → Type _}
+  @[hott] protected def rec {P : cylinder → Type _}
     (Pbase : Π(b : B), P (base b)) (Ptop : Π(a : A), P (top a))
     (Pseg : Π(a : A), Pbase (f a) =[seg a] Ptop a) (x : cylinder) : P x :=
   begin
@@ -44,7 +44,7 @@ section
     { cases H, apply Pseg}
   end
 
-  protected @[hott] def rec_on [reducible] {P : cylinder → Type _} (x : cylinder)
+  @[hott] protected def rec_on [reducible] {P : cylinder → Type _} (x : cylinder)
     (Pbase : Π(b : B), P (base b)) (Ptop  : Π(a : A), P (top a))
     (Pseg  : Π(a : A), Pbase (f a) =[seg a] Ptop a) : P x :=
   rec Pbase Ptop Pseg x
@@ -55,11 +55,11 @@ section
       (a : A) : apd (rec Pbase Ptop Pseg) (seg a) = Pseg a :=
   !rec_eq_of_rel
 
-  protected @[hott] def elim {P : Type _} (Pbase : B → P) (Ptop : A → P)
+  @[hott] protected def elim {P : Type _} (Pbase : B → P) (Ptop : A → P)
     (Pseg : Π(a : A), Pbase (f a) = Ptop a) (x : cylinder) : P :=
   rec Pbase Ptop (λa, pathover_of_eq _ (Pseg a)) x
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (x : cylinder) (Pbase : B → P) (Ptop : A → P)
+  @[hott] protected def elim_on [reducible] {P : Type _} (x : cylinder) (Pbase : B → P) (Ptop : A → P)
     (Pseg : Π(a : A), Pbase (f a) = Ptop a) : P :=
   elim Pbase Ptop Pseg x
 
@@ -71,11 +71,11 @@ section
     rewrite [▸*,-apd_eq_pathover_of_eq_ap,↑elim,rec_seg],
   end
 
-  protected @[hott] def elim_type (Pbase : B → Type _) (Ptop : A → Type _)
+  @[hott] protected def elim_type (Pbase : B → Type _) (Ptop : A → Type _)
     (Pseg : Π(a : A), Pbase (f a) ≃ Ptop a) (x : cylinder) : Type _ :=
   elim Pbase Ptop (λa, ua (Pseg a)) x
 
-  protected @[hott] def elim_type_on [reducible] (x : cylinder) (Pbase : B → Type _) (Ptop : A → Type _)
+  @[hott] protected def elim_type_on [reducible] (x : cylinder) (Pbase : B → Type _) (Ptop : A → Type _)
     (Pseg : Π(a : A), Pbase (f a) ≃ Ptop a) : Type _ :=
   elim_type Pbase Ptop Pseg x
 
@@ -120,7 +120,7 @@ namespace cylinder
 -- TODO: define the induction principle for "fcylinder"
 --   set_option pp.notation false
 --   -- The induction principle for the dependent mapping cylinder (TODO)
---   protected @[hott] def frec {P : Π(b), fcylinder f b → Type _}
+--   @[hott] protected def frec {P : Π(b), fcylinder f b → Type _}
 --     (Pbase : Π(b : B), P _ (fbase b)) (Ptop : Π(a : A), P _ (ftop a))
 --     (Pseg : Π(a : A), Pbase (f a) =[fseg a] Ptop a) {b : B} (x : fcylinder f b) : P _ x :=
 --   begin

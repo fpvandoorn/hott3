@@ -57,7 +57,7 @@ section
     apply resp_id
   end
 
-  protected @[hott] def rec {P : groupoid_quotient → Type _} [Πx, is_trunc 1 (P x)]
+  @[hott] protected def rec {P : groupoid_quotient → Type _} [Πx, is_trunc 1 (P x)]
     (Pe : Πg, P (elt g)) (Pp : Π⦃a b⦄ (f : a ⟶ b), Pe a =[pth f] Pe b)
     (Pcomp : Π⦃a b c⦄ (g : b ⟶ c) (f : a ⟶ b),
       change_path (resp_comp g f) (Pp (g ∘ f)) = Pp f ⬝o Pp g)
@@ -70,19 +70,19 @@ section
       apply Pcomp}
   end
 
-  protected @[hott] def rec_on {P : groupoid_quotient → Type _} [Πx, is_trunc 1 (P x)]
+  @[hott] protected def rec_on {P : groupoid_quotient → Type _} [Πx, is_trunc 1 (P x)]
     (x : groupoid_quotient)
     (Pe : Πg, P (elt g)) (Pp : Π⦃a b⦄ (f : a ⟶ b), Pe a =[pth f] Pe b)
     (Pcomp : Π⦃a b c⦄ (g : b ⟶ c) (f : a ⟶ b),
       change_path (resp_comp g f) (Pp (g ∘ f)) = Pp f ⬝o Pp g) : P x :=
   rec Pe Pp Pcomp x
 
-  protected @[hott] def set_rec {P : groupoid_quotient → Type _} [Πx, is_set (P x)]
+  @[hott] protected def set_rec {P : groupoid_quotient → Type _} [Πx, is_set (P x)]
     (Pe : Πg, P (elt g)) (Pp : Π⦃a b⦄ (f : a ⟶ b), Pe a =[pth f] Pe b)
     (x : groupoid_quotient) : P x :=
   rec Pe Pp !center x
 
-  protected @[hott] def prop_rec {P : groupoid_quotient → Type _} [Πx, is_prop (P x)]
+  @[hott] protected def prop_rec {P : groupoid_quotient → Type _} [Πx, is_prop (P x)]
     (Pe : Πg, P (elt g)) (x : groupoid_quotient) : P x :=
   rec Pe !center !center x
 
@@ -93,7 +93,7 @@ section
     {a b : G} (f : a ⟶ b) : apd (rec Pe Pp Pcomp) (pth f) = Pp f :=
   proof !rec_incl1 qed
 
-  protected @[hott] def elim {P : Type _} [is_trunc 1 P] (Pe : G → P)
+  @[hott] protected def elim {P : Type _} [is_trunc 1 P] (Pe : G → P)
     (Pp : Π⦃a b⦄ (f : a ⟶ b), Pe a = Pe b)
     (Pcomp : Π⦃a b c⦄ (g : b ⟶ c) (f : a ⟶ b), Pp (g ∘ f) = Pp f ⬝ Pp g)
     (x : groupoid_quotient) : P :=
@@ -105,17 +105,17 @@ section
       exact Pcomp g f}
   end
 
-  protected @[hott] def elim_on [reducible] {P : Type _} [is_trunc 1 P] (x : groupoid_quotient)
+  @[hott] protected def elim_on [reducible] {P : Type _} [is_trunc 1 P] (x : groupoid_quotient)
     (Pe : G → P) (Pp : Π⦃a b⦄ (f : a ⟶ b), Pe a = Pe b)
     (Pcomp : Π⦃a b c⦄ (g : b ⟶ c) (f : a ⟶ b), Pp (g ∘ f) = Pp f ⬝ Pp g) : P :=
   elim Pe Pp Pcomp x
 
-  protected @[hott] def set_elim [reducible] {P : Type _} [is_set P] (Pe : G → P)
+  @[hott] protected def set_elim [reducible] {P : Type _} [is_set P] (Pe : G → P)
     (Pp : Π⦃a b⦄ (f : a ⟶ b), Pe a = Pe b)
     (x : groupoid_quotient) : P :=
   elim Pe Pp !center x
 
-  protected @[hott] def prop_elim [reducible] {P : Type _} [is_prop P] (Pe : G → P)
+  @[hott] protected def prop_elim [reducible] {P : Type _} [is_prop P] (Pe : G → P)
     (x : groupoid_quotient) : P :=
   elim Pe !center !center x
 
@@ -136,7 +136,7 @@ section
              (!ap_con ⬝ (elim_pth Pcomp f ◾ elim_pth Pcomp g)) :=
   proof !elim_incl2 qed
 
-  protected @[hott] def elim_set.{u} (Pe : G → Set.{u}) (Pp : Π⦃a b⦄ (f : a ⟶ b), Pe a ≃ Pe b)
+  @[hott] protected def elim_set.{u} (Pe : G → Set.{u}) (Pp : Π⦃a b⦄ (f : a ⟶ b), Pe a ≃ Pe b)
     (Pcomp : Π⦃a b c⦄ (g : b ⟶ c) (f : a ⟶ b) (x : Pe a), Pp (g ∘ f) x = Pp g (Pp f x))
     (x : groupoid_quotient) : Set.{u} :=
   elim Pe (λa b f, tua (Pp f)) (λa b c g f, ap tua (equiv_eq (Pcomp g f)) ⬝ !tua_trans) x
@@ -167,7 +167,7 @@ section
 
   include a
 
-  protected @[hott] def code (x : groupoid_quotient G) : Set.{v} :=
+  @[hott] protected def code (x : groupoid_quotient G) : Set.{v} :=
   begin
     refine groupoid_quotient.elim_set _ _ _ x,
     { intro b, exact homset a b},
@@ -180,10 +180,10 @@ section
   local abbreviation code := @groupoid_quotient.code G a
 
   variable {a}
-  protected @[hott] def encode (x : groupoid_quotient G) (p : elt a = x) : code a x :=
+  @[hott] protected def encode (x : groupoid_quotient G) (p : elt a = x) : code a x :=
   transport (code a) p (ID a)
 
-  protected @[hott] def decode (x : groupoid_quotient G) (z : code a x) : elt a = x :=
+  @[hott] protected def decode (x : groupoid_quotient G) (z : code a x) : elt a = x :=
   begin
     induction x using groupoid_quotient.set_rec with b b c g,
     { esimp, exact pth z},
@@ -194,11 +194,11 @@ section
   local abbreviation encode := @groupoid_quotient.encode G a
   local abbreviation decode := @groupoid_quotient.decode G a
 
-  protected @[hott] def decode_encode (x : groupoid_quotient G) (p : elt a = x) :
+  @[hott] protected def decode_encode (x : groupoid_quotient G) (p : elt a = x) :
     decode x (encode x p) = p :=
   begin induction p, esimp, apply resp_id end
 
-  protected @[hott] def encode_decode (x : groupoid_quotient G) (z : code a x) :
+  @[hott] protected def encode_decode (x : groupoid_quotient G) (z : code a x) :
     encode x (decode x z) = z :=
   begin
     induction x using groupoid_quotient.prop_rec with b,

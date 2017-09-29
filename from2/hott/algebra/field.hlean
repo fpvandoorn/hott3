@@ -21,7 +21,7 @@ section division_ring
   variables [s : division_ring A] {a b c : A}
   include s
 
-  protected @[hott] def algebra.div (a b : A) : A := a * b⁻¹
+  @[hott] protected def algebra.div (a b : A) : A := a * b⁻¹
 
   @[hott] def division_ring_has_div [instance] : has_div A :=
   has_div.mk algebra.div

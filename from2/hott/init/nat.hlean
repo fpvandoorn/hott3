@@ -12,19 +12,19 @@ set_option class.force_new true
 notation `ℕ` := nat
 
 namespace nat
-  protected @[hott] def rec_on [reducible] [recursor]
+  @[hott] protected def rec_on [reducible] [recursor]
                        {C : ℕ → Type _} (n : ℕ) (H₁ : C 0) (H₂ : Π (a : ℕ), C a → C (succ a)) : C n :=
   nat.rec H₁ H₂ n
 
-  protected @[hott] def cases [reducible] {M : ℕ → Type _} (mz : M zero)
+  @[hott] protected def cases [reducible] {M : ℕ → Type _} (mz : M zero)
     (ms : Πn, M (succ n)) : Πn, M n :=
   nat.rec mz (λn dummy, ms n)
 
-  protected @[hott] def cases_on [reducible] [recursor]
+  @[hott] protected def cases_on [reducible] [recursor]
                        {C : ℕ → Type _} (n : ℕ) (H₁ : C 0) (H₂ : Π (a : ℕ), C (succ a)) : C n :=
   nat.rec H₁ (λ a ih, H₂ a) n
 
-  protected @[hott] def no_confusion_type.{u} [reducible] (P : Type u) (v₁ v₂ : ℕ) : Type u :=
+  @[hott] protected def no_confusion_type.{u} [reducible] (P : Type u) (v₁ v₂ : ℕ) : Type u :=
   nat.rec
     (nat.rec
        (P → lift P)
@@ -36,7 +36,7 @@ namespace nat
        v₂)
     v₁
 
-  protected @[hott] def no_confusion [reducible]
+  @[hott] protected def no_confusion [reducible]
                        {P : Type _} {v₁ v₂ : ℕ} (H : v₁ = v₂) : nat.no_confusion_type P v₁ v₂ :=
   eq.rec (λ H₁ : v₁ = v₁, nat.rec (λ h, lift.up h) (λ a ih h, lift.up (h (eq.refl a))) v₁) H H
 
@@ -47,10 +47,10 @@ namespace nat
 
   @[hott] def nat_has_le [instance] [priority nat.prio]: has_le nat := has_le.mk nat.le
 
-  protected @[hott] def le_refl [refl] : Π a : nat, a ≤ a :=
+  @[hott] protected def le_refl [refl] : Π a : nat, a ≤ a :=
   le.nat_refl
 
-  protected @[hott] def lt [reducible] (n m : ℕ) := succ n ≤ m
+  @[hott] protected def lt [reducible] (n m : ℕ) := succ n ≤ m
   @[hott] def nat_has_lt [instance] [priority nat.prio] : has_lt nat := has_lt.mk nat.lt
 
   @[hott] def pred (a : nat) : nat :=
@@ -58,10 +58,10 @@ namespace nat
 
   -- add is defined in init.reserved_notation
 
-  protected @[hott] def sub (a b : nat) : nat :=
+  @[hott] protected def sub (a b : nat) : nat :=
   nat.rec_on b a (λ b₁, pred)
 
-  protected @[hott] def mul (a b : nat) : nat :=
+  @[hott] protected def mul (a b : nat) : nat :=
   nat.rec_on b zero (λ b₁ r, r + a)
 
   @[hott] def nat_has_sub [instance] [priority nat.prio] : has_sub nat :=
@@ -72,10 +72,10 @@ namespace nat
 
   /- properties of ℕ -/
 
-  protected @[hott] def is_inhabited [instance] : inhabited nat :=
+  @[hott] protected def is_inhabited [instance] : inhabited nat :=
   inhabited.mk zero
 
-  protected @[hott] def has_decidable_eq [instance] [priority nat.prio] : Π x y : nat, decidable (x = y)
+  @[hott] protected def has_decidable_eq [instance] [priority nat.prio] : Π x y : nat, decidable (x = y)
   | has_decidable_eq zero     zero     := inl rfl
   | has_decidable_eq (succ x) zero     := inr (by contradiction)
   | has_decidable_eq zero     (succ y) := inr (by contradiction)
@@ -87,7 +87,7 @@ namespace nat
 
   /- properties of inequality -/
 
-  protected @[hott] def le_of_eq {n m : ℕ} (p : n = m) : n ≤ m := p ▸ !nat.le_refl
+  @[hott] protected def le_of_eq {n m : ℕ} (p : n = m) : n ≤ m := p ▸ !nat.le_refl
 
   @[hott] def le_succ (n : ℕ) : n ≤ succ n := le.step !nat.le_refl
 
@@ -99,14 +99,14 @@ namespace nat
   @[hott] def pred_le_iff_unit [simp] (n : ℕ) : pred n ≤ n ↔ unit :=
   iff_unit_intro (pred_le n)
 
-  protected @[hott] def le_trans {n m k : ℕ} (H1 : n ≤ m) : m ≤ k → n ≤ k :=
+  @[hott] protected def le_trans {n m k : ℕ} (H1 : n ≤ m) : m ≤ k → n ≤ k :=
   le.rec H1 (λp H2, le.step)
 
   @[hott] def le_succ_of_le {n m : ℕ} (H : n ≤ m) : n ≤ succ m := nat.le_trans H !le_succ
 
   @[hott] def le_of_succ_le {n m : ℕ} (H : succ n ≤ m) : n ≤ m := nat.le_trans !le_succ H
 
-  protected @[hott] def le_of_lt {n m : ℕ} (H : n < m) : n ≤ m := le_of_succ_le H
+  @[hott] protected def le_of_lt {n m : ℕ} (H : n < m) : n ≤ m := le_of_succ_le H
 
   @[hott] def succ_le_succ {n m : ℕ} : n ≤ m → succ n ≤ succ m :=
   le.rec !nat.le_refl (λa b, le.step)
@@ -146,15 +146,15 @@ namespace nat
   @[hott] theorem zero_lt_succ_iff_unit [simp] (n : ℕ) : 0 < succ n ↔ unit :=
   iff_unit_intro (zero_lt_succ n)
 
-  protected @[hott] theorem lt_trans {n m k : ℕ} (H1 : n < m) : m < k → n < k :=
+  @[hott] protected theorem lt_trans {n m k : ℕ} (H1 : n < m) : m < k → n < k :=
   nat.le_trans (le.step H1)
 
-  protected @[hott] theorem lt_of_le_of_lt {n m k : ℕ} (H1 : n ≤ m) : m < k → n < k :=
+  @[hott] protected theorem lt_of_le_of_lt {n m k : ℕ} (H1 : n ≤ m) : m < k → n < k :=
   nat.le_trans (succ_le_succ H1)
 
-  protected @[hott] theorem lt_of_lt_of_le {n m k : ℕ} : n < m → m ≤ k → n < k := nat.le_trans
+  @[hott] protected theorem lt_of_lt_of_le {n m k : ℕ} : n < m → m ≤ k → n < k := nat.le_trans
 
-  protected @[hott] theorem lt_irrefl (n : ℕ) : ¬n < n := not_succ_le_self
+  @[hott] protected theorem lt_irrefl (n : ℕ) : ¬n < n := not_succ_le_self
 
   @[hott] theorem lt_self_iff_empty (n : ℕ) : n < n ↔ empty :=
   iff_empty_intro (λ H, absurd H (nat.lt_irrefl n))
@@ -169,13 +169,13 @@ namespace nat
   @[hott] theorem le_lt_antisymm {n m : ℕ} (H1 : n ≤ m) (H2 : m < n) : empty :=
   !nat.lt_irrefl (nat.lt_of_le_of_lt H1 H2)
 
-  protected @[hott] theorem le_antisymm {n m : ℕ} (H1 : n ≤ m) : m ≤ n → n = m :=
+  @[hott] protected theorem le_antisymm {n m : ℕ} (H1 : n ≤ m) : m ≤ n → n = m :=
   le.cases_on H1 (λa, rfl) (λa b c, absurd (nat.lt_of_le_of_lt b c) !nat.lt_irrefl)
 
   @[hott] theorem lt_le_antisymm {n m : ℕ} (H1 : n < m) (H2 : m ≤ n) : empty :=
   le_lt_antisymm H2 H1
 
-  protected @[hott] theorem nat.lt_asymm {n m : ℕ} (H1 : n < m) : ¬ m < n :=
+  @[hott] protected theorem nat.lt_asymm {n m : ℕ} (H1 : n < m) : ¬ m < n :=
   le_lt_antisymm (nat.le_of_lt H1)
 
   @[hott] theorem not_lt_zero (a : ℕ) : ¬ a < 0 := !not_succ_le_zero
@@ -183,10 +183,10 @@ namespace nat
   @[hott] theorem lt_zero_iff_empty [simp] (a : ℕ) : a < 0 ↔ empty :=
   iff_empty_intro (not_lt_zero a)
 
-  protected @[hott] theorem eq_sum_lt_of_le {a b : ℕ} (H : a ≤ b) : a = b ⊎ a < b :=
+  @[hott] protected theorem eq_sum_lt_of_le {a b : ℕ} (H : a ≤ b) : a = b ⊎ a < b :=
   le.cases_on H (inl rfl) (λn h, inr (succ_le_succ h))
 
-  protected @[hott] theorem le_of_eq_sum_lt {a b : ℕ} (H : a = b ⊎ a < b) : a ≤ b :=
+  @[hott] protected theorem le_of_eq_sum_lt {a b : ℕ} (H : a = b ⊎ a < b) : a ≤ b :=
   sum.rec_on H !nat.le_of_eq !nat.le_of_lt
 
   @[hott] theorem succ_lt_succ {a b : ℕ} : a < b → succ a < succ b :=
@@ -207,23 +207,23 @@ namespace nat
   @[hott] def decidable_lt [instance] [priority nat.prio] : Π a b : nat, decidable (a < b) :=
   λ a b, decidable_le (succ a) b
 
-  protected @[hott] theorem lt_sum_ge (a b : ℕ) : a < b ⊎ a ≥ b :=
+  @[hott] protected theorem lt_sum_ge (a b : ℕ) : a < b ⊎ a ≥ b :=
   nat.rec (inr !zero_le) (λn, sum.rec
     (λh, inl (le_succ_of_le h))
     (λh, sum.rec_on (nat.eq_sum_lt_of_le h) (λe, inl (eq.subst e !nat.le_refl)) inr)) b
 
-  protected @[hott] def lt_ge_by_cases {a b : ℕ} {P : Type _} (H1 : a < b → P) (H2 : a ≥ b → P) : P :=
+  @[hott] protected def lt_ge_by_cases {a b : ℕ} {P : Type _} (H1 : a < b → P) (H2 : a ≥ b → P) : P :=
   by_cases H1 (λh, H2 (sum.rec_on !nat.lt_sum_ge (λa, absurd a h) (λa, a)))
 
-  protected @[hott] def lt_by_cases {a b : ℕ} {P : Type _} (H1 : a < b → P) (H2 : a = b → P)
+  @[hott] protected def lt_by_cases {a b : ℕ} {P : Type _} (H1 : a < b → P) (H2 : a = b → P)
     (H3 : b < a → P) : P :=
   nat.lt_ge_by_cases H1 (λh₁,
     nat.lt_ge_by_cases H3 (λh₂, H2 (nat.le_antisymm h₂ h₁)))
 
-  protected @[hott] theorem lt_trichotomy (a b : ℕ) : a < b ⊎ a = b ⊎ b < a :=
+  @[hott] protected theorem lt_trichotomy (a b : ℕ) : a < b ⊎ a = b ⊎ b < a :=
   nat.lt_by_cases (λH, inl H) (λH, inr (inl H)) (λH, inr (inr H))
 
-  protected @[hott] theorem eq_sum_lt_of_not_lt {a b : ℕ} (hnlt : ¬ a < b) : a = b ⊎ b < a :=
+  @[hott] protected theorem eq_sum_lt_of_not_lt {a b : ℕ} (hnlt : ¬ a < b) : a = b ⊎ b < a :=
   sum.rec_on (nat.lt_trichotomy a b)
     (λ hlt, absurd hlt hnlt)
     (λ h, h)

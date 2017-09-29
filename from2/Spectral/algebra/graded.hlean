@@ -233,7 +233,7 @@ isomorphism.mk (φ i) _
   M₁ ((deg φ)⁻¹ i) ≃lm M₂ i :=
 isomorphism_of_graded_iso' φ !to_right_inv
 
-protected @[hott] def graded_iso.mk (d : I ≃ I) (φ : Πi, M₁ i ≃lm M₂ (d i)) :
+@[hott] protected def graded_iso.mk (d : I ≃ I) (φ : Πi, M₁ i ≃lm M₂ (d i)) :
   M₁ ≃gm M₂ :=
 begin
   apply graded_iso.mk' (graded_hom.mk d φ),
@@ -241,7 +241,7 @@ begin
   exact to_is_equiv (equiv_of_isomorphism (φ i)),
 end
 
-protected @[hott] def graded_iso.mk_out (d : I ≃ I) (φ : Πi, M₁ (d⁻¹ i) ≃lm M₂ i) :
+@[hott] protected def graded_iso.mk_out (d : I ≃ I) (φ : Πi, M₁ (d⁻¹ i) ≃lm M₂ i) :
   M₁ ≃gm M₂ :=
 begin
   apply graded_iso.mk' (graded_hom.mk_out d φ),

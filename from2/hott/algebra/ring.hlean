@@ -103,7 +103,7 @@ section comm_semiring
   variables [s : comm_semiring A] (a b c : A)
   include s
 
-  protected @[hott] def algebra.dvd (a b : A) : Type _ := Σc, b = a * c
+  @[hott] protected def algebra.dvd (a b : A) : Type _ := Σc, b = a * c
 
   @[hott] def comm_semiring_has_dvd [instance] [priority algebra.prio] : has_dvd A :=
   has_dvd.mk algebra.dvd

@@ -54,7 +54,7 @@ namespace category
   _
 
   -- the constructor you want to use in practice
-  protected @[hott] def precategory.mk {ob : Type _} (hom : ob → ob → Type _)
+  @[hott] protected def precategory.mk {ob : Type _} (hom : ob → ob → Type _)
     [set : Π (a b : ob), is_set (hom a b)]
     (comp : Π ⦃a b c : ob⦄, hom b c → hom a b → hom a c) (ID : Π (a : ob), hom a a)
     (ass : Π ⦃a b c d : ob⦄ (h : hom c d) (g : hom b c) (f : hom a b),

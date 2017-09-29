@@ -20,7 +20,7 @@ namespace sigma
 
   /- Paths in a sigma-type -/
 
-  protected @[hott] def eta : Π (u : Σa, B a), ⟨u.1 , u.2⟩ = u
+  @[hott] protected def eta : Π (u : Σa, B a), ⟨u.1 , u.2⟩ = u
   | eta ⟨u₁, u₂⟩ := idp
 
   @[hott] def eta2 : Π (u : Σa b, C a b), ⟨u.1, u.2.1, u.2.2⟩ = u
@@ -72,7 +72,7 @@ namespace sigma
     : transport (λx, B' x.1) (sigma_eq p q) = transport B' p :=
   by induction u; induction v; esimp at *;induction q; reflexivity
 
-  protected @[hott] def ap_pr1 (p : u = v) : ap (λx : sigma B, x.1) p = p..1 := idp
+  @[hott] protected def ap_pr1 (p : u = v) : ap (λx : sigma B, x.1) p = p..1 := idp
 
   /- the uncurried version of sigma_eq. We will prove that this is an equivalence -/
 
@@ -466,11 +466,11 @@ namespace sigma
 
   /- *** The negative universal property. -/
 
-  protected @[hott] def coind_unc (fg : Σ(f : Πa, B a), Πa, C a (f a)) (a : A)
+  @[hott] protected def coind_unc (fg : Σ(f : Πa, B a), Πa, C a (f a)) (a : A)
     : Σ(b : B a), C a b :=
   ⟨fg.1 a, fg.2 a⟩
 
-  protected @[hott] def coind (f : Π a, B a) (g : Π a, C a (f a)) (a : A) : Σ(b : B a), C a b :=
+  @[hott] protected def coind (f : Π a, B a) (g : Π a, C a (f a)) (a : A) : Σ(b : B a), C a b :=
   sigma.coind_unc ⟨f, g⟩ a
 
   --is the instance below dangerous?

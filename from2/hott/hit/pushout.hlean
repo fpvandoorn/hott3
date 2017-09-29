@@ -33,7 +33,7 @@ parameters {TL BL TR : Type _} (f : TL → BL) (g : TL → TR)
   @[hott] def glue (x : TL) : inl (f x) = inr (g x) :=
   eq_of_rel pushout_rel (Rmk f g x)
 
-  protected @[hott] def rec {P : pushout → Type _} (Pinl : Π(x : BL), P (inl x))
+  @[hott] protected def rec {P : pushout → Type _} (Pinl : Π(x : BL), P (inl x))
     (Pinr : Π(x : TR), P (inr x)) (Pglue : Π(x : TL), Pinl (f x) =[glue x] Pinr (g x))
       (y : pushout) : P y :=
   begin
@@ -44,7 +44,7 @@ parameters {TL BL TR : Type _} (f : TL → BL) (g : TL → TR)
     { cases H, apply Pglue}
   end
 
-  protected @[hott] def rec_on [reducible] {P : pushout → Type _} (y : pushout)
+  @[hott] protected def rec_on [reducible] {P : pushout → Type _} (y : pushout)
     (Pinl : Π(x : BL), P (inl x)) (Pinr : Π(x : TR), P (inr x))
     (Pglue : Π(x : TL), Pinl (f x) =[glue x] Pinr (g x)) : P y :=
   rec Pinl Pinr Pglue y
@@ -54,11 +54,11 @@ parameters {TL BL TR : Type _} (f : TL → BL) (g : TL → TR)
       (x : TL) : apd (rec Pinl Pinr Pglue) (glue x) = Pglue x :=
   !rec_eq_of_rel
 
-  protected @[hott] def elim {P : Type _} (Pinl : BL → P) (Pinr : TR → P)
+  @[hott] protected def elim {P : Type _} (Pinl : BL → P) (Pinr : TR → P)
     (Pglue : Π(x : TL), Pinl (f x) = Pinr (g x)) (y : pushout) : P :=
   rec Pinl Pinr (λx, pathover_of_eq _ (Pglue x)) y
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (y : pushout) (Pinl : BL → P)
+  @[hott] protected def elim_on [reducible] {P : Type _} (y : pushout) (Pinl : BL → P)
     (Pinr : TR → P) (Pglue : Π(x : TL), Pinl (f x) = Pinr (g x)) : P :=
   elim Pinl Pinr Pglue y
 
@@ -70,12 +70,12 @@ parameters {TL BL TR : Type _} (f : TL → BL) (g : TL → TR)
     rewrite [▸*,-apd_eq_pathover_of_eq_ap,↑pushout.elim,rec_glue],
   end
 
-  protected @[hott] def elim_type (Pinl : BL → Type _) (Pinr : TR → Type _)
+  @[hott] protected def elim_type (Pinl : BL → Type _) (Pinr : TR → Type _)
     (Pglue : Π(x : TL), Pinl (f x) ≃ Pinr (g x)) : pushout → Type _ :=
   quotient.elim_type (sum.rec Pinl Pinr)
     begin intros v v' r, induction r, apply Pglue end
 
-  protected @[hott] def elim_type_on [reducible] (y : pushout) (Pinl : BL → Type _)
+  @[hott] protected def elim_type_on [reducible] (y : pushout) (Pinl : BL → Type _)
     (Pinr : TR → Type _) (Pglue : Π(x : TL), Pinl (f x) ≃ Pinr (g x)) : Type _ :=
   elim_type Pinl Pinr Pglue y
 
@@ -89,11 +89,11 @@ parameters {TL BL TR : Type _} (f : TL → BL) (g : TL → TR)
     : transport (elim_type Pinl Pinr Pglue) (glue x)⁻¹ = to_inv (Pglue x) :=
   !elim_type_eq_of_rel_inv
 
-  protected @[hott] def rec_prop {P : pushout → Type _} [H : Πx, is_prop (P x)]
+  @[hott] protected def rec_prop {P : pushout → Type _} [H : Πx, is_prop (P x)]
     (Pinl : Π(x : BL), P (inl x)) (Pinr : Π(x : TR), P (inr x)) (y : pushout) :=
   rec Pinl Pinr (λx, !is_prop.elimo) y
 
-  protected @[hott] def elim_prop {P : Type _} [H : is_prop P] (Pinl : BL → P) (Pinr : TR → P)
+  @[hott] protected def elim_prop {P : Type _} [H : is_prop P] (Pinl : BL → P) (Pinr : TR → P)
     (y : pushout) : P :=
   elim Pinl Pinr (λa, !is_prop.elim) y
 
@@ -112,12 +112,12 @@ namespace pushout
 
   variables {TL BL TR : Type _} (f : TL → BL) (g : TL → TR)
 
-  protected @[hott] theorem elim_inl {P : Type _} (Pinl : BL → P) (Pinr : TR → P)
+  @[hott] protected theorem elim_inl {P : Type _} (Pinl : BL → P) (Pinr : TR → P)
     (Pglue : Π(x : TL), Pinl (f x) = Pinr (g x)) {b b' : BL} (p : b = b')
     : ap (pushout.elim Pinl Pinr Pglue) (ap inl p) = ap Pinl p :=
   !ap_compose⁻¹
 
-  protected @[hott] theorem elim_inr {P : Type _} (Pinl : BL → P) (Pinr : TR → P)
+  @[hott] protected theorem elim_inr {P : Type _} (Pinl : BL → P) (Pinr : TR → P)
     (Pglue : Π(x : TL), Pinl (f x) = Pinr (g x)) {b b' : TR} (p : b = b')
     : ap (pushout.elim Pinl Pinr Pglue) (ap inr p) = ap Pinr p :=
   !ap_compose⁻¹
@@ -137,7 +137,7 @@ namespace pushout
   end
 
   /- glue squares -/
-  protected @[hott] def glue_square {x x' : TL} (p : x = x')
+  @[hott] protected def glue_square {x x' : TL} (p : x = x')
     : square (glue x) (glue x') (ap inl (ap f p)) (ap inr (ap g p)) :=
   by cases p; apply vrefl
 
@@ -166,7 +166,7 @@ namespace pushout
     local abbreviation G : sigma (Pinl ∘ f) → sigma Pinr :=
     λz, ⟨ g z.1 , Pglue z.1 z.2 ⟩
 
-    protected @[hott] def flattening : sigma P ≃ pushout F G :=
+    @[hott] protected def flattening : sigma P ≃ pushout F G :=
     begin
       apply equiv.trans !quotient.flattening.flattening_lemma,
       fapply equiv.MK,
@@ -201,13 +201,13 @@ namespace pushout
   section
   variables {TL BL TR : Type _} (f : TL → BL) (g : TL → TR)
 
-  protected @[hott] def transpose : pushout f g → pushout g f :=
+  @[hott] protected def transpose : pushout f g → pushout g f :=
   begin
     intro x, induction x, apply inr a, apply inl a, apply !glue⁻¹
   end
 
   --TODO prove without krewrite?
-  protected @[hott] def transpose_involutive (x : pushout f g) :
+  @[hott] protected def transpose_involutive (x : pushout f g) :
     pushout.transpose g f (pushout.transpose f g x) = x :=
   begin
       induction x, apply idp, apply idp,
@@ -216,7 +216,7 @@ namespace pushout
       krewrite [elim_glue, ap_inv, elim_glue, inv_inv], apply hrfl
   end
 
-  protected @[hott] def symm : pushout f g ≃ pushout g f :=
+  @[hott] protected def symm : pushout f g ≃ pushout g f :=
   begin
     fapply equiv.MK, do 2 exact !pushout.transpose,
     do 2 (intro x; apply pushout.transpose_involutive),
@@ -244,7 +244,7 @@ namespace pushout
               (fh : bl ∘ f ~ f' ∘ tl) (gh : tr ∘ g ~ g' ∘ tl)
     include fh gh
 
-    protected @[hott] def functor : pushout f g → pushout f' g' :=
+    @[hott] protected def functor : pushout f g → pushout f' g' :=
     begin
       intro x, induction x with a b z,
       { exact inl (bl a) },
@@ -252,11 +252,11 @@ namespace pushout
       { exact (ap inl (fh z)) ⬝ glue (tl z) ⬝ (ap inr (gh z)⁻¹) }
     end
 
-    protected @[hott] def ap_functor_inl {x x' : BL} (p : x = x')
+    @[hott] protected def ap_functor_inl {x x' : BL} (p : x = x')
       : ap (pushout.functor tl bl tr fh gh) (ap inl p) = ap inl (ap bl p) :=
     by cases p; reflexivity
 
-    protected @[hott] def ap_functor_inr {x x' : TR} (p : x = x')
+    @[hott] protected def ap_functor_inr {x x' : TR} (p : x = x')
       : ap (pushout.functor tl bl tr fh gh) (ap inr p) = ap inr (ap tr p) :=
     by cases p; reflexivity
 
@@ -264,7 +264,7 @@ namespace pushout
     include ietl iebl ietr
 
     open equiv is_equiv arrow
-    protected @[hott] def is_equiv_functor [instance]
+    @[hott] protected def is_equiv_functor [instance]
       : is_equiv (pushout.functor tl bl tr fh gh) :=
     adjointify
       (pushout.functor tl bl tr fh gh)
@@ -346,7 +346,7 @@ namespace pushout
               (fh : bl ∘ f ~ f' ∘ tl) (gh : tr ∘ g ~ g' ∘ tl)
     include fh gh
 
-    protected @[hott] def equiv : pushout f g ≃ pushout f' g' :=
+    @[hott] protected def equiv : pushout f g ≃ pushout f' g' :=
     equiv.mk (pushout.functor tl bl tr fh gh) _
   end
 
@@ -377,7 +377,7 @@ namespace pushout
   section
   variables {TL BL TR : Type*} (f : TL →* BL) (g : TL →* TR)
 
-  protected @[hott] def psymm : ppushout f g ≃* ppushout g f :=
+  @[hott] protected def psymm : ppushout f g ≃* ppushout g f :=
   begin
     fapply pequiv_of_equiv,
     { apply pushout.symm },

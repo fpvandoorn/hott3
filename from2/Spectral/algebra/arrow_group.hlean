@@ -83,11 +83,11 @@ namespace group
     induction q, induction p, induction k with k q, induction q, reflexivity
   end
 
-  protected @[hott] def ppi_mul_loop.lemma1 {X : Type _} {x : X} (p q : x = x) (p_pt : idp = p) (q_pt : idp = q)
+  @[hott] protected def ppi_mul_loop.lemma1 {X : Type _} {x : X} (p q : x = x) (p_pt : idp = p) (q_pt : idp = q)
     : refl (p ⬝ q) ⬝ whisker_left p q_pt⁻¹ ⬝ p_pt⁻¹ = p_pt⁻¹ ◾ q_pt⁻¹ :=
   by induction p_pt; induction q_pt; reflexivity
 
-  protected @[hott] def ppi_mul_loop.lemma2 {X : Type _} {x : X} (p q : x = x) (p_pt : p = idp) (q_pt : q = idp)
+  @[hott] protected def ppi_mul_loop.lemma2 {X : Type _} {x : X} (p q : x = x) (p_pt : p = idp) (q_pt : q = idp)
     : refl (p ⬝ q) ⬝ whisker_left p q_pt ⬝ p_pt = p_pt ◾ q_pt :=
   by rewrite [-(inv_inv p_pt),-(inv_inv q_pt)]; exact ppi_mul_loop.lemma1 p q p_pt⁻¹ q_pt⁻¹
 

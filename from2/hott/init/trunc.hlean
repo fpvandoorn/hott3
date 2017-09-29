@@ -49,7 +49,7 @@ namespace trunc_index
   infix ` +2+ `:65 := trunc_index.add_plus_two
 
   -- addition of trunc_indices, where results smaller than -2 are changed to -2
-  protected @[hott] def add (n m : ℕ₋₂) : ℕ₋₂ :=
+  @[hott] protected def add (n m : ℕ₋₂) : ℕ₋₂ :=
   trunc_index.cases_on m
     (trunc_index.cases_on n -2 (λn', (trunc_index.cases_on n' -2 id)))
     (λm', trunc_index.cases_on m'
@@ -374,7 +374,7 @@ attribute trunctype.struct [instance] [priority 1400]
 protected abbreviation Prop.mk := @trunctype.mk -1
 protected abbreviation Set.mk := @trunctype.mk (-1.+1)
 
-protected @[hott] def trunctype.mk' (n : ℕ₋₂) (A : Type _) [H : is_trunc n A]
+@[hott] protected def trunctype.mk' (n : ℕ₋₂) (A : Type _) [H : is_trunc n A]
   : n-Type _ :=
 trunctype.mk A H
 

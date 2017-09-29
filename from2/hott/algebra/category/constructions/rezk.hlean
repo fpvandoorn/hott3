@@ -40,7 +40,7 @@ namespace rezk
     apply ap pth, apply iso_eq, apply id_left,
   end
 
-  protected @[hott] def rec {P : rezk_carrier → Type _} [Π x, is_trunc 1 (P x)]
+  @[hott] protected def rec {P : rezk_carrier → Type _} [Π x, is_trunc 1 (P x)]
     (Pe : Π a, P (elt a)) (Pp : Π ⦃a b⦄ (f : a ≅ b), Pe a =[pth f] Pe b)
     (Pcomp : Π ⦃a b c⦄ (g : b ≅ c) (f : a ≅ b),
       change_path (resp_comp g f) (Pp (f ⬝i g)) = Pp f ⬝o Pp g)
@@ -52,23 +52,23 @@ namespace rezk
     { induction q with a b c g f, apply Pcomp }
   end
 
-  protected @[hott] def rec_on {P : rezk_carrier → Type _} [Π x, is_trunc 1 (P x)]
+  @[hott] protected def rec_on {P : rezk_carrier → Type _} [Π x, is_trunc 1 (P x)]
     (x : rezk_carrier)
     (Pe : Π a, P (elt a)) (Pp : Π ⦃a b⦄ (f : a ≅ b), Pe a =[pth f] Pe b)
     (Pcomp : Π ⦃a b c⦄ (g : b ≅ c) (f : a ≅ b),
       change_path (resp_comp g f) (Pp (f ⬝i g)) = Pp f ⬝o Pp g) : P x :=
   rec Pe Pp Pcomp x
 
-  protected @[hott] def set_rec {P : rezk_carrier → Type _} [Π x, is_set (P x)]
+  @[hott] protected def set_rec {P : rezk_carrier → Type _} [Π x, is_set (P x)]
     (Pe : Π a, P (elt a)) (Pp : Π⦃a b⦄ (f : a ≅ b), Pe a =[pth f] Pe b)
     (x : rezk_carrier) : P x :=
   rec Pe Pp !center x
 
-  protected @[hott] def prop_rec {P : rezk_carrier → Type _} [Π x, is_prop (P x)]
+  @[hott] protected def prop_rec {P : rezk_carrier → Type _} [Π x, is_prop (P x)]
     (Pe : Π a, P (elt a)) (x : rezk_carrier) : P x :=
   rec Pe !center !center x
 
-  protected @[hott] def elim {P : Type _} [is_trunc 1 P] (Pe : A → P)
+  @[hott] protected def elim {P : Type _} [is_trunc 1 P] (Pe : A → P)
     (Pp : Π ⦃a b⦄ (f : a ≅ b), Pe a = Pe b)
     (Pcomp : Π ⦃a b c⦄ (g : b ≅ c) (f : a ≅ b), Pp (f ⬝i g) = Pp f ⬝ Pp g)
     (x : rezk_carrier) : P :=
@@ -79,16 +79,16 @@ namespace rezk
     { induction q with a b c g f, exact Pcomp g f }
   end
 
-  protected @[hott] def elim_on [reducible] {P : Type _} [is_trunc 1 P] (x : rezk_carrier)
+  @[hott] protected def elim_on [reducible] {P : Type _} [is_trunc 1 P] (x : rezk_carrier)
     (Pe : A → P) (Pp : Π ⦃a b⦄ (f : a ≅ b), Pe a = Pe b)
     (Pcomp : Π ⦃a b c⦄ (g : b ≅ c) (f : a ≅ b), Pp (f ⬝i g) = Pp f ⬝ Pp g) : P :=
   elim Pe Pp Pcomp x
 
-  protected @[hott] def set_elim [reducible] {P : Type _} [is_set P] (Pe : A → P)
+  @[hott] protected def set_elim [reducible] {P : Type _} [is_set P] (Pe : A → P)
     (Pp : Π ⦃a b⦄ (f : a ≅ b), Pe a = Pe b) (x : rezk_carrier) : P :=
   elim Pe Pp !center x
 
-  protected @[hott] def prop_elim [reducible] {P : Type _} [is_prop P] (Pe : A → P)
+  @[hott] protected def prop_elim [reducible] {P : Type _} [is_prop P] (Pe : A → P)
     (x : rezk_carrier) : P :=
   elim Pe !center !center x
 
@@ -98,17 +98,17 @@ namespace rezk
   !elim_incl1
 
   --TODO generalize this to arbitrary truncated two-quotients or not?
-  protected @[hott] def elim_set.{m} [reducible] (Pe : A → Set.{m}) (Pp : Π ⦃a b⦄ (f : a ≅ b), Pe a ≃ Pe b)
+  @[hott] protected def elim_set.{m} [reducible] (Pe : A → Set.{m}) (Pp : Π ⦃a b⦄ (f : a ≅ b), Pe a ≃ Pe b)
     (Pcomp : Π ⦃a b c⦄ (g : b ≅ c) (f : a ≅ b) (x : Pe a), Pp (f ⬝i g) x = Pp g (Pp f x))
     (x : rezk_carrier) : Set.{m} :=
   elim Pe (λa b f, tua (Pp f)) (λa b c g f, ap tua (equiv_eq (Pcomp g f)) ⬝ !tua_trans) x
 
-  protected @[hott] def elim_set_pt.{m} [reducible] (Pe : A → Set.{m}) (Pp : Π ⦃a b⦄ (f : a ≅ b), Pe a ≃ Pe b)
+  @[hott] protected def elim_set_pt.{m} [reducible] (Pe : A → Set.{m}) (Pp : Π ⦃a b⦄ (f : a ≅ b), Pe a ≃ Pe b)
     (Pcomp : Π ⦃a b c⦄ (g : b ≅ c) (f : a ≅ b) (x : Pe a), Pp (f ⬝i g) x = Pp g (Pp f x))
     (a : A) : trunctype.carrier (rezk.elim_set Pe Pp Pcomp (elt a)) = Pe a :=
   idp
 
-  protected @[hott] theorem elim_set_pth {Pe : A → Set} {Pp : Π⦃a b⦄ (f : a ≅ b), Pe a ≃ Pe b}
+  @[hott] protected theorem elim_set_pth {Pe : A → Set} {Pp : Π⦃a b⦄ (f : a ≅ b), Pe a ≃ Pe b}
     (Pcomp : Π⦃a b c⦄ (g : b ≅ c) (f : a ≅ b) (x : Pe a), Pp (f ⬝i g) x = Pp g (Pp f x))
     {a b : A} (f : a ≅ b) :
     transport (elim_set Pe Pp Pcomp) (pth f) = Pp f :=
@@ -254,7 +254,7 @@ namespace rezk
   @[hott] def is_set_rezk_hom [instance] (a b : @rezk_carrier A C) : is_set (rezk_hom a b) :=
   _
 
-  protected @[hott] def id_left {a b : @rezk_carrier A C} (f : rezk_hom a b) :
+  @[hott] protected def id_left {a b : @rezk_carrier A C} (f : rezk_hom a b) :
     rezk_comp (rezk_id b) f = f :=
   begin
     induction a using rezk.prop_rec with a a a' ia,
@@ -262,7 +262,7 @@ namespace rezk
     apply id_left,
   end
 
-  protected @[hott] def id_right {a b : @rezk_carrier A C} (f : rezk_hom a b) :
+  @[hott] protected def id_right {a b : @rezk_carrier A C} (f : rezk_hom a b) :
     rezk_comp f (rezk_id a) = f :=
   begin
     induction a using rezk.prop_rec with a a a' ia,
@@ -270,7 +270,7 @@ namespace rezk
     apply id_right,
   end
 
-  protected @[hott] def assoc {a b c d : @rezk_carrier A C} (h : rezk_hom c d)
+  @[hott] protected def assoc {a b c d : @rezk_carrier A C} (h : rezk_hom c d)
     (g : rezk_hom b c) (f : rezk_hom a b) :
     rezk_comp h (rezk_comp g f) = rezk_comp (rezk_comp h g) f :=
   begin
@@ -303,18 +303,18 @@ namespace rezk
   parameters {A : Type _} [C : precategory A]
   include C
 
-  protected @[hott] def elt_iso_of_iso [reducible] {a b : A} (f : a ≅ b) : elt a ≅ elt b :=
+  @[hott] protected def elt_iso_of_iso [reducible] {a b : A} (f : a ≅ b) : elt a ≅ elt b :=
   begin
     fapply iso.mk, apply to_hom f, apply functor.preserve_is_iso (rezk_functor _)
   end
 
-  protected @[hott] def iso_of_elt_iso [reducible] {a b : A} (f : elt a ≅ elt b) : a ≅ b :=
+  @[hott] protected def iso_of_elt_iso [reducible] {a b : A} (f : elt a ≅ elt b) : a ≅ b :=
   begin
     cases f with f Hf, cases Hf with inv linv rinv,
     fapply iso.mk, exact f, fapply is_iso.mk, exact inv, exact linv, exact rinv
   end
 
-  protected @[hott] def iso_of_elt_iso_distrib {a b c : A} (f : elt a ≅ elt b) (g : elt b ≅ elt c) :
+  @[hott] protected def iso_of_elt_iso_distrib {a b c : A} (f : elt a ≅ elt b) (g : elt b ≅ elt c) :
     iso_of_elt_iso (f ⬝i g) = (iso_of_elt_iso f) ⬝i (iso_of_elt_iso g) :=
   begin
     cases g with g Hg, cases Hg with invg linvg rinvg,
@@ -322,7 +322,7 @@ namespace rezk
     reflexivity
   end
 
-  protected @[hott] def iso_equiv_elt_iso (a b : A) : (a ≅ b) ≃ (elt a ≅ elt b) :=
+  @[hott] protected def iso_equiv_elt_iso (a b : A) : (a ≅ b) ≃ (elt a ≅ elt b) :=
   begin
     fapply equiv.MK, apply elt_iso_of_iso, apply iso_of_elt_iso,
     { intro f, cases f with f Hf, cases Hf with inv linv rinv, fapply iso_eq, reflexivity },
@@ -368,7 +368,7 @@ namespace rezk
     apply ap (λ x, _ ⬝i x), apply equiv.to_left_inv !iso_equiv_elt_iso
   end
 
-  protected @[hott] def eq_of_iso {a b : @rezk_carrier A C} :
+  @[hott] protected def eq_of_iso {a b : @rezk_carrier A C} :
     a ≅ b → a = b :=
   begin
     intro f,
@@ -387,7 +387,7 @@ namespace rezk
        apply @is_prop.elimo }
   end
 
-  protected @[hott] def eq_of_iso_of_eq (a b : @rezk_carrier A C) (p : a = b) :
+  @[hott] protected def eq_of_iso_of_eq (a b : @rezk_carrier A C) (p : a = b) :
     eq_of_iso (iso_of_eq p) = p :=
   begin
     cases p, clear b,
@@ -396,7 +396,7 @@ namespace rezk
     apply iso_eq, reflexivity
   end
 
-  protected @[hott] def iso_of_eq_of_iso (a b : @rezk_carrier A C) (f : a ≅ b) :
+  @[hott] protected def iso_of_eq_of_iso (a b : @rezk_carrier A C) (f : a ≅ b) :
     iso_of_eq (eq_of_iso f) = f :=
   begin
     induction a using rezk.prop_rec with a,

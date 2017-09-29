@@ -27,9 +27,9 @@ namespace pointed
   @[hott] def pt [reducible] [H : pointed A] := point A
   @[hott] def Point [reducible] (A : Type*) := pType.Point A
   @[hott] def carrier [reducible] (A : Type*) := pType.carrier A
-  protected @[hott] def Mk {A : Type _} (a : A) := pType.mk A a
-  protected @[hott] def MK (A : Type _) (a : A) := pType.mk A a
-  protected @[hott] def mk' (A : Type _) [H : pointed A] : Type* :=
+  @[hott] protected def Mk {A : Type _} (a : A) := pType.mk A a
+  @[hott] protected def MK (A : Type _) (a : A) := pType.mk A a
+  @[hott] protected def mk' (A : Type _) [H : pointed A] : Type* :=
   pType.mk A (point A)
   @[hott] def pointed_carrier [instance] (A : Type*) : pointed A :=
   pointed.mk (Point A)
@@ -53,12 +53,12 @@ notation `Set*` := pSet
 
 namespace pointed
 
-  protected @[hott] def ptrunctype.mk' (n : ℕ₋₂)
+  @[hott] protected def ptrunctype.mk' (n : ℕ₋₂)
     (A : Type _) [pointed A] [is_trunc n A] : n-Type* :=
   ptrunctype.mk A _ pt
 
-  protected @[hott] def pSet.mk := @ptrunctype.mk (-1.+1)
-  protected @[hott] def pSet.mk' := ptrunctype.mk' (-1.+1)
+  @[hott] protected def pSet.mk := @ptrunctype.mk (-1.+1)
+  @[hott] protected def pSet.mk' := ptrunctype.mk' (-1.+1)
 
   @[hott] def ptrunctype_of_trunctype {n : ℕ₋₂} (A : n-Type _) (a : A)
     : n-Type* :=

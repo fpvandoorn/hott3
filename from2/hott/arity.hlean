@@ -229,11 +229,11 @@ attribute funext.is_equiv_apd100 funext.is_equiv_apd1000
 namespace eq
   open funext
   local attribute funext.is_equiv_apd100 [instance]
-  protected @[hott] def homotopy2.rec_on {f g : Πa b, C a b} {P : (f ~2 g) → Type _}
+  @[hott] protected def homotopy2.rec_on {f g : Πa b, C a b} {P : (f ~2 g) → Type _}
     (p : f ~2 g) (H : Π(q : f = g), P (apd100 q)) : P p :=
   right_inv apd100 p ▸ H (eq_of_homotopy2 p)
 
-  protected @[hott] def homotopy3.rec_on {f g : Πa b c, D a b c} {P : (f ~3 g) → Type _}
+  @[hott] protected def homotopy3.rec_on {f g : Πa b c, D a b c} {P : (f ~3 g) → Type _}
     (p : f ~3 g) (H : Π(q : f = g), P (apd1000 q)) : P p :=
   right_inv apd1000 p ▸ H (eq_of_homotopy3 p)
 

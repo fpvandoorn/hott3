@@ -103,13 +103,13 @@ general m
 
 /- addition -/
 
-protected @[hott] def add_zero [simp] (n : ℕ) : n + 0 = n :=
+@[hott] protected def add_zero [simp] (n : ℕ) : n + 0 = n :=
 rfl
 
 @[hott] def add_succ [simp] (n m : ℕ) : n + succ m = succ (n + m) :=
 rfl
 
-protected @[hott] def zero_add [simp] (n : ℕ) : 0 + n = n :=
+@[hott] protected def zero_add [simp] (n : ℕ) : 0 + n = n :=
 begin
   induction n with n IH,
     reflexivity,
@@ -123,14 +123,14 @@ begin
     exact ap succ IH
 end
 
-protected @[hott] def add_comm [simp] (n m : ℕ) : n + m = m + n :=
+@[hott] protected def add_comm [simp] (n m : ℕ) : n + m = m + n :=
 begin
   induction n with n IH,
   { apply nat.zero_add},
   { exact !succ_add ⬝ ap succ IH}
 end
 
-protected @[hott] def add_add (n l k : ℕ) : n + l + k = n + (k + l) :=
+@[hott] protected def add_add (n l k : ℕ) : n + l + k = n + (k + l) :=
 begin
   induction l with l IH,
     reflexivity,
@@ -140,20 +140,20 @@ end
 @[hott] def succ_add_eq_succ_add (n m : ℕ) : succ n + m = n + succ m :=
 !succ_add
 
-protected @[hott] def add_assoc [simp] (n m k : ℕ) : (n + m) + k = n + (m + k) :=
+@[hott] protected def add_assoc [simp] (n m k : ℕ) : (n + m) + k = n + (m + k) :=
 begin
   induction k with k IH,
     reflexivity,
     exact ap succ IH
 end
 
-protected @[hott] theorem add_left_comm : Π (n m k : ℕ), n + (m + k) = m + (n + k) :=
+@[hott] protected theorem add_left_comm : Π (n m k : ℕ), n + (m + k) = m + (n + k) :=
 left_comm nat.add_comm nat.add_assoc
 
-protected @[hott] theorem add_right_comm : Π (n m k : ℕ), n + m + k = n + k + m :=
+@[hott] protected theorem add_right_comm : Π (n m k : ℕ), n + m + k = n + k + m :=
 right_comm nat.add_comm nat.add_assoc
 
-protected @[hott] theorem add_left_cancel {n m k : ℕ} : n + m = n + k → m = k :=
+@[hott] protected theorem add_left_cancel {n m k : ℕ} : n + m = n + k → m = k :=
 nat.rec_on n
   (take H : 0 + m = 0 + k,
     !nat.zero_add⁻¹ ⬝ H ⬝ !nat.zero_add)
@@ -166,7 +166,7 @@ nat.rec_on n
     have n + m = n + k, from succ.inj this,
     IH this)
 
-protected @[hott] theorem add_right_cancel {n m k : ℕ} (H : n + m = k + m) : n = k :=
+@[hott] protected theorem add_right_cancel {n m k : ℕ} (H : n + m = k + m) : n = k :=
 have H2 : m + n = m + k, from !nat.add_comm ⬝ H ⬝ !nat.add_comm,
   nat.add_left_cancel H2
 
@@ -194,7 +194,7 @@ pair (eq_zero_of_add_eq_zero_right H) (eq_zero_of_add_eq_zero_left H)
 
 /- multiplication -/
 
-protected @[hott] theorem mul_zero [simp] (n : ℕ) : n * 0 = 0 :=
+@[hott] protected theorem mul_zero [simp] (n : ℕ) : n * 0 = 0 :=
 rfl
 
 @[hott] theorem mul_succ [simp] (n m : ℕ) : n * succ m = n * m + n :=
@@ -202,7 +202,7 @@ rfl
 
 -- commutativity, distributivity, associativity, identity
 
-protected @[hott] theorem zero_mul [simp] (n : ℕ) : 0 * n = 0 :=
+@[hott] protected theorem zero_mul [simp] (n : ℕ) : 0 * n = 0 :=
 nat.rec_on n
   !nat.mul_zero
   (take m IH, !mul_succ ⬝ !nat.add_zero ⬝ IH)
@@ -219,7 +219,7 @@ nat.rec_on m
                 ... = n * k + n + succ k    : nat.add_assoc
                 ... = n * succ k + succ k   : mul_succ)
 
-protected @[hott] theorem mul_comm [simp] (n m : ℕ) : n * m = m * n :=
+@[hott] protected theorem mul_comm [simp] (n m : ℕ) : n * m = m * n :=
 nat.rec_on m
   (!nat.mul_zero ⬝ !nat.zero_mul⁻¹)
   (take k IH, calc
@@ -227,7 +227,7 @@ nat.rec_on m
            ... = k * n + n    : IH
            ... = (succ k) * n : succ_mul)
 
-protected @[hott] theorem right_distrib (n m k : ℕ) : (n + m) * k = n * k + m * k :=
+@[hott] protected theorem right_distrib (n m k : ℕ) : (n + m) * k = n * k + m * k :=
 nat.rec_on k
   (calc
     (n + m) * 0 = 0             : nat.mul_zero
@@ -243,14 +243,14 @@ nat.rec_on k
                  ... = n * succ l + (m * l + m) : mul_succ
                  ... = n * succ l + m * succ l  : mul_succ)
 
-protected @[hott] theorem left_distrib (n m k : ℕ) : n * (m + k) = n * m + n * k :=
+@[hott] protected theorem left_distrib (n m k : ℕ) : n * (m + k) = n * m + n * k :=
 calc
   n * (m + k) = (m + k) * n    : nat.mul_comm
           ... = m * n + k * n  : nat.right_distrib
           ... = n * m + k * n  : nat.mul_comm
           ... = n * m + n * k  : nat.mul_comm
 
-protected @[hott] theorem mul_assoc [simp] (n m k : ℕ) : (n * m) * k = n * (m * k) :=
+@[hott] protected theorem mul_assoc [simp] (n m k : ℕ) : (n * m) * k = n * (m * k) :=
 nat.rec_on k
   (calc
     (n * m) * 0 = n * (m * 0) : nat.mul_zero)
@@ -261,13 +261,13 @@ nat.rec_on k
                    ... = n * (m * l + m)     : nat.left_distrib
                    ... = n * (m * succ l)    : mul_succ)
 
-protected @[hott] theorem mul_one [simp] (n : ℕ) : n * 1 = n :=
+@[hott] protected theorem mul_one [simp] (n : ℕ) : n * 1 = n :=
 calc
   n * 1 = n * 0 + n : mul_succ
     ... = 0 + n     : nat.mul_zero
     ... = n         : nat.zero_add
 
-protected @[hott] theorem one_mul [simp] (n : ℕ) : 1 * n = n :=
+@[hott] protected theorem one_mul [simp] (n : ℕ) : 1 * n = n :=
 calc
   1 * n = n * 1 : nat.mul_comm
     ... = n     : nat.mul_one
@@ -287,7 +287,7 @@ nat.cases_on n
              ... = succ (succ n' * m' + n') : add_succ)⁻¹
           !succ_ne_zero))
 
-protected @[hott] def comm_semiring [trans_instance] : comm_semiring nat :=
+@[hott] protected def comm_semiring [trans_instance] : comm_semiring nat :=
 ⦃comm_semiring,
  add            := nat.add,
  add_assoc      := nat.add_assoc,

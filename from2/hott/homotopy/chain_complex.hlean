@@ -67,7 +67,7 @@ notation `+6ℤ` := stratified +ℤ 5
 notation `-6ℤ` := stratified -ℤ 5
 
 namespace succ_str
-  protected @[hott] def add [reducible] {N : succ_str} (n : N) (k : ℕ) : N :=
+  @[hott] protected def add [reducible] {N : succ_str} (n : N) (k : ℕ) : N :=
   iterate S k n
 
   infix ` +' `:65 := succ_str.add

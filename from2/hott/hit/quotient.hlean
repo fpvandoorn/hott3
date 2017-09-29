@@ -22,11 +22,11 @@ namespace quotient
 
   variables {A : Type _} {R : A → A → Type _}
 
-  protected @[hott] def elim {P : Type _} (Pc : A → P) (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a = Pc a')
+  @[hott] protected def elim {P : Type _} (Pc : A → P) (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a = Pc a')
     (x : quotient R) : P :=
   quotient.rec Pc (λa a' H, pathover_of_eq _ (Pp H)) x
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (x : quotient R)
+  @[hott] protected def elim_on [reducible] {P : Type _} (x : quotient R)
     (Pc : A → P) (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a = Pc a') : P :=
   quotient.elim Pc Pp x
 
@@ -38,18 +38,18 @@ namespace quotient
     rewrite [▸*,-apd_eq_pathover_of_eq_ap,↑quotient.elim,rec_eq_of_rel],
   end
 
-  protected @[hott] def rec_prop {A : Type _} {R : A → A → Type _} {P : quotient R → Type _}
+  @[hott] protected def rec_prop {A : Type _} {R : A → A → Type _} {P : quotient R → Type _}
     [H : Πx, is_prop (P x)] (Pc : Π(a : A), P (class_of R a)) (x : quotient R) : P x :=
   quotient.rec Pc (λa a' H, !is_prop.elimo) x
 
-  protected @[hott] def elim_prop {P : Type _} [H : is_prop P] (Pc : A → P) (x : quotient R) : P :=
+  @[hott] protected def elim_prop {P : Type _} [H : is_prop P] (Pc : A → P) (x : quotient R) : P :=
   quotient.elim Pc (λa a' H, !is_prop.elim) x
 
-  protected @[hott] def elim_type (Pc : A → Type _)
+  @[hott] protected def elim_type (Pc : A → Type _)
     (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a ≃ Pc a') : quotient R → Type _ :=
   quotient.elim Pc (λa a' H, ua (Pp H))
 
-  protected @[hott] def elim_type_on [reducible] (x : quotient R) (Pc : A → Type _)
+  @[hott] protected def elim_type_on [reducible] (x : quotient R) (Pc : A → Type _)
     (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a ≃ Pc a') : Type _ :=
   quotient.elim_type Pc Pp x
 
@@ -218,18 +218,18 @@ namespace quotient
              (f : A → B) (k : Πa a' : A, R a a' → Q (f a) (f a'))
   include f k
 
-  protected @[hott] def functor [reducible] : quotient R → quotient Q :=
+  @[hott] protected def functor [reducible] : quotient R → quotient Q :=
   quotient.elim (λa, class_of Q (f a)) (λa a' r, eq_of_rel Q (k a a' r))
 
   variables [F : is_equiv f] [K : Πa a', is_equiv (k a a')]
   include F K
 
-  protected @[hott] def functor_inv [reducible] : quotient Q → quotient R :=
+  @[hott] protected def functor_inv [reducible] : quotient Q → quotient R :=
   quotient.elim (λb, class_of R (f⁻¹ b))
                 (λb b' q, eq_of_rel R ((k (f⁻¹ b) (f⁻¹ b'))⁻¹
                           ((right_inv f b)⁻¹ ▸ (right_inv f b')⁻¹ ▸ q)))
 
-  protected @[hott] def is_equiv [instance]
+  @[hott] protected def is_equiv [instance]
     : is_equiv (quotient.functor R Q f k):=
   begin
     fapply adjointify _ (quotient.functor_inv R Q f k),
@@ -312,7 +312,7 @@ section
   include f k
 
   /- This could also be proved using ua, but then it wouldn't compute -/
-  protected @[hott] def equiv : quotient R ≃ quotient Q :=
+  @[hott] protected def equiv : quotient R ≃ quotient Q :=
   equiv.mk (quotient.functor R Q f k) _
 end
 

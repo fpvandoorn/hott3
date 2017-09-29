@@ -21,7 +21,7 @@ structure pullback (f₂₁ : A₂₀ → A₂₂) (f₁₂ : A₀₂ → A₂�
 
 namespace pullback
 
-  protected @[hott] def sigma_char :
+  @[hott] protected def sigma_char :
     pullback f₂₁ f₁₂ ≃ Σ(a₂₀ : A₂₀) (a₀₂ : A₀₂), f₂₁ a₂₀ = f₁₂ a₀₂ :=
   begin
     fapply equiv.MK,

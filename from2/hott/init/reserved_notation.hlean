@@ -100,9 +100,9 @@ has_add.mk num.add
 @[hott] def std.priority.max     : num := 4294967295
 
 namespace nat
-  protected @[hott] def prio := num.add std.priority.default 100
+  @[hott] protected def prio := num.add std.priority.default 100
 
-  protected @[hott] def add (a b : nat) : nat :=
+  @[hott] protected def add (a b : nat) : nat :=
   nat.rec a (λ b₁ r, succ r) b
 
   @[hott] def of_num (n : num) : nat :=

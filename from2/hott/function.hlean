@@ -45,11 +45,11 @@ structure is_conditionally_constant [class] (f : A → B) :=
   (eq : Π(a : A), f a = g (tr a))
 
 section image
-protected @[hott] def image.mk {f : A → B} {b : B} (a : A) (p : f a = b)
+@[hott] protected def image.mk {f : A → B} {b : B} (a : A) (p : f a = b)
   : image f b :=
 tr (fiber.mk a p)
 
-protected @[hott] def image.rec [recursor 8] {f : A → B} {b : B} {P : image' f b → Type _}
+@[hott] protected def image.rec [recursor 8] {f : A → B} {b : B} {P : image' f b → Type _}
   [H : Πv, is_prop (P v)] (H : Π(a : A) (p : f a = b), P (image.mk a p)) (v : image' f b) : P v :=
 begin unfold [image'] at *, induction v with v, induction v with a p, exact H a p end
 

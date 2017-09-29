@@ -16,11 +16,11 @@ open is_trunc eq equiv is_equiv function prod sum sigma
 
 namespace trunc
 
-  protected @[hott] def elim {n : trunc_index} {A : Type _} {P : Type _}
+  @[hott] protected def elim {n : trunc_index} {A : Type _} {P : Type _}
     [Pt : is_trunc n P] (H : A → P) : trunc n A → P :=
   trunc.rec H
 
-  protected @[hott] def elim_on {n : trunc_index} {A : Type _} {P : Type _} (aa : trunc n A)
+  @[hott] protected def elim_on {n : trunc_index} {A : Type _} {P : Type _} (aa : trunc n A)
     [Pt : is_trunc n P] (H : A → P) : P :=
   trunc.elim H aa
 

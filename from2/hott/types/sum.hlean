@@ -14,29 +14,29 @@ namespace sum
   universe variables u v u' v'
   variables {A : Type u} {B : Type v} (z z' : A + B) {P : A → Type u'} {Q : A → Type v'}
 
-  protected @[hott] def eta : sum.rec inl inr z = z :=
+  @[hott] protected def eta : sum.rec inl inr z = z :=
   by induction z; all_goals reflexivity
 
-  protected @[hott] def code : A + B → A + B → Type max u v
+  @[hott] protected def code : A + B → A + B → Type max u v
   | code (inl a) (inl a') := lift (a = a')
   | code (inr b) (inr b') := lift (b = b')
   | code _       _        := lift empty
 
-  protected @[hott] def decode : Π(z z' : A + B), sum.code z z' → z = z'
+  @[hott] protected def decode : Π(z z' : A + B), sum.code z z' → z = z'
   | decode (inl a) (inl a') := λc, ap inl (down c)
   | decode (inl a) (inr b') := λc, empty.elim (down c) _
   | decode (inr b) (inl a') := λc, empty.elim (down c) _
   | decode (inr b) (inr b') := λc, ap inr (down c)
 
-  protected @[hott] def mem_cases : (Σ a, z = inl a) + (Σ b, z = inr b) :=
+  @[hott] protected def mem_cases : (Σ a, z = inl a) + (Σ b, z = inr b) :=
   by cases z with a b; exact inl ⟨a, idp⟩; exact inr ⟨b, idp⟩
 
-  protected @[hott] def eqrec {A B : Type _} {C : A + B → Type _}
+  @[hott] protected def eqrec {A B : Type _} {C : A + B → Type _}
     (x : A + B) (cl : Π a, x = inl a → C (inl a)) (cr : Π b, x = inr b → C (inr b)) : C x :=
   by cases x with a b; exact cl a idp; exact cr b idp
 
   variables {z z'}
-  protected @[hott] def encode (p : z = z') : sum.code z z' :=
+  @[hott] protected def encode (p : z = z') : sum.code z z' :=
   by induction p; induction z; all_goals exact up idp
 
   variables (z z')
@@ -74,12 +74,12 @@ namespace sum
     : z =[p] sum.rec (λa, inl (p ▸ a)) (λb, inr (p ▸ b)) z :=
   by induction p; induction z; all_goals constructor
 
-  protected @[hott] def codeo (p : a = a') : P a + Q a → P a' + Q a' → Type max u' v'
+  @[hott] protected def codeo (p : a = a') : P a + Q a → P a' + Q a' → Type max u' v'
   | codeo (inl x) (inl x') := lift.{u' v'} (x =[p] x')
   | codeo (inr y) (inr y') := lift.{v' u'} (y =[p] y')
   | codeo _       _        := lift empty
 
-  protected @[hott] def decodeo (p : a = a') : Π(z : P a + Q a) (z' : P a' + Q a'),
+  @[hott] protected def decodeo (p : a = a') : Π(z : P a + Q a) (z' : P a' + Q a'),
     sum.codeo p z z' → z =[p] z'
   | decodeo (inl x) (inl x') := λc, apo (λa, inl) (down c)
   | decodeo (inl x) (inr y') := λc, empty.elim (down c) _
@@ -87,7 +87,7 @@ namespace sum
   | decodeo (inr y) (inr y') := λc, apo (λa, inr) (down c)
 
   variables {z z'}
-  protected @[hott] def encodeo {p : a = a'} {z : P a + Q a} {z' : P a' + Q a'} (q : z =[p] z')
+  @[hott] protected def encodeo {p : a = a'} {z : P a + Q a} {z' : P a' + Q a'} (q : z =[p] z')
     : sum.codeo p z z' :=
   by induction q; induction z; all_goals exact up idpo
 

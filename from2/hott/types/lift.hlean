@@ -14,17 +14,17 @@ namespace lift
   universe variables u v
   variables {A : Type u} (z z' : lift.{u v} A)
 
-  protected @[hott] def eta : up (down z) = z :=
+  @[hott] protected def eta : up (down z) = z :=
   by induction z; reflexivity
 
-  protected @[hott] def code : lift A → lift A → Type _
+  @[hott] protected def code : lift A → lift A → Type _
   | code (up a) (up a') := a = a'
 
-  protected @[hott] def decode : Π(z z' : lift A), lift.code z z' → z = z'
+  @[hott] protected def decode : Π(z z' : lift A), lift.code z z' → z = z'
   | decode (up a) (up a') := λc, ap up c
 
   variables {z z'}
-  protected @[hott] def encode (p : z = z') : lift.code z z' :=
+  @[hott] protected def encode (p : z = z') : lift.code z z' :=
   by induction p; induction z; esimp
 
   variables (z z')

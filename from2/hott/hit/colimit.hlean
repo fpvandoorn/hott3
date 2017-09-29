@@ -32,7 +32,7 @@ section
   @[hott] def cglue : ι (f j b) = ι b :=
   eq_of_rel colim_rel (Rmk f b)
 
-   protected @[hott] def rec {P : colimit → Type _}
+   @[hott] protected def rec {P : colimit → Type _}
     (Pincl : Π⦃i : I⦄ (x : A i), P (ι x))
     (Pglue : Π(j : J) (x : A (dom j)), Pincl (f j x) =[cglue j x] Pincl x)
       (y : colimit) : P y :=
@@ -42,7 +42,7 @@ section
     { intros a a' H, cases H, apply Pglue}
   end
 
-  protected @[hott] def rec_on [reducible] {P : colimit → Type _} (y : colimit)
+  @[hott] protected def rec_on [reducible] {P : colimit → Type _} (y : colimit)
     (Pincl : Π⦃i : I⦄ (x : A i), P (ι x))
     (Pglue : Π(j : J) (x : A (dom j)), Pincl (f j x) =[cglue j x] Pincl x) : P y :=
   rec Pincl Pglue y
@@ -53,11 +53,11 @@ section
       {j : J} (x : A (dom j)) : apd (rec Pincl Pglue) (cglue j x) = Pglue j x :=
   !rec_eq_of_rel
 
-  protected @[hott] def elim {P : Type _} (Pincl : Π⦃i : I⦄ (x : A i), P)
+  @[hott] protected def elim {P : Type _} (Pincl : Π⦃i : I⦄ (x : A i), P)
     (Pglue : Π(j : J) (x : A (dom j)), Pincl (f j x) = Pincl x) (y : colimit) : P :=
   rec Pincl (λj a, pathover_of_eq _ (Pglue j a)) y
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (y : colimit)
+  @[hott] protected def elim_on [reducible] {P : Type _} (y : colimit)
     (Pincl : Π⦃i : I⦄ (x : A i), P)
     (Pglue : Π(j : J) (x : A (dom j)), Pincl (f j x) = Pincl x) : P :=
   elim Pincl Pglue y
@@ -71,11 +71,11 @@ section
     rewrite [▸*,-apd_eq_pathover_of_eq_ap,↑elim,rec_cglue],
   end
 
-  protected @[hott] def elim_type (Pincl : Π⦃i : I⦄ (x : A i), Type _)
+  @[hott] protected def elim_type (Pincl : Π⦃i : I⦄ (x : A i), Type _)
     (Pglue : Π(j : J) (x : A (dom j)), Pincl (f j x) ≃ Pincl x) (y : colimit) : Type _ :=
   elim Pincl (λj a, ua (Pglue j a)) y
 
-  protected @[hott] def elim_type_on [reducible] (y : colimit)
+  @[hott] protected def elim_type_on [reducible] (y : colimit)
     (Pincl : Π⦃i : I⦄ (x : A i), Type _)
     (Pglue : Π(j : J) (x : A (dom j)), Pincl (f j x) ≃ Pincl x) : Type _ :=
   elim_type Pincl Pglue y
@@ -85,11 +85,11 @@ section
       {j : J} (x : A (dom j)) : transport (elim_type Pincl Pglue) (cglue j x) = Pglue j x :=
   by rewrite [tr_eq_cast_ap_fn,↑elim_type,elim_cglue];apply cast_ua_fn
 
-  protected @[hott] def rec_prop {P : colimit → Type _} [H : Πx, is_prop (P x)]
+  @[hott] protected def rec_prop {P : colimit → Type _} [H : Πx, is_prop (P x)]
     (Pincl : Π⦃i : I⦄ (x : A i), P (ι x)) (y : colimit) : P y :=
   rec Pincl (λa b, !is_prop.elimo) y
 
-  protected @[hott] def elim_prop {P : Type _} [H : is_prop P] (Pincl : Π⦃i : I⦄ (x : A i), P)
+  @[hott] protected def elim_prop {P : Type _} [H : is_prop P] (Pincl : Π⦃i : I⦄ (x : A i), P)
     (y : colimit) : P :=
   elim Pincl (λa b, !is_prop.elim) y
 
@@ -124,7 +124,7 @@ section
   @[hott] def glue : sι (f a) = sι a :=
   eq_of_rel seq_rel (Rmk f a)
 
-  protected @[hott] def rec {P : seq_colim → Type _}
+  @[hott] protected def rec {P : seq_colim → Type _}
     (Pincl : Π⦃n : ℕ⦄ (a : A n), P (sι a))
     (Pglue : Π(n : ℕ) (a : A n), Pincl (f a) =[glue a] Pincl a) (aa : seq_colim) : P aa :=
   begin
@@ -133,7 +133,7 @@ section
     { intros a a' H, cases H, apply Pglue}
   end
 
-  protected @[hott] def rec_on [reducible] {P : seq_colim → Type _} (aa : seq_colim)
+  @[hott] protected def rec_on [reducible] {P : seq_colim → Type _} (aa : seq_colim)
     (Pincl : Π⦃n : ℕ⦄ (a : A n), P (sι a))
     (Pglue : Π⦃n : ℕ⦄ (a : A n), Pincl (f a) =[glue a] Pincl a)
       : P aa :=
@@ -144,11 +144,11 @@ section
       : apd (rec Pincl Pglue) (glue a) = Pglue a :=
   !rec_eq_of_rel
 
-  protected @[hott] def elim {P : Type _} (Pincl : Π⦃n : ℕ⦄ (a : A n), P)
+  @[hott] protected def elim {P : Type _} (Pincl : Π⦃n : ℕ⦄ (a : A n), P)
     (Pglue : Π⦃n : ℕ⦄ (a : A n), Pincl (f a) = Pincl a) : seq_colim → P :=
   rec Pincl (λn a, pathover_of_eq _ (Pglue a))
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (aa : seq_colim)
+  @[hott] protected def elim_on [reducible] {P : Type _} (aa : seq_colim)
     (Pincl : Π⦃n : ℕ⦄ (a : A n), P)
     (Pglue : Π⦃n : ℕ⦄ (a : A n), Pincl (f a) = Pincl a) : P :=
   elim Pincl Pglue aa
@@ -161,11 +161,11 @@ section
     rewrite [▸*,-apd_eq_pathover_of_eq_ap,↑elim,rec_glue],
   end
 
-  protected @[hott] def elim_type (Pincl : Π⦃n : ℕ⦄ (a : A n), Type _)
+  @[hott] protected def elim_type (Pincl : Π⦃n : ℕ⦄ (a : A n), Type _)
     (Pglue : Π⦃n : ℕ⦄ (a : A n), Pincl (f a) ≃ Pincl a) : seq_colim → Type _ :=
   elim Pincl (λn a, ua (Pglue a))
 
-  protected @[hott] def elim_type_on [reducible] (aa : seq_colim)
+  @[hott] protected def elim_type_on [reducible] (aa : seq_colim)
     (Pincl : Π⦃n : ℕ⦄ (a : A n), Type _)
     (Pglue : Π⦃n : ℕ⦄ (a : A n), Pincl (f a) ≃ Pincl a) : Type _ :=
   elim_type Pincl Pglue aa
@@ -180,11 +180,11 @@ section
     : transport (seq_colim.elim_type f Pincl Pglue) (glue a)⁻¹ = to_inv (Pglue a) :=
   by rewrite [tr_eq_cast_ap_fn, ↑seq_colim.elim_type, ap_inv, elim_glue]; apply cast_ua_inv_fn
 
-  protected @[hott] def rec_prop {P : seq_colim → Type _} [H : Πx, is_prop (P x)]
+  @[hott] protected def rec_prop {P : seq_colim → Type _} [H : Πx, is_prop (P x)]
     (Pincl : Π⦃n : ℕ⦄ (a : A n), P (sι a)) (aa : seq_colim) : P aa :=
   rec Pincl (λa b, !is_prop.elimo) aa
 
-  protected @[hott] def elim_prop {P : Type _} [H : is_prop P] (Pincl : Π⦃n : ℕ⦄ (a : A n), P)
+  @[hott] protected def elim_prop {P : Type _} [H : is_prop P] (Pincl : Π⦃n : ℕ⦄ (a : A n), P)
     : seq_colim → P :=
   elim Pincl (λa b, !is_prop.elim)
 

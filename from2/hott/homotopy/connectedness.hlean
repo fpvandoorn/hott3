@@ -54,7 +54,7 @@ namespace is_conn
     λt b, rec.helper t b (@center (trunc n (fiber h b)) (H b))
 
     -- induction principle for n-connected maps (@[hott] lemma 7.5.7)
-    protected @[hott] def rec : is_equiv (λs : Πb : B, P b, λa : A, s (h a)) :=
+    @[hott] protected def rec : is_equiv (λs : Πb : B, P b, λa : A, s (h a)) :=
     adjointify (λs a, s (h a)) rec.g
     begin
       intro t, apply eq_of_homotopy, intro a, unfold rec.g, unfold rec.helper,
@@ -66,10 +66,10 @@ namespace is_conn
       intros a p, induction p, reflexivity
     end
 
-    protected @[hott] def elim : (Πa : A, P (h a)) → (Πb : B, P b) :=
+    @[hott] protected def elim : (Πa : A, P (h a)) → (Πb : B, P b) :=
     @is_equiv.inv _ _ (λs a, s (h a)) rec
 
-    protected @[hott] def elim_β : Πf : (Πa : A, P (h a)), Πa : A, elim f (h a) = f a :=
+    @[hott] protected def elim_β : Πf : (Πa : A, P (h a)), Πa : A, elim f (h a) = f a :=
     λf, apd10 (@is_equiv.right_inv _ _ (λs a, s (h a)) rec f)
 
   end
@@ -188,17 +188,17 @@ namespace is_conn
                  [H : is_conn n .+1 A] (P : A → Type _) [Πa, is_trunc n (P a)]
 
       include H
-      protected @[hott] def rec : is_equiv (λs : Πa : A, P a, s (Point A)) :=
+      @[hott] protected def rec : is_equiv (λs : Πa : A, P a, s (Point A)) :=
       @is_equiv_compose
         (Πa : A, P a) (unit → P (Point A)) (P (Point A))
         (λf, f unit.star) (λs x, s (Point A))
         (is_conn_fun.rec n (is_conn_fun_from_unit n A (Point A)) P)
         (to_is_equiv (arrow_unit_left (P (Point A))))
 
-      protected @[hott] def elim : P (Point A) → (Πa : A, P a) :=
+      @[hott] protected def elim : P (Point A) → (Πa : A, P a) :=
       @is_equiv.inv _ _ (λs, s (Point A)) rec
 
-      protected @[hott] def elim_β (p : P (Point A)) : elim p (Point A) = p :=
+      @[hott] protected def elim_β (p : P (Point A)) : elim p (Point A) = p :=
       @is_equiv.right_inv _ _ (λs, s (Point A)) rec p
     end
 

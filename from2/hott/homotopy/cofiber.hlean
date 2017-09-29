@@ -19,35 +19,35 @@ namespace cofiber
   @[hott] def base : cofiber f := inr ⋆
 
   parameter {f}
-  protected @[hott] def glue (a : A) : cofiber.cod f (f a) = cofiber.base f :=
+  @[hott] protected def glue (a : A) : cofiber.cod f (f a) = cofiber.base f :=
   pushout.glue a
 
-  protected @[hott] def rec {P : cofiber f → Type _} (Pcod : Π (b : B), P (cod b)) (Pbase : P base)
+  @[hott] protected def rec {P : cofiber f → Type _} (Pcod : Π (b : B), P (cod b)) (Pbase : P base)
     (Pglue : Π (a : A), pathover P (Pcod (f a)) (glue a) Pbase) :
     (Π y, P y) :=
   begin
     intro y, induction y, exact Pcod x, induction x, exact Pbase, exact Pglue x
   end
 
-  protected @[hott] def rec_on {P : cofiber f → Type _} (y : cofiber f)
+  @[hott] protected def rec_on {P : cofiber f → Type _} (y : cofiber f)
     (Pcod : Π (b : B), P (cod b)) (Pbase : P base)
     (Pglue : Π (a : A), pathover P (Pcod (f a)) (glue a) Pbase) : P y :=
   cofiber.rec Pcod Pbase Pglue y
 
-  protected @[hott] theorem rec_glue {P : cofiber f → Type _} (Pcod : Π (b : B), P (cod b)) (Pbase : P base)
+  @[hott] protected theorem rec_glue {P : cofiber f → Type _} (Pcod : Π (b : B), P (cod b)) (Pbase : P base)
     (Pglue : Π (a : A), pathover P (Pcod (f a)) (glue a) Pbase) (a : A)
     : apd (cofiber.rec Pcod Pbase Pglue) (cofiber.glue a) = Pglue a :=
   !pushout.rec_glue
 
-  protected @[hott] def elim {P : Type _} (Pcod : B → P) (Pbase : P)
+  @[hott] protected def elim {P : Type _} (Pcod : B → P) (Pbase : P)
     (Pglue : Π (x : A), Pcod (f x) = Pbase) (y : cofiber f) : P :=
   pushout.elim Pcod (λu, Pbase) Pglue y
 
-  protected @[hott] def elim_on {P : Type _} (y : cofiber f) (Pcod : B → P) (Pbase : P)
+  @[hott] protected def elim_on {P : Type _} (y : cofiber f) (Pcod : B → P) (Pbase : P)
     (Pglue : Π (x : A), Pcod (f x) = Pbase) : P :=
   cofiber.elim Pcod Pbase Pglue y
 
-  protected @[hott] theorem elim_glue {P : Type _} (Pcod : B → P) (Pbase : P)
+  @[hott] protected theorem elim_glue {P : Type _} (Pcod : B → P) (Pbase : P)
     (Pglue : Π (x : A), Pcod (f x) = Pbase) (a : A)
     : ap (cofiber.elim Pcod Pbase Pglue) (cofiber.glue a) = Pglue a :=
   !pushout.elim_glue

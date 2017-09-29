@@ -11,7 +11,7 @@ open iff
 -- Empty type
 -- ----------
 
-protected @[hott] def empty.has_decidable_eq [instance] : decidable_eq empty :=
+@[hott] protected def empty.has_decidable_eq [instance] : decidable_eq empty :=
 take (a b : empty), decidable.inl (!empty.elim a)
 
 -- Unit type

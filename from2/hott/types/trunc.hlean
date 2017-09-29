@@ -23,7 +23,7 @@ namespace trunc_index
   succ_le_succ !minus_one_le_succ
 
   open decidable
-  protected @[hott] def has_decidable_eq [instance] : Π(n m : ℕ₋₂), decidable (n = m)
+  @[hott] protected def has_decidable_eq [instance] : Π(n m : ℕ₋₂), decidable (n = m)
   | has_decidable_eq -2     -2     := inl rfl
   | has_decidable_eq (n.+1) -2     := inr (by contradiction)
   | has_decidable_eq -2     (m.+1) := inr (by contradiction)
@@ -36,7 +36,7 @@ namespace trunc_index
   @[hott] def not_succ_le_minus_two {n : ℕ₋₂} (H : n .+1 ≤ -2) : empty :=
   by cases H
 
-  protected @[hott] def le_trans {n m k : ℕ₋₂} (H1 : n ≤ m) (H2 : m ≤ k) : n ≤ k :=
+  @[hott] protected def le_trans {n m k : ℕ₋₂} (H1 : n ≤ m) (H2 : m ≤ k) : n ≤ k :=
   begin
     induction H2 with k H2 IH,
     { exact H1},
@@ -57,21 +57,21 @@ namespace trunc_index
     { exact IH (le_of_succ_le_succ H)}
   end
 
-  protected @[hott] def le_antisymm {n m : ℕ₋₂} (H1 : n ≤ m) (H2 : m ≤ n) : n = m :=
+  @[hott] protected def le_antisymm {n m : ℕ₋₂} (H1 : n ≤ m) (H2 : m ≤ n) : n = m :=
   begin
     induction H2 with n H2 IH,
     { reflexivity},
     { exfalso, apply @not_succ_le_self n, exact trunc_index.le_trans H1 H2}
   end
 
-  protected @[hott] def le_succ {n m : ℕ₋₂} (H1 : n ≤ m) : n ≤ m.+1 :=
+  @[hott] protected def le_succ {n m : ℕ₋₂} (H1 : n ≤ m) : n ≤ m.+1 :=
   le.step H1
 
-  protected @[hott] def self_le_succ (n : ℕ₋₂) : n ≤ n.+1 :=
+  @[hott] protected def self_le_succ (n : ℕ₋₂) : n ≤ n.+1 :=
   le.step (trunc_index.le.tr_refl n)
 
   -- the order is total
-  protected @[hott] theorem le_sum_le (n m : ℕ₋₂) : n ≤ m ⊎ m ≤ n :=
+  @[hott] protected theorem le_sum_le (n m : ℕ₋₂) : n ≤ m ⊎ m ≤ n :=
   begin
     induction m with m IH,
     { exact inr !minus_two_le},
@@ -218,7 +218,7 @@ namespace trunc_index
     exact le_of_succ_le_succ (le_of_succ_le_succ H)
   end
 
-  protected @[hott] theorem succ_le_of_not_le {n m : ℕ₋₂} (H : ¬ n ≤ m) : m.+1 ≤ n :=
+  @[hott] protected theorem succ_le_of_not_le {n m : ℕ₋₂} (H : ¬ n ≤ m) : m.+1 ≤ n :=
   begin
     cases (le.total n m) with H2 H2,
     { exfalso, exact H H2},
@@ -277,7 +277,7 @@ namespace is_trunc
   λf f', !is_equiv_ap_to_fun
 
   /- theorems about trunctype -/
-  protected @[hott] def trunctype.sigma_char.{l} (n : ℕ₋₂) :
+  @[hott] protected def trunctype.sigma_char.{l} (n : ℕ₋₂) :
     (trunctype.{l} n) ≃ (Σ (A : Type l), is_trunc n A) :=
   begin
     fapply equiv.MK,
@@ -528,16 +528,16 @@ namespace trunc
   by induction p; induction q; exact ap tr !ap_con
 
   /- characterization of equality in truncated types -/
-  protected @[hott] def code (n : ℕ₋₂) (aa aa' : trunc n.+1 A) : trunctype.{u} n :=
+  @[hott] protected def code (n : ℕ₋₂) (aa aa' : trunc n.+1 A) : trunctype.{u} n :=
   by induction aa with a; induction aa' with a'; exact trunctype.mk' n (trunc n (a = a'))
 
-  protected @[hott] def encode {n : ℕ₋₂} {aa aa' : trunc n.+1 A}
+  @[hott] protected def encode {n : ℕ₋₂} {aa aa' : trunc n.+1 A}
     : aa = aa' → trunc.code n aa aa' :=
   begin
     intro p, induction p, induction aa with a, esimp, exact (tr idp)
   end
 
-  protected @[hott] def decode {n : ℕ₋₂} (aa aa' : trunc n.+1 A) :
+  @[hott] protected def decode {n : ℕ₋₂} (aa aa' : trunc n.+1 A) :
     trunc.code n aa aa' → aa = aa' :=
   begin
     induction aa' with a', induction aa with a,

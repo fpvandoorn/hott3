@@ -34,7 +34,7 @@ namespace torus
   @[hott] def surf  : square loop1 loop1 loop2 loop2 :=
   square_of_eq (incl2 _ _ Qmk)
 
-  protected @[hott] def rec {P : torus → Type _} (Pb : P base) (Pl1 : Pb =[loop1] Pb)
+  @[hott] protected def rec {P : torus → Type _} (Pb : P base) (Pl1 : Pb =[loop1] Pb)
     (Pl2 : Pb =[loop2] Pb) (Ps : squareover P surf Pl1 Pl1 Pl2 Pl2) (x : torus) : P x :=
   begin
     induction x,
@@ -45,7 +45,7 @@ namespace torus
     { induction q, esimp, apply change_path_of_pathover, apply pathover_of_squareover, exact Ps},
   end
 
-  protected @[hott] def rec_on [reducible] {P : torus → Type _} (x : torus) (Pb : P base)
+  @[hott] protected def rec_on [reducible] {P : torus → Type _} (x : torus) (Pb : P base)
     (Pl1 : Pb =[loop1] Pb) (Pl2 : Pb =[loop2] Pb) (Ps : squareover P surf Pl1 Pl1 Pl2 Pl2) : P x :=
   torus.rec Pb Pl1 Pl2 Ps x
 
@@ -59,7 +59,7 @@ namespace torus
     : apd (torus.rec Pb Pl1 Pl2 Ps) loop2 = Pl2 :=
   !rec_incl1
 
-  protected @[hott] def elim {P : Type _} (Pb : P) (Pl1 : Pb = Pb) (Pl2 : Pb = Pb)
+  @[hott] protected def elim {P : Type _} (Pb : P) (Pl1 : Pb = Pb) (Pl2 : Pb = Pb)
     (Ps : square Pl1 Pl1 Pl2 Pl2) (x : torus) : P :=
   begin
     induction x,
@@ -70,7 +70,7 @@ namespace torus
     { induction q, apply eq_of_square, exact Ps},
   end
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (x : torus) (Pb : P)
+  @[hott] protected def elim_on [reducible] {P : Type _} (x : torus) (Pb : P)
     (Pl1 : Pb = Pb) (Pl2 : Pb = Pb) (Ps : square Pl1 Pl1 Pl2 Pl2) : P :=
   torus.elim Pb Pl1 Pl2 Ps x
 

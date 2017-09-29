@@ -43,7 +43,7 @@ section
   @[hott] def equator_pt : equator pt = idp :=
   incl2 R Q Qmk
 
-  protected @[hott] def rec {P : red_susp → Type _} (Pb : P base) (Pm : Π(a : A), Pb =[equator a] Pb)
+  @[hott] protected def rec {P : red_susp → Type _} (Pb : P base) (Pm : Π(a : A), Pb =[equator a] Pb)
     (Pe : change_path equator_pt (Pm pt) = idpo) (x : red_susp') : P x :=
   begin
     induction x,
@@ -52,7 +52,7 @@ section
     { induction q, esimp, exact Pe}
   end
 
-  protected @[hott] def rec_on [reducible] {P : red_susp → Type _} (x : red_susp') (Pb : P base)
+  @[hott] protected def rec_on [reducible] {P : red_susp → Type _} (x : red_susp') (Pb : P base)
     (Pm : Π(a : A), Pb =[equator a] Pb) (Pe : change_path equator_pt (Pm pt) = idpo) : P x :=
   red_susp.rec Pb Pm Pe x
 
@@ -61,7 +61,7 @@ section
     : apd (rec Pb Pm Pe) (equator a) = Pm a :=
   !rec_incl1
 
-  protected @[hott] def elim {P : Type _} (Pb : P) (Pm : Π(a : A), Pb = Pb)
+  @[hott] protected def elim {P : Type _} (Pb : P) (Pm : Π(a : A), Pb = Pb)
     (Pe : Pm pt = idp) (x : red_susp') : P :=
   begin
     induction x,
@@ -70,7 +70,7 @@ section
       induction q, exact Pe
   end
 
- protected @[hott] def elim_on [reducible] {P : Type _} (x : red_susp') (Pb : P)
+ @[hott] protected def elim_on [reducible] {P : Type _} (x : red_susp') (Pb : P)
     (Pm : Π(a : A), Pb = Pb) (Pe : Pm pt = idp) : P :=
   elim Pb Pm Pe x
 
@@ -94,10 +94,10 @@ attribute red_susp.rec_on red_susp.elim_on
 
 namespace red_susp
 
-  protected @[hott] def pelim' {A P : Type*} (f : A →* Ω P) : red_susp' A → P :=
+  @[hott] protected def pelim' {A P : Type*} (f : A →* Ω P) : red_susp' A → P :=
   red_susp.elim pt f (respect_pt f)
 
-  protected @[hott] def pelim {A P : Type*} (f : A →* Ω P) : red_susp A →* P :=
+  @[hott] protected def pelim {A P : Type*} (f : A →* Ω P) : red_susp A →* P :=
   pmap.mk (red_susp.pelim' f) idp
 
   @[hott] def susp_of_red_susp {A : Type*} (x : red_susp A) : susp A :=
@@ -147,7 +147,7 @@ namespace red_susp
   /- a second proof that the reduced suspension is the suspension, by first proving
      a new induction principle for the reduced suspension -/
 
-  protected @[hott] def susp_rec {A : Type*} {P : red_susp A → Type _} (P0 : P base)
+  @[hott] protected def susp_rec {A : Type*} {P : red_susp A → Type _} (P0 : P base)
     (P1 : Πa, P0 =[equator a] P0) (x : red_susp' A) : P x :=
   begin
     induction x,

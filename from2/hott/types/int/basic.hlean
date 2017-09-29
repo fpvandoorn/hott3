@@ -46,7 +46,7 @@ attribute int.of_nat [coercion]
 
 notation `-[1+ ` n `]` := int.neg_succ_of_nat n    -- for pretty-printing output
 
-protected @[hott] def prio : num := num.pred nat.prio
+@[hott] protected def prio : num := num.pred nat.prio
 
 @[hott] def int_has_zero [instance] [priority int.prio] : has_zero int :=
 has_zero.mk (of_nat 0)
@@ -72,16 +72,16 @@ match (n - m : nat) with
   | (succ k) := -[1+ k]         -- m < n, and n - m = succ k
 end
 
-protected @[hott] def neg (a : ℤ) : ℤ :=
+@[hott] protected def neg (a : ℤ) : ℤ :=
 int.cases_on a neg_of_nat succ
 
-protected @[hott] def add : ℤ → ℤ → ℤ
+@[hott] protected def add : ℤ → ℤ → ℤ
 | (of_nat m) (of_nat n) := _root_.add m n
 | (of_nat m) -[1+ n]    := sub_nat_nat m (succ n)
 | -[1+ m]    (of_nat n) := sub_nat_nat n (succ m)
 | -[1+ m]    -[1+ n]    := neg_of_nat (succ m + succ n)
 
-protected @[hott] def mul : ℤ → ℤ → ℤ
+@[hott] protected def mul : ℤ → ℤ → ℤ
 | (of_nat m) (of_nat n) := m * n
 | (of_nat m) -[1+ n]    := neg_of_nat (m * succ n)
 | -[1+ m]    (of_nat n) := neg_of_nat (succ m * n)
@@ -163,19 +163,19 @@ rfl
 
 /- int is a quotient of ordered pairs of natural numbers -/
 
-protected @[hott] def equiv (p q : ℕ × ℕ) : Type :=  pr1 p + pr2 q = pr2 p + pr1 q
+@[hott] protected def equiv (p q : ℕ × ℕ) : Type :=  pr1 p + pr2 q = pr2 p + pr1 q
 
 local infix ≡ := int.equiv
 
-protected @[hott] theorem equiv.refl [refl] {p : ℕ × ℕ} : p ≡ p := !add.comm
+@[hott] protected theorem equiv.refl [refl] {p : ℕ × ℕ} : p ≡ p := !add.comm
 
-protected @[hott] theorem equiv.symm [symm] {p q : ℕ × ℕ} (H : p ≡ q) : q ≡ p :=
+@[hott] protected theorem equiv.symm [symm] {p q : ℕ × ℕ} (H : p ≡ q) : q ≡ p :=
 calc
   pr1 q + pr2 p = pr2 p + pr1 q : by rewrite add.comm
     ... = pr1 p + pr2 q         : H⁻¹
     ... = pr2 q + pr1 p         : by rewrite add.comm
 
-protected @[hott] theorem equiv.trans [trans] {p q r : ℕ × ℕ} (H1 : p ≡ q) (H2 : q ≡ r) : p ≡ r :=
+@[hott] protected theorem equiv.trans [trans] {p q r : ℕ × ℕ} (H1 : p ≡ q) (H2 : q ≡ r) : p ≡ r :=
 add.right_cancel (calc
    pr1 p + pr2 r + pr2 q = pr1 p + pr2 q + pr2 r : by rewrite add.right_comm
     ... = pr2 p + pr1 q + pr2 r                  : {H1}
@@ -184,10 +184,10 @@ add.right_cancel (calc
     ... = pr2 p + pr2 q + pr1 r                  : by rewrite add.assoc
     ... = pr2 p + pr1 r + pr2 q                  : by rewrite add.right_comm)
 
-protected @[hott] theorem equiv_equiv : is_equivalence int.equiv :=
+@[hott] protected theorem equiv_equiv : is_equivalence int.equiv :=
 is_equivalence.mk @equiv.refl @equiv.symm @equiv.trans
 
-protected @[hott] theorem equiv_cases {p q : ℕ × ℕ} (H : p ≡ q) :
+@[hott] protected theorem equiv_cases {p q : ℕ × ℕ} (H : p ≡ q) :
     (pr1 p ≥ pr2 p × pr1 q ≥ pr2 q) ⊎ (pr1 p < pr2 p × pr1 q < pr2 q) :=
 sum.elim (@le_sum_gt _ _ (pr2 p) (pr1 p))
   (suppose pr1 p ≥ pr2 p,
@@ -197,7 +197,7 @@ sum.elim (@le_sum_gt _ _ (pr2 p) (pr1 p))
     have pr2 p + pr1 q < pr2 p + pr2 q, from H ▸ add_lt_add_right H₁ (pr2 q),
     sum.inr (pair H₁ (lt_of_add_lt_add_left this)))
 
-protected @[hott] theorem equiv_of_eq {p q : ℕ × ℕ} (H : p = q) : p ≡ q := H ▸ equiv.refl
+@[hott] protected theorem equiv_of_eq {p q : ℕ × ℕ} (H : p = q) : p ≡ q := H ▸ equiv.refl
 
 /- the representation and abstraction functions -/
 
@@ -339,11 +339,11 @@ calc (pr1 p + pr1 q + pr1 r, pr2 p + pr2 q + pr2 r)
         = (pr1 p + (pr1 q + pr1 r), pr2 p + pr2 q + pr2 r)   : by rewrite add.assoc
     ... = (pr1 p + (pr1 q + pr1 r), pr2 p + (pr2 q + pr2 r)) : by rewrite add.assoc
 
-protected @[hott] theorem add_comm (a b : ℤ) : a + b = b + a :=
+@[hott] protected theorem add_comm (a b : ℤ) : a + b = b + a :=
 eq_of_repr_equiv_repr (equiv.trans !repr_add
    (equiv.symm (!padd_comm ▸ !repr_add)))
 
-protected @[hott] theorem add_assoc (a b c : ℤ) : a + b + c = a + (b + c) :=
+@[hott] protected theorem add_assoc (a b c : ℤ) : a + b + c = a + (b + c) :=
 eq_of_repr_equiv_repr (calc
          repr (a + b + c)
        ≡ padd (repr (a + b)) (repr c)           : repr_add
@@ -352,9 +352,9 @@ eq_of_repr_equiv_repr (calc
   ...  ≡ padd (repr a) (repr (b + c))           : padd_congr !equiv.refl !repr_add
   ...  ≡ repr (a + (b + c))                     : repr_add)
 
-protected @[hott] theorem add_zero : Π (a : ℤ), a + 0 = a := int.rec (λm, rfl) (λm, rfl)
+@[hott] protected theorem add_zero : Π (a : ℤ), a + 0 = a := int.rec (λm, rfl) (λm, rfl)
 
-protected @[hott] theorem zero_add (a : ℤ) : 0 + a = a := !int.add_comm ▸ !int.add_zero
+@[hott] protected theorem zero_add (a : ℤ) : 0 + a = a := !int.add_comm ▸ !int.add_zero
 
 /- negation -/
 
@@ -392,7 +392,7 @@ calc      pr1 p + pr1 q + pr2 q + pr2 p
     ... = pr1 p + (pr2 p + pr2 q + pr1 q) : add.comm
     ... = pr2 p + pr2 q + pr1 q + pr1 p   : add.comm
 
-protected @[hott] theorem add_left_inv (a : ℤ) : -a + a = 0 :=
+@[hott] protected theorem add_left_inv (a : ℤ) : -a + a = 0 :=
 have H : repr (-a + a) ≡ repr 0, from
   calc
     repr (-a + a) ≡ padd (repr (neg a)) (repr a) : repr_add
@@ -484,7 +484,7 @@ begin
     { rewrite add.comm, congruence, repeat rewrite mul.comm }
 end
 
-protected @[hott] theorem mul_comm (a b : ℤ) : a * b = b * a :=
+@[hott] protected theorem mul_comm (a b : ℤ) : a * b = b * a :=
 eq_of_repr_equiv_repr
   ((calc
     repr (a * b) = pmul (repr a) (repr b) : repr_mul
@@ -504,7 +504,7 @@ end
 
 @[hott] theorem pmul_assoc (p q r: ℕ × ℕ) : pmul (pmul p q) r = pmul p (pmul q r) := pmul_assoc_prep
 
-protected @[hott] theorem mul_assoc (a b c : ℤ) : (a * b) * c = a * (b * c) :=
+@[hott] protected theorem mul_assoc (a b c : ℤ) : (a * b) * c = a * (b * c) :=
 eq_of_repr_equiv_repr
   ((calc
     repr (a * b * c) = pmul (repr (a * b)) (repr c) : repr_mul
@@ -513,11 +513,11 @@ eq_of_repr_equiv_repr
       ... = pmul (repr a) (repr (b * c)) : repr_mul
       ... = repr (a * (b * c)) : repr_mul) ▸ !equiv.refl)
 
-protected @[hott] theorem mul_one : Π (a : ℤ), a * 1 = a
+@[hott] protected theorem mul_one : Π (a : ℤ), a * 1 = a
 | (of_nat m) := !int.zero_add -- zero_add happens to be def. = to this thm
 | -[1+ m]    := !nat.zero_add ▸ rfl
 
-protected @[hott] theorem one_mul (a : ℤ) : 1 * a = a :=
+@[hott] protected theorem one_mul (a : ℤ) : 1 * a = a :=
 int.mul_comm a 1 ▸ int.mul_one a
 
 private @[hott] theorem mul_distrib_prep {a1 a2 b1 b2 c1 c2 : ℕ} :
@@ -529,7 +529,7 @@ begin
     {rewrite add.comm4}
 end
 
-protected @[hott] theorem right_distrib (a b c : ℤ) : (a + b) * c = a * c + b * c :=
+@[hott] protected theorem right_distrib (a b c : ℤ) : (a + b) * c = a * c + b * c :=
 eq_of_repr_equiv_repr
   (calc
     repr ((a + b) * c) = pmul (repr (a + b)) (repr c) : repr_mul
@@ -539,21 +539,21 @@ eq_of_repr_equiv_repr
       ... = padd (repr (a * c)) (repr (b * c))                     : repr_mul
       ... ≡ repr (a * c + b * c)                                   : repr_add)
 
-protected @[hott] theorem left_distrib (a b c : ℤ) : a * (b + c) = a * b + a * c :=
+@[hott] protected theorem left_distrib (a b c : ℤ) : a * (b + c) = a * b + a * c :=
 calc
   a * (b + c) = (b + c) * a : int.mul_comm
     ... = b * a + c * a : int.right_distrib
     ... = a * b + c * a : int.mul_comm
     ... = a * b + a * c : int.mul_comm
 
-protected @[hott] theorem zero_ne_one : (0 : int) ≠ 1 :=
+@[hott] protected theorem zero_ne_one : (0 : int) ≠ 1 :=
 assume H : 0 = 1, !succ_ne_zero (of_nat.inj H)⁻¹
 
-protected @[hott] theorem eq_zero_sum_eq_zero_of_mul_eq_zero {a b : ℤ} (H : a * b = 0) : a = 0 ⊎ b = 0 :=
+@[hott] protected theorem eq_zero_sum_eq_zero_of_mul_eq_zero {a b : ℤ} (H : a * b = 0) : a = 0 ⊎ b = 0 :=
 sum.imp eq_zero_of_nat_abs_eq_zero eq_zero_of_nat_abs_eq_zero
   (eq_zero_sum_eq_zero_of_mul_eq_zero (by rewrite [-nat_abs_mul, H]))
 
-protected @[hott] def integral_domain [trans_instance] : integral_domain int :=
+@[hott] protected def integral_domain [trans_instance] : integral_domain int :=
 ⦃integral_domain,
   add            := int.add,
   add_assoc      := int.add_assoc,

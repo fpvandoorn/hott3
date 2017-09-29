@@ -19,7 +19,7 @@ namespace nat_trans
 
   attribute natural_map [coercion]
 
-  protected @[hott] def compose (η : G ⟹ H) (θ : F ⟹ G) : F ⟹ H :=
+  @[hott] protected def compose (η : G ⟹ H) (θ : F ⟹ G) : F ⟹ H :=
   nat_trans.mk
     (λ a, η a ∘ θ a)
     (λ a b f,
@@ -35,10 +35,10 @@ namespace nat_trans
 
   @[hott] def compose_def (η : G ⟹ H) (θ : F ⟹ G) (c : C) : (η ∘n θ) c = η c ∘ θ c := idp
 
-  protected @[hott] def id [reducible] {F : C ⇒ D} : nat_trans F F :=
+  @[hott] protected def id [reducible] {F : C ⇒ D} : nat_trans F F :=
   mk (λa, id) (λa b f, !id_right ⬝ !id_left⁻¹)
 
-  protected @[hott] def ID [reducible] (F : C ⇒ D) : nat_trans F F :=
+  @[hott] protected def ID [reducible] (F : C ⇒ D) : nat_trans F F :=
   (@nat_trans.id C D F)
 
   notation 1 := nat_trans.id
@@ -64,17 +64,17 @@ namespace nat_trans
   @[hott] def nat_trans_eq {η₁ η₂ : F ⟹ G} : natural_map η₁ ~ natural_map η₂ → η₁ = η₂ :=
   by induction η₁; induction η₂; apply nat_trans_mk_eq
 
-  protected @[hott] def assoc (η₃ : H ⟹ I) (η₂ : G ⟹ H) (η₁ : F ⟹ G) :
+  @[hott] protected def assoc (η₃ : H ⟹ I) (η₂ : G ⟹ H) (η₁ : F ⟹ G) :
       η₃ ∘n (η₂ ∘n η₁) = (η₃ ∘n η₂) ∘n η₁ :=
   nat_trans_eq (λa, !assoc)
 
-  protected @[hott] def id_left (η : F ⟹ G) : 1 ∘n η = η :=
+  @[hott] protected def id_left (η : F ⟹ G) : 1 ∘n η = η :=
   nat_trans_eq (λa, !id_left)
 
-  protected @[hott] def id_right (η : F ⟹ G) : η ∘n 1 = η :=
+  @[hott] protected def id_right (η : F ⟹ G) : η ∘n 1 = η :=
   nat_trans_eq (λa, !id_right)
 
-  protected @[hott] def sigma_char (F G : C ⇒ D) :
+  @[hott] protected def sigma_char (F G : C ⇒ D) :
     (Σ (η : Π (a : C), hom (F a) (G a)), Π (a b : C) (f : hom a b), G f ∘ η a = η b ∘ F f) ≃  (F ⟹ G) :=
   begin
     fapply equiv.mk,

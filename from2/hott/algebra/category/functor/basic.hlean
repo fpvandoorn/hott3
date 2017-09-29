@@ -25,7 +25,7 @@ namespace functor
 
   -- The following lemmas will later be used to prove that the type of
   -- precategories forms a precategory itself
-  protected @[hott] def compose [reducible] (G : functor D E) (F : functor C D)
+  @[hott] protected def compose [reducible] (G : functor D E) (F : functor C D)
     : functor C E :=
   functor.mk
     (λ x, G (F x))
@@ -39,10 +39,10 @@ namespace functor
 
   infixr ` ∘f `:75 := functor.compose
 
-  protected @[hott] def id [reducible] {C : Precategory} : functor C C :=
+  @[hott] protected def id [reducible] {C : Precategory} : functor C C :=
   mk (λa, a) (λ a b f, f) (λ a, idp) (λ a b c f g, idp)
 
-  protected @[hott] def ID [reducible] (C : Precategory) : functor C C := @functor.id C
+  @[hott] protected def ID [reducible] (C : Precategory) : functor C C := @functor.id C
   notation 1 := functor.id
 
   @[hott] def constant_functor (C : Precategory) {D : Precategory} (d : D) : C ⇒ D :=
@@ -136,17 +136,17 @@ namespace functor
     F (inv_of_eq p) = inv_of_eq (ap F p) :=
   by induction p; apply respect_id
 
-  protected @[hott] def assoc (H : C ⇒ D) (G : B ⇒ C) (F : A ⇒ B) :
+  @[hott] protected def assoc (H : C ⇒ D) (G : B ⇒ C) (F : A ⇒ B) :
       H ∘f (G ∘f F) = (H ∘f G) ∘f F :=
   !functor_mk_eq_constant (λa b f, idp)
 
-  protected @[hott] def id_left  (F : C ⇒ D) : 1 ∘f F = F :=
+  @[hott] protected def id_left  (F : C ⇒ D) : 1 ∘f F = F :=
   functor.rec_on F (λF1 F2 F3 F4, !functor_mk_eq_constant (λa b f, idp))
 
-  protected @[hott] def id_right (F : C ⇒ D) : F ∘f 1 = F :=
+  @[hott] protected def id_right (F : C ⇒ D) : F ∘f 1 = F :=
   functor.rec_on F (λF1 F2 F3 F4, !functor_mk_eq_constant (λa b f, idp))
 
-  protected @[hott] def comp_id_eq_id_comp (F : C ⇒ D) : F ∘f 1 = 1 ∘f F :=
+  @[hott] protected def comp_id_eq_id_comp (F : C ⇒ D) : F ∘f 1 = 1 ∘f F :=
   !functor.id_right ⬝ !functor.id_left⁻¹
 
   @[hott] def functor_of_eq {C D : Precategory} (p : C = D :> Precategory) : C ⇒ D :=
@@ -155,7 +155,7 @@ namespace functor
              (by intro c; induction p; reflexivity)
              (by intros; induction p; reflexivity)
 
-  protected @[hott] def sigma_char :
+  @[hott] protected def sigma_char :
     (Σ (to_fun_ob : C → D)
     (to_fun_hom : Π ⦃a b : C⦄, hom a b → hom (to_fun_ob a) (to_fun_ob b)),
     (Π (a : C), to_fun_hom (ID a) = ID (to_fun_ob a)) ×
@@ -183,7 +183,7 @@ namespace functor
   section
     local attribute precategory.is_set_hom [instance] [priority 1001]
     local attribute trunctype.struct [instance] [priority 1] -- remove after #842 is closed
-    protected @[hott] theorem is_set_functor [instance]
+    @[hott] protected theorem is_set_functor [instance]
       [HD : is_set D] : is_set (functor C D) :=
     by apply is_trunc_equiv_closed; apply functor.sigma_char
   end

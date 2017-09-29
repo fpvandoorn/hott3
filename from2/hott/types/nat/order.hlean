@@ -12,19 +12,19 @@ namespace nat
 
 /- lt and le -/
 
-protected @[hott] theorem le_of_lt_sum_eq {m n : ℕ} (H : m < n ⊎ m = n) : m ≤ n :=
+@[hott] protected theorem le_of_lt_sum_eq {m n : ℕ} (H : m < n ⊎ m = n) : m ≤ n :=
 nat.le_of_eq_sum_lt (sum.swap H)
 
-protected @[hott] theorem lt_sum_eq_of_le {m n : ℕ} (H : m ≤ n) : m < n ⊎ m = n :=
+@[hott] protected theorem lt_sum_eq_of_le {m n : ℕ} (H : m ≤ n) : m < n ⊎ m = n :=
 sum.swap (nat.eq_sum_lt_of_le H)
 
-protected @[hott] theorem le_iff_lt_sum_eq (m n : ℕ) : m ≤ n ↔ m < n ⊎ m = n :=
+@[hott] protected theorem le_iff_lt_sum_eq (m n : ℕ) : m ≤ n ↔ m < n ⊎ m = n :=
 iff.intro nat.lt_sum_eq_of_le nat.le_of_lt_sum_eq
 
-protected @[hott] theorem lt_of_le_prod_ne {m n : ℕ} (H1 : m ≤ n) : m ≠ n → m < n :=
+@[hott] protected theorem lt_of_le_prod_ne {m n : ℕ} (H1 : m ≤ n) : m ≠ n → m < n :=
 sum_resolve_right (nat.eq_sum_lt_of_le H1)
 
-protected @[hott] theorem lt_iff_le_prod_ne (m n : ℕ) : m < n ↔ m ≤ n × m ≠ n :=
+@[hott] protected theorem lt_iff_le_prod_ne (m n : ℕ) : m < n ↔ m ≤ n × m ≠ n :=
 iff.intro
   (take H, pair (nat.le_of_lt H) (take H1, !nat.lt_irrefl (H1 ▸ H)))
   (prod.rec nat.lt_of_le_prod_ne)
@@ -42,31 +42,31 @@ h ▸ !le_add_right
 le.rec (sigma.mk 0 rfl) (λm h, sigma.rec
   (λ k H, sigma.mk (succ k) (H ▸ rfl)))
 
-protected @[hott] theorem le_total {m n : ℕ} : m ≤ n ⊎ n ≤ m :=
+@[hott] protected theorem le_total {m n : ℕ} : m ≤ n ⊎ n ≤ m :=
 sum.imp_left nat.le_of_lt !nat.lt_sum_ge
 
 /- addition -/
 
-protected @[hott] theorem add_le_add_left {n m : ℕ} (H : n ≤ m) (k : ℕ) : k + n ≤ k + m :=
+@[hott] protected theorem add_le_add_left {n m : ℕ} (H : n ≤ m) (k : ℕ) : k + n ≤ k + m :=
 obtain l Hl, from le.elim H, le.intro (Hl ▸ !add.assoc)
 
-protected @[hott] theorem add_le_add_right {n m : ℕ} (H : n ≤ m) (k : ℕ) : n + k ≤ m + k :=
+@[hott] protected theorem add_le_add_right {n m : ℕ} (H : n ≤ m) (k : ℕ) : n + k ≤ m + k :=
 !add.comm ▸ !add.comm ▸ nat.add_le_add_left H k
 
-protected @[hott] theorem le_of_add_le_add_left {k n m : ℕ} (H : k + n ≤ k + m) : n ≤ m :=
+@[hott] protected theorem le_of_add_le_add_left {k n m : ℕ} (H : k + n ≤ k + m) : n ≤ m :=
 obtain l Hl, from le.elim H, le.intro (nat.add_left_cancel (!add.assoc⁻¹ ⬝ Hl))
 
-protected @[hott] theorem lt_of_add_lt_add_left {k n m : ℕ} (H : k + n < k + m) : n < m :=
+@[hott] protected theorem lt_of_add_lt_add_left {k n m : ℕ} (H : k + n < k + m) : n < m :=
 let H' := nat.le_of_lt H in
 nat.lt_of_le_prod_ne (nat.le_of_add_le_add_left H') (assume Heq, !nat.lt_irrefl (Heq ▸ H))
 
-protected @[hott] theorem add_lt_add_left {n m : ℕ} (H : n < m) (k : ℕ) : k + n < k + m :=
+@[hott] protected theorem add_lt_add_left {n m : ℕ} (H : n < m) (k : ℕ) : k + n < k + m :=
 lt_of_succ_le (!add_succ ▸ nat.add_le_add_left (succ_le_of_lt H) k)
 
-protected @[hott] theorem add_lt_add_right {n m : ℕ} (H : n < m) (k : ℕ) : n + k < m + k :=
+@[hott] protected theorem add_lt_add_right {n m : ℕ} (H : n < m) (k : ℕ) : n + k < m + k :=
 !add.comm ▸ !add.comm ▸ nat.add_lt_add_left H k
 
-protected @[hott] theorem lt_add_of_pos_right {n k : ℕ} (H : k > 0) : n < n + k :=
+@[hott] protected theorem lt_add_of_pos_right {n k : ℕ} (H : k > 0) : n < n + k :=
 !add_zero ▸ nat.add_lt_add_left H n
 
 /- multiplication -/
@@ -79,18 +79,18 @@ le.intro this
 @[hott] theorem mul_le_mul_right {n m : ℕ} (k : ℕ) (H : n ≤ m) : n * k ≤ m * k :=
 !mul.comm ▸ !mul.comm ▸ !mul_le_mul_left H
 
-protected @[hott] theorem mul_le_mul {n m k l : ℕ} (H1 : n ≤ k) (H2 : m ≤ l) : n * m ≤ k * l :=
+@[hott] protected theorem mul_le_mul {n m k l : ℕ} (H1 : n ≤ k) (H2 : m ≤ l) : n * m ≤ k * l :=
 nat.le_trans (!nat.mul_le_mul_right H1) (!nat.mul_le_mul_left H2)
 
-protected @[hott] theorem mul_lt_mul_of_pos_left {n m k : ℕ} (H : n < m) (Hk : k > 0) : k * n < k * m :=
+@[hott] protected theorem mul_lt_mul_of_pos_left {n m k : ℕ} (H : n < m) (Hk : k > 0) : k * n < k * m :=
 nat.lt_of_lt_of_le (nat.lt_add_of_pos_right Hk) (!mul_succ ▸ nat.mul_le_mul_left k (succ_le_of_lt H))
 
-protected @[hott] theorem mul_lt_mul_of_pos_right {n m k : ℕ} (H : n < m) (Hk : k > 0) : n * k < m * k :=
+@[hott] protected theorem mul_lt_mul_of_pos_right {n m k : ℕ} (H : n < m) (Hk : k > 0) : n * k < m * k :=
 !mul.comm ▸ !mul.comm ▸ nat.mul_lt_mul_of_pos_left H Hk
 
 /- nat is an instance of a linearly ordered semiring and a lattice -/
 
-protected @[hott] def decidable_linear_ordered_semiring [trans_instance] :
+@[hott] protected def decidable_linear_ordered_semiring [trans_instance] :
 decidable_linear_ordered_semiring nat :=
 ⦃ decidable_linear_ordered_semiring, nat.comm_semiring,
   add_left_cancel            := @nat.add_left_cancel,
@@ -236,13 +236,13 @@ nat.succ_le_succ !one_le_succ
 
 /- other forms of induction -/
 
-protected @[hott] def strong_rec_on {P : nat → Type _} (n : ℕ) (H : Πn, (Πm, m < n → P m) → P n) : P n :=
+@[hott] protected def strong_rec_on {P : nat → Type _} (n : ℕ) (H : Πn, (Πm, m < n → P m) → P n) : P n :=
 nat.rec (λm h, absurd h !not_lt_zero)
   (λn' (IH : Π {m : ℕ}, m < n' → P m) m l,
      sum.elim (lt_sum_eq_of_le (le_of_lt_succ l))
     IH (λ e, eq.rec (H n' @IH) e⁻¹)) (succ n) n !lt_succ_self
 
-protected @[hott] theorem case_strong_rec_on {P : nat → Type _} (a : nat) (H0 : P 0)
+@[hott] protected theorem case_strong_rec_on {P : nat → Type _} (a : nat) (H0 : P 0)
   (Hind : Π(n : nat), (Πm, m ≤ n → P m) → P (succ n)) : P a :=
 nat.strong_rec_on a
   (take n,
@@ -366,7 +366,7 @@ sum.elim !lt_sum_ge
 /- In algebra.ordered_group, these next four are only proved for additive groups, not additive
    semigroups. -/
 
-protected @[hott] theorem min_add_add_left (a b c : ℕ) : min (a + b) (a + c) = a + min b c :=
+@[hott] protected theorem min_add_add_left (a b c : ℕ) : min (a + b) (a + c) = a + min b c :=
 decidable.by_cases
   (suppose b ≤ c,
    have a + b ≤ a + c, from add_le_add_left this _,
@@ -376,10 +376,10 @@ decidable.by_cases
    have a + c ≤ a + b, from add_le_add_left this _,
    by rewrite [min_eq_right `c ≤ b`, min_eq_right this])
 
-protected @[hott] theorem min_add_add_right (a b c : ℕ) : min (a + c) (b + c) = min a b + c :=
+@[hott] protected theorem min_add_add_right (a b c : ℕ) : min (a + c) (b + c) = min a b + c :=
 by rewrite [add.comm a c, add.comm b c, add.comm _ c]; apply nat.min_add_add_left
 
-protected @[hott] theorem max_add_add_left (a b c : ℕ) : max (a + b) (a + c) = a + max b c :=
+@[hott] protected theorem max_add_add_left (a b c : ℕ) : max (a + b) (a + c) = a + max b c :=
 decidable.by_cases
   (suppose b ≤ c,
    have a + b ≤ a + c, from add_le_add_left this _,
@@ -389,7 +389,7 @@ decidable.by_cases
    have a + c ≤ a + b, from add_le_add_left this _,
    by rewrite [max_eq_left `c ≤ b`, max_eq_left this])
 
-protected @[hott] theorem max_add_add_right (a b c : ℕ) : max (a + c) (b + c) = max a b + c :=
+@[hott] protected theorem max_add_add_right (a b c : ℕ) : max (a + c) (b + c) = max a b + c :=
 by rewrite [add.comm a c, add.comm b c, add.comm _ c]; apply nat.max_add_add_left
 
 /- least and greatest -/

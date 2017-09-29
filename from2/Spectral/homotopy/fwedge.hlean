@@ -23,20 +23,20 @@ namespace fwedge
   @[hott] def pinl (i : I) : F i →* ⋁F := pmap.mk (inl i) (glue i)
   @[hott] def glue (i : I) : inl i pt = pt :> ⋁ F := glue i
 
-  protected @[hott] def rec {P : ⋁F → Type _} (Pinl : Π(i : I) (x : F i), P (il x))
+  @[hott] protected def rec {P : ⋁F → Type _} (Pinl : Π(i : I) (x : F i), P (il x))
     (Pinr : P pt) (Pglue : Πi, pathover P (Pinl i pt) (glue i) (Pinr)) (y : fwedge' F) : P y :=
   begin induction y, induction x, apply Pinl, induction x, apply Pinr, apply Pglue end
 
-  protected @[hott] def elim {P : Type _} (Pinl : Π(i : I) (x : F i), P)
+  @[hott] protected def elim {P : Type _} (Pinl : Π(i : I) (x : F i), P)
     (Pinr : P) (Pglue : Πi, Pinl i pt = Pinr) (y : fwedge' F) : P :=
   begin induction y with x u, induction x with i x, exact Pinl i x, induction u, apply Pinr, apply Pglue end
 
-  protected @[hott] def elim_glue {P : Type _} {Pinl : Π(i : I) (x : F i), P}
+  @[hott] protected def elim_glue {P : Type _} {Pinl : Π(i : I) (x : F i), P}
     {Pinr : P} (Pglue : Πi, Pinl i pt = Pinr) (i : I)
     : ap (fwedge.elim Pinl Pinr Pglue) (fwedge.glue i) = Pglue i :=
   !pushout.elim_glue
 
-  protected @[hott] def rec_glue {P : ⋁F → Type _} {Pinl : Π(i : I) (x : F i), P (il x)}
+  @[hott] protected def rec_glue {P : ⋁F → Type _} {Pinl : Π(i : I) (x : F i), P (il x)}
     {Pinr : P pt} (Pglue : Πi, pathover P (Pinl i pt) (glue i) (Pinr)) (i : I)
     : apd (fwedge.rec Pinl Pinr Pglue) (fwedge.glue i) = Pglue i :=
   !pushout.rec_glue

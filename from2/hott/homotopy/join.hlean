@@ -22,14 +22,14 @@ namespace join
   @[hott] def glue (a : A) (b : B) : inl a = inr b :=
   @pushout.glue (A × B) A B pr1 pr2 (a, b)
 
-  protected @[hott] def rec {P : join A B → Type _}
+  @[hott] protected def rec {P : join A B → Type _}
     (Pinl : Π(x : A), P (inl x))
     (Pinr : Π(y : B), P (inr y))
     (Pglue : Π(x : A)(y : B), Pinl x =[glue x y] Pinr y)
     (z : join A B) : P z :=
   pushout.rec Pinl Pinr (prod.rec Pglue) z
 
-  protected @[hott] def rec_glue {P : join A B → Type _}
+  @[hott] protected def rec_glue {P : join A B → Type _}
     (Pinl : Π(x : A), P (inl x))
     (Pinr : Π(y : B), P (inr y))
     (Pglue : Π(x : A)(y : B), Pinl x =[glue x y] Pinr y)
@@ -37,11 +37,11 @@ namespace join
     : apd (join.rec Pinl Pinr Pglue) (glue x y) = Pglue x y :=
   !quotient.rec_eq_of_rel
 
-  protected @[hott] def elim {P : Type _} (Pinl : A → P) (Pinr : B → P)
+  @[hott] protected def elim {P : Type _} (Pinl : A → P) (Pinr : B → P)
     (Pglue : Π(x : A)(y : B), Pinl x = Pinr y) (z : join A B) : P :=
   join.rec Pinl Pinr (λx y, pathover_of_eq _ (Pglue x y)) z
 
-  protected @[hott] def elim_glue {P : Type _} (Pinl : A → P) (Pinr : B → P)
+  @[hott] protected def elim_glue {P : Type _} (Pinl : A → P) (Pinr : B → P)
     (Pglue : Π(x : A)(y : B), Pinl x = Pinr y) (x : A) (y : B)
     : ap (join.elim Pinl Pinr Pglue) (glue x y) = Pglue x y :=
   begin
@@ -50,16 +50,16 @@ namespace join
     apply join.rec_glue
   end
 
-  protected @[hott] def elim_ap_inl {P : Type _} (Pinl : A → P) (Pinr : B → P)
+  @[hott] protected def elim_ap_inl {P : Type _} (Pinl : A → P) (Pinr : B → P)
     (Pglue : Π(x : A)(y : B), Pinl x = Pinr y) {a a' : A} (p : a = a')
     : ap (join.elim Pinl Pinr Pglue) (ap inl p) = ap Pinl p :=
   by cases p; reflexivity
 
-  protected @[hott] def hsquare {a a' : A} {b b' : B} (p : a = a') (q : b = b') :
+  @[hott] protected def hsquare {a a' : A} {b b' : B} (p : a = a') (q : b = b') :
     square (ap inl p) (ap inr q) (glue a b) (glue a' b') :=
   by induction p; induction q; exact hrfl
 
-  protected @[hott] def vsquare {a a' : A} {b b' : B} (p : a = a') (q : b = b') :
+  @[hott] protected def vsquare {a a' : A} {b b' : B} (p : a = a') (q : b = b') :
     square (glue a b) (glue a' b') (ap inl p) (ap inr q) :=
   by induction p; induction q; exact vrfl
 
@@ -80,10 +80,10 @@ notation ` ★ `:40 := pjoin
 namespace join
   variables {A B : Type _}
 
-  protected @[hott] def diamond (a a' : A) (b b' : B) :=
+  @[hott] protected def diamond (a a' : A) (b b' : B) :=
   square (glue a b) (glue a' b')⁻¹ (glue a b') (glue a' b)⁻¹
 
-  protected @[hott] def hdiamond {a a' : A} (b b' : B) (p : a = a')
+  @[hott] protected def hdiamond {a a' : A} (b b' : B) (p : a = a')
     : join.diamond a a' b b' :=
   begin
     cases p, unfold join.diamond,
@@ -92,7 +92,7 @@ namespace join
     exact H ▸ top_deg_square (glue a b') (glue a b')⁻¹ (glue a b)⁻¹,
   end
 
-  protected @[hott] def vdiamond (a a' : A) {b b' : B} (q : b = b')
+  @[hott] protected def vdiamond (a a' : A) {b b' : B} (q : b = b')
     : join.diamond a a' b b' :=
   begin
     cases q, unfold join.diamond,
@@ -101,7 +101,7 @@ namespace join
     exact H ▸ top_deg_square (glue a b) (glue a' b)⁻¹ (glue a' b)⁻¹
   end
 
-  protected @[hott] def symm_diamond (a : A) (b : B)
+  @[hott] protected def symm_diamond (a : A) (b : B)
     : join.vdiamond a a idp = join.hdiamond b b idp :=
   begin
     unfold join.hdiamond, unfold join.vdiamond,
@@ -127,7 +127,7 @@ namespace join
     { exact inl (f a) }, { exact inr (g b) }, { apply glue }
   end
 
-  protected @[hott] def ap_diamond (f : A₁ → A₂) (g : B₁ → B₂)
+  @[hott] protected def ap_diamond (f : A₁ → A₂) (g : B₁ → B₂)
     {a a' : A₁} {b b' : B₁}
     : join.diamond a a' b b' → join.diamond (f a) (f a') (g b) (g b') :=
   begin
@@ -162,7 +162,7 @@ namespace join
         do 2 krewrite join.elim_glue, apply join.hsquare } }
   end
 
-  protected @[hott] def twist_diamond {A : Type _} {a a' : A} (p : a = a')
+  @[hott] protected def twist_diamond {A : Type _} {a a' : A} (p : a = a')
     : pathover (λx, join.diamond a' x a x)
         (join.vdiamond a' a idp) p
         (join.hdiamond a a' idp) :=
@@ -351,7 +351,7 @@ section join_switch
     apply !switch_coh_fill.1,
   end
 
-  protected @[hott] def switch [reducible] : join (join A B) C → join (join C B) A :=
+  @[hott] protected def switch [reducible] : join (join A B) C → join (join C B) A :=
   begin
     intro x, induction x with ab c ab c, exact switch_left ab, exact inl (inl c),
     exact switch_coh ab c,
@@ -471,7 +471,7 @@ section join_switch
     apply natural_square_beta, apply join.rec_glue,
   end
 
-  protected @[hott] def switch_involutive (x : join (join A B) C) :
+  @[hott] protected def switch_involutive (x : join (join A B) C) :
     join.switch (join.switch x) = x :=
   begin
     induction x with ab c ab c, apply switch_inv_left, reflexivity,
@@ -498,7 +498,7 @@ end join_switch
     unfold switch_coh, unfold join_symm, unfold join_swap, esimp, rewrite inv_inv
   end
 
-  protected @[hott] def ap_assoc_inv_glue_inr {A C : Type _} (B : Type _) (a : A) (c : C)
+  @[hott] protected def ap_assoc_inv_glue_inr {A C : Type _} (B : Type _) (a : A) (c : C)
     : ap (to_inv (join_assoc A B C)) (glue a (inr c)) = glue (inl a) c :=
   begin
     unfold join_assoc, rewrite ap_compose, krewrite join.elim_glue,

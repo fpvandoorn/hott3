@@ -8,7 +8,7 @@ import init.bool
 open bool algebra
 
 namespace pos_num
-  protected @[hott] def mul (a b : pos_num) : pos_num :=
+  @[hott] protected def mul (a b : pos_num) : pos_num :=
   pos_num.rec_on a
     b
     (λn r, bit0 r + b)
@@ -46,7 +46,7 @@ namespace num
   @[hott] def size (a : num) : num :=
   num.rec_on a (pos one) (λp, pos (size p))
 
-  protected @[hott] def mul (a b : num) : num :=
+  @[hott] protected def mul (a b : num) : num :=
   num.rec_on a zero (λpa, num.rec_on b zero (λpb, pos (pos_num.mul pa pb)))
 end num
 
@@ -54,7 +54,7 @@ end num
 has_mul.mk num.mul
 
 namespace num
-  protected @[hott] def le (a b : num) : bool :=
+  @[hott] protected def le (a b : num) : bool :=
   num.rec_on a tt (λpa, num.rec_on b ff (λpb, pos_num.le pa pb))
 
   private @[hott] def psub (a b : pos_num) : num :=
@@ -76,7 +76,7 @@ namespace num
            (λm, 2 * f m)))
     b
 
-  protected @[hott] def sub (a b : num) : num :=
+  @[hott] protected def sub (a b : num) : num :=
   num.rec_on a zero (λpa, num.rec_on b a (λpb, psub pa pb))
 end num
 

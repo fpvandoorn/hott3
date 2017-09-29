@@ -35,7 +35,7 @@ section
 
   variables ⦃a a' a'' : A⦄ {s : R a a'} {r : T a a} {B C : Type _}
 
-  protected @[hott] def e_closure.elim {f : A → B}
+  @[hott] protected def e_closure.elim {f : A → B}
     (e : Π⦃a a' : A⦄, R a a' → f a = f a') (t : T a a') : f a = f a' :=
   begin
     induction t with a a' r a a' pp a a' r IH a a' a'' r r' IH₁ IH₂,
@@ -188,7 +188,7 @@ section
   /- dependent elimination -/
 
   variables {P : B → Type _} {Q : C → Type _} {f : A → B} {g : B → C} {f' : Π(a : A), P (f a)}
-  protected @[hott] def e_closure.elimo (p : Π⦃a a' : A⦄, R a a' → f a = f a')
+  @[hott] protected def e_closure.elimo (p : Π⦃a a' : A⦄, R a a' → f a = f a')
     (po : Π⦃a a' : A⦄ (s : R a a'), f' a =[p s] f' a') (t : T a a')
     : f' a =[e_closure.elim p t] f' a' :=
   begin

@@ -64,7 +64,7 @@ namespace smash
     ap (smash.elim' Pmk Pgl Pgr ql qr) (gluer' b pt) = Pgr b :=
   !elim_gluer' ⬝ whisker_left _ qr⁻²
 
-  protected @[hott] def rec_eq {A B : Type*} {C : Type _} {f g : smash A B → C}
+  @[hott] protected def rec_eq {A B : Type*} {C : Type _} {f g : smash A B → C}
     (Pmk : Πa b, f (smash.mk a b) = g (smash.mk a b))
     (Pl : f auxl = g auxl) (Pr : f auxr = g auxr)
     (Pgl : Πa, square (Pmk a pt) Pl (ap f (gluel a)) (ap g (gluel a)))

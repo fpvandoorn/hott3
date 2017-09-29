@@ -82,20 +82,20 @@ namespace nat
       { exfalso, apply lt.irrefl, apply lt_of_le_of_lt H H'}}
   end
 
-  protected @[hott] def code [reducible] : ℕ → ℕ → Type
+  @[hott] protected def code [reducible] : ℕ → ℕ → Type
   | code 0        0        := unit
   | code 0        (succ m) := empty
   | code (succ n) 0        := empty
   | code (succ n) (succ m) := code n m
 
-  protected @[hott] def refl : Πn, nat.code n n
+  @[hott] protected def refl : Πn, nat.code n n
   | refl 0        := star
   | refl (succ n) := refl n
 
-  protected @[hott] def encode {n m : ℕ} (p : n = m) : nat.code n m :=
+  @[hott] protected def encode {n m : ℕ} (p : n = m) : nat.code n m :=
   p ▸ nat.refl n
 
-  protected @[hott] def decode : Π(n m : ℕ), nat.code n m → n = m
+  @[hott] protected def decode : Π(n m : ℕ), nat.code n m → n = m
   | decode 0        0        := λc, idp
   | decode 0        (succ l) := λc, empty.elim c _
   | decode (succ k) 0        := λc, empty.elim c _

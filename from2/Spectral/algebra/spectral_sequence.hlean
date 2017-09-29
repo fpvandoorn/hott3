@@ -224,7 +224,7 @@ namespace left_module
     (deg_ij_commute : hsquare (deg (j X)) (deg (j X)) (deg (i X)) (deg (i X)))
 
 /- Note: Elb proves Dlb for some bound B', but we want tight control over when B' = 0 -/
-  protected @[hott] def is_bounded.mk {R : Ring} {I : Set} {X : exact_couple R I}
+  @[hott] protected def is_bounded.mk {R : Ring} {I : Set} {X : exact_couple R I}
     (B B' B'' : I → ℕ)
     (Dub : Π⦃x : I⦄ ⦃s : ℕ⦄, B x ≤ s → is_contr (D X ((deg (i X))^[s] x)))
     (Dlb : Π⦃x : I⦄ ⦃s : ℕ⦄, B' x ≤ s → is_surjective (i X (((deg (i X))⁻¹ᵉ^[s + 1] x))))
@@ -573,7 +573,7 @@ namespace spectrum
 
   parameters {A : ℤ → spectrum} (f : Π(s : ℤ), A s →ₛ A (s - 1))
 
---  protected @[hott] def I : Set := gℤ ×g gℤ
+--  @[hott] protected def I : Set := gℤ ×g gℤ
   local abbreviation I := Z2
 
   @[hott] def D_sequence : graded_module rℤ I :=

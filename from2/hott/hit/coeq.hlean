@@ -30,7 +30,7 @@ parameters {A B : Type u} (f g : A → B)
   @[hott] def cp (x : A) : coeq_i (f x) = coeq_i (g x) :=
   eq_of_rel coeq_rel (Rmk f g x)
 
-  protected @[hott] def rec {P : coeq → Type _} (P_i : Π(x : B), P (coeq_i x))
+  @[hott] protected def rec {P : coeq → Type _} (P_i : Π(x : B), P (coeq_i x))
     (Pcp : Π(x : A), P_i (f x) =[cp x] P_i (g x)) (y : coeq) : P y :=
   begin
     induction y,
@@ -38,7 +38,7 @@ parameters {A B : Type u} (f g : A → B)
     { cases H, apply Pcp}
   end
 
-  protected @[hott] def rec_on [reducible] {P : coeq → Type _} (y : coeq)
+  @[hott] protected def rec_on [reducible] {P : coeq → Type _} (y : coeq)
     (P_i : Π(x : B), P (coeq_i x)) (Pcp : Π(x : A), P_i (f x) =[cp x] P_i (g x)) : P y :=
   rec P_i Pcp y
 
@@ -47,11 +47,11 @@ parameters {A B : Type u} (f g : A → B)
       (x : A) : apd (rec P_i Pcp) (cp x) = Pcp x :=
   !rec_eq_of_rel
 
-  protected @[hott] def elim {P : Type _} (P_i : B → P)
+  @[hott] protected def elim {P : Type _} (P_i : B → P)
     (Pcp : Π(x : A), P_i (f x) = P_i (g x)) (y : coeq) : P :=
   rec P_i (λx, pathover_of_eq _ (Pcp x)) y
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (y : coeq) (P_i : B → P)
+  @[hott] protected def elim_on [reducible] {P : Type _} (y : coeq) (P_i : B → P)
     (Pcp : Π(x : A), P_i (f x) = P_i (g x)) : P :=
   elim P_i Pcp y
 
@@ -62,11 +62,11 @@ parameters {A B : Type u} (f g : A → B)
     rewrite [▸*,-apd_eq_pathover_of_eq_ap,↑elim,rec_cp],
   end
 
-  protected @[hott] def elim_type (P_i : B → Type _)
+  @[hott] protected def elim_type (P_i : B → Type _)
     (Pcp : Π(x : A), P_i (f x) ≃ P_i (g x)) (y : coeq) : Type _ :=
   elim P_i (λx, ua (Pcp x)) y
 
-  protected @[hott] def elim_type_on [reducible] (y : coeq) (P_i : B → Type _)
+  @[hott] protected def elim_type_on [reducible] (y : coeq) (P_i : B → Type _)
     (Pcp : Π(x : A), P_i (f x) ≃ P_i (g x)) : Type _ :=
   elim_type P_i Pcp y
 
@@ -74,11 +74,11 @@ parameters {A B : Type u} (f g : A → B)
     (x : A) : transport (elim_type P_i Pcp) (cp x) = Pcp x :=
   by rewrite [tr_eq_cast_ap_fn,↑elim_type,elim_cp];apply cast_ua_fn
 
-  protected @[hott] def rec_prop {P : coeq → Type _} [H : Πx, is_prop (P x)]
+  @[hott] protected def rec_prop {P : coeq → Type _} [H : Πx, is_prop (P x)]
     (P_i : Π(x : B), P (coeq_i x)) (y : coeq) : P y :=
   rec P_i (λa, !is_prop.elimo) y
 
-  protected @[hott] def elim_prop {P : Type _} [H : is_prop P] (P_i : B → P) (y : coeq) : P :=
+  @[hott] protected def elim_prop {P : Type _} [H : is_prop P] (P_i : B → P) (y : coeq) : P :=
   elim P_i (λa, !is_prop.elim) y
 
 end
@@ -114,7 +114,7 @@ section
 
   local abbreviation P' := quotient.elim_type P_i Pr
 
-  protected @[hott] def flattening : sigma P ≃ coeq F G :=
+  @[hott] protected def flattening : sigma P ≃ coeq F G :=
   begin
     have H : Πz, P z ≃ P' z,
     begin

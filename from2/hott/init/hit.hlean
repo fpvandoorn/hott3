@@ -39,7 +39,7 @@ namespace trunc
   protected constant rec {n : ℕ₋₂} {A : Type _} {P : trunc n A → Type _}
     [Pt : Πaa, is_trunc n (P aa)] (H : Πa, P (tr a)) : Πaa, P aa
 
-  protected @[hott] def rec_on [reducible] {n : ℕ₋₂} {A : Type _}
+  @[hott] protected def rec_on [reducible] {n : ℕ₋₂} {A : Type _}
     {P : trunc n A → Type _} (aa : trunc n A) [Pt : Πaa, is_trunc n (P aa)] (H : Πa, P (tr a))
     : P aa :=
   trunc.rec H aa
@@ -58,7 +58,7 @@ namespace quotient
     (Pc : Π(a : A), P (class_of R a)) (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a =[eq_of_rel R H] Pc a')
     (x : quotient R) : P x
 
-  protected @[hott] def rec_on [reducible] {A : Type _} {R : A → A → Type _} {P : quotient R → Type _}
+  @[hott] protected def rec_on [reducible] {A : Type _} {R : A → A → Type _} {P : quotient R → Type _}
     (x : quotient R) (Pc : Π(a : A), P (class_of R a))
     (Pp : Π⦃a a' : A⦄ (H : R a a'), Pc a =[eq_of_rel R H] Pc a') : P x :=
   quotient.rec Pc Pp x

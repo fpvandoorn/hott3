@@ -39,7 +39,7 @@ namespace one_step_tr
   parameters {A : Type _}
   variables (a a' : A)
 
-  protected @[hott] def R (a a' : A) : Type := unit
+  @[hott] protected def R (a a' : A) : Type := unit
   parameter (A)
   @[hott] def one_step_tr : Type _ := quotient R
   parameter {A}
@@ -49,7 +49,7 @@ namespace one_step_tr
   @[hott] def tr_eq : tr a = tr a' :=
   eq_of_rel _ star
 
-  protected @[hott] def rec {P : one_step_tr → Type _} (Pt : Π(a : A), P (tr a))
+  @[hott] protected def rec {P : one_step_tr → Type _} (Pt : Π(a : A), P (tr a))
     (Pe : Π(a a' : A), Pt a =[tr_eq a a'] Pt a') (x : one_step_tr) : P x :=
   begin
     fapply (quotient.rec_on x),
@@ -57,15 +57,15 @@ namespace one_step_tr
     { intros a a' H, cases H, apply Pe}
   end
 
-  protected @[hott] def rec_on [reducible] {P : one_step_tr → Type _} (x : one_step_tr)
+  @[hott] protected def rec_on [reducible] {P : one_step_tr → Type _} (x : one_step_tr)
     (Pt : Π(a : A), P (tr a)) (Pe : Π(a a' : A), Pt a =[tr_eq a a'] Pt a') : P x :=
   rec Pt Pe x
 
-  protected @[hott] def elim {P : Type _} (Pt : A → P)
+  @[hott] protected def elim {P : Type _} (Pt : A → P)
     (Pe : Π(a a' : A), Pt a = Pt a') (x : one_step_tr) : P :=
   rec Pt (λa a', pathover_of_eq _ (Pe a a')) x
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (x : one_step_tr) (Pt : A → P)
+  @[hott] protected def elim_on [reducible] {P : Type _} (x : one_step_tr) (Pt : A → P)
     (Pe : Π(a a' : A), Pt a = Pt a') : P :=
   elim Pt Pe x
 
@@ -308,7 +308,7 @@ namespace prop_trunc
   @[hott] def ptrunc.{u} (A : Type u) : Type u            := @truncX A
   @[hott] def ptr {A : Type _} : A → ptrunc A                   := @i A 0
   @[hott] def is_prop_trunc (A : Type _) : is_prop (ptrunc A)   := is_prop_truncX
-  protected @[hott] def ptrunc.rec {A : Type _} {P : ptrunc A → Type _}
+  @[hott] protected def ptrunc.rec {A : Type _} {P : ptrunc A → Type _}
     [Pt : Π(x : ptrunc A), is_prop (P x)]
     (H : Π(a : A), P (ptr a)) : Π(x : ptrunc A), P x          := @rec A P Pt H
 

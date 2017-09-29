@@ -28,7 +28,7 @@ namespace smash
   by induction u; exact ff; exact tt
 
   @[hott] def smash' (A B : Type*) : Type _ := pushout (@prod_of_sum A B) (@bool_of_sum A B)
-  protected @[hott] def mk' (a : A) (b : B) : smash' A B := inl (a, b)
+  @[hott] protected def mk' (a : A) (b : B) : smash' A B := inl (a, b)
 
   @[hott] def pointed_smash' [instance] (A B : Type*) : pointed (smash' A B) :=
   pointed.mk (smash.mk' pt pt)
@@ -37,7 +37,7 @@ namespace smash
 
   infixr ` ∧ ` := smash
 
-  protected @[hott] def mk (a : A) (b : B) : A ∧ B := inl (a, b)
+  @[hott] protected def mk (a : A) (b : B) : A ∧ B := inl (a, b)
   @[hott] def auxl : smash A B := inr ff
   @[hott] def auxr : smash A B := inr tt
   @[hott] def gluel (a : A) : smash.mk a pt = auxl :> smash A B := glue (inl a)
@@ -64,7 +64,7 @@ namespace smash
   @[hott] def ap_mk_right {b b' : B} (p : b = b') : ap (smash.mk (Point A)) p = gluer' b b' :=
   !ap_is_constant
 
-  protected @[hott] def rec {P : smash A B → Type _} (Pmk : Πa b, P (smash.mk a b))
+  @[hott] protected def rec {P : smash A B → Type _} (Pmk : Πa b, P (smash.mk a b))
     (Pl : P auxl) (Pr : P auxr) (Pgl : Πa, Pmk a pt =[gluel a] Pl)
     (Pgr : Πb, Pmk pt b =[gluer b] Pr) (x : smash' A B) : P x :=
   begin
@@ -95,12 +95,12 @@ namespace smash
       (Pgl a ⬝o (Pgl pt)⁻¹ᵒ) ⬝o (Pgr pt ⬝o (Pgr b)⁻¹ᵒ) :=
   by rewrite [↑glue, ↑gluel', ↑gluer', +apd_con, +apd_inv, +rec_gluel, +rec_gluer]
 
-  protected @[hott] def elim {P : Type _} (Pmk : Πa b, P) (Pl Pr : P)
+  @[hott] protected def elim {P : Type _} (Pmk : Πa b, P) (Pl Pr : P)
     (Pgl : Πa : A, Pmk a pt = Pl) (Pgr : Πb : B, Pmk pt b = Pr) (x : smash' A B) : P :=
   smash.rec Pmk Pl Pr (λa, pathover_of_eq _ (Pgl a)) (λb, pathover_of_eq _ (Pgr b)) x
 
   -- an elim where you are forced to make (Pgl pt) and (Pgl pt) to be reflexivity
-  protected @[hott] def elim' [reducible] {P : Type _} (Pmk : Πa b, P)
+  @[hott] protected def elim' [reducible] {P : Type _} (Pmk : Πa b, P)
     (Pgl : Πa : A, Pmk a pt = Pmk pt pt) (Pgr : Πb : B, Pmk pt b = Pmk pt pt)
     (ql : Pgl pt = idp) (qr : Pgr pt = idp) (x : smash' A B) : P :=
   smash.elim Pmk (Pmk pt pt) (Pmk pt pt) Pgl Pgr x

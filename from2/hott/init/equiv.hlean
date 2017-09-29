@@ -38,7 +38,7 @@ namespace is_equiv
   variables {A B C : Type _} (g : B → C) (f : A → B) {f' : A → B}
 
   -- The variant of mk' where f is explicit.
-  protected @[hott] def mk := @is_equiv.mk' A B f
+  @[hott] protected def mk := @is_equiv.mk' A B f
 
   -- The identity function is an equivalence.
   @[hott] def is_equiv_id [instance] (A : Type _) : (is_equiv (id : A → A)) :=
@@ -312,7 +312,7 @@ namespace equiv
   section
   variables {A B C : Type _}
 
-  protected @[hott] def MK [reducible] (f : A → B) (g : B → A)
+  @[hott] protected def MK [reducible] (f : A → B) (g : B → A)
     (right_inv : Πb, f (g b) = b) (left_inv : Πa, g (f a) = a) : A ≃ B :=
   equiv.mk f (adjointify f g right_inv left_inv)
 
@@ -322,16 +322,16 @@ namespace equiv
   @[hott] def to_left_inv [reducible] (f : A ≃ B) (a : A) : f⁻¹ (f a) = a :=
   left_inv f a
 
-  protected @[hott] def rfl [refl] : A ≃ A :=
+  @[hott] protected def rfl [refl] : A ≃ A :=
   equiv.mk id !is_equiv_id
 
-  protected @[hott] def refl [reducible] (A : Type _) : A ≃ A :=
+  @[hott] protected def refl [reducible] (A : Type _) : A ≃ A :=
   @equiv.rfl A
 
-  protected @[hott] def symm [symm] (f : A ≃ B) : B ≃ A :=
+  @[hott] protected def symm [symm] (f : A ≃ B) : B ≃ A :=
   equiv.mk f⁻¹ !is_equiv_inv
 
-  protected @[hott] def trans [trans] (f : A ≃ B) (g : B ≃ C) : A ≃ C :=
+  @[hott] protected def trans [trans] (f : A ≃ B) (g : B ≃ C) : A ≃ C :=
   equiv.mk (g ∘ f) !is_equiv_compose
 
   infixl ` ⬝e `:75 := equiv.trans

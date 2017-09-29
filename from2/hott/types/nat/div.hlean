@@ -21,7 +21,7 @@ prod.rec (λ ypos ylex, sub_lt (lt_of_lt_of_le ypos ylex) ypos)
 private @[hott] def div.F (x : nat) (f : Π x₁, x₁ < x → nat → nat) (y : nat) : nat :=
 if H : 0 < y × y ≤ x then f (x - y) (div_rec_@[hott] lemma H) y + 1 else zero
 
-protected @[hott] def div := fix div.F
+@[hott] protected def div := fix div.F
 
 @[hott] def nat_has_divide [reducible] [instance] [priority nat.prio] : has_div nat :=
 has_div.mk nat.div
@@ -29,13 +29,13 @@ has_div.mk nat.div
 @[hott] theorem div_def (x y : nat) : div x y = if 0 < y × y ≤ x then div (x - y) y + 1 else 0 :=
 congr_fun (fix_eq div.F x) y
 
-protected @[hott] theorem div_zero [simp] (a : ℕ) : a / 0 = 0 :=
+@[hott] protected theorem div_zero [simp] (a : ℕ) : a / 0 = 0 :=
 div_def a 0 ⬝ if_neg (!not_prod_of_not_left (lt.irrefl 0))
 
 @[hott] theorem div_eq_zero_of_lt {a b : ℕ} (h : a < b) : a / b = 0 :=
 div_def a b ⬝ if_neg (!not_prod_of_not_right (not_le_of_gt h))
 
-protected @[hott] theorem zero_div [simp] (b : ℕ) : 0 / b = 0 :=
+@[hott] protected theorem zero_div [simp] (b : ℕ) : 0 / b = 0 :=
 div_def 0 b ⬝ if_neg (prod.rec not_le_of_gt)
 
 @[hott] theorem div_eq_succ_sub_div {a b : ℕ} (h₁ : b > 0) (h₂ : a ≥ b) : a / b = succ ((a - b) / b) :=
@@ -64,13 +64,13 @@ nat.rec_on y
 @[hott] theorem add_mul_div_self_left (x z : ℕ) {y : ℕ} (H : y > 0) : (x + y * z) / y = x / y + z :=
 !mul.comm ▸ add_mul_div_self H
 
-protected @[hott] theorem mul_div_cancel (m : ℕ) {n : ℕ} (H : n > 0) : m * n / n = m :=
+@[hott] protected theorem mul_div_cancel (m : ℕ) {n : ℕ} (H : n > 0) : m * n / n = m :=
 calc
   m * n / n = (0 + m * n) / n : by rewrite [zero_add]
           ... = 0 / n + m     : add_mul_div_self H
           ... = m             : by rewrite [nat.zero_div, zero_add]
 
-protected @[hott] theorem mul_div_cancel_left {m : ℕ} (n : ℕ) (H : m > 0) : m * n / m = n :=
+@[hott] protected theorem mul_div_cancel_left {m : ℕ} (n : ℕ) (H : m > 0) : m * n / m = n :=
 !mul.comm ▸ !nat.mul_div_cancel H
 
 /- mod -/
@@ -78,7 +78,7 @@ protected @[hott] theorem mul_div_cancel_left {m : ℕ} (n : ℕ) (H : m > 0) : 
 private @[hott] def mod.F (x : nat) (f : Π x₁, x₁ < x → nat → nat) (y : nat) : nat :=
 if H : 0 < y × y ≤ x then f (x - y) (div_rec_@[hott] lemma H) y else x
 
-protected @[hott] def mod := fix mod.F
+@[hott] protected def mod := fix mod.F
 
 @[hott] def nat_has_mod [reducible] [instance] [priority nat.prio] : has_mod nat :=
 has_mod.mk nat.mod
@@ -245,7 +245,7 @@ have H5 : q1 * y = q2 * y, from add.right_cancel H4,
 have H6 : y > 0, from lt_of_le_of_lt !zero_le H1,
 show q1 = q2, from eq_of_mul_eq_mul_right H6 H5
 
-protected @[hott] theorem mul_div_mul_left {z : ℕ} (x y : ℕ) (zpos : z > 0) :
+@[hott] protected theorem mul_div_mul_left {z : ℕ} (x y : ℕ) (zpos : z > 0) :
   (z * x) / (z * y) = x / y :=
 if H : y = 0 then
   by rewrite [H, mul_zero, *nat.div_zero]
@@ -261,7 +261,7 @@ else
         ... = z * (x / y * y) + z * (x % y)                     : left_distrib
         ... = (x / y) * (z * y) + z * (x % y)                   : mul.left_comm)
 
-protected @[hott] theorem mul_div_mul_right {x z y : ℕ} (zpos : z > 0) : (x * z) / (y * z) = x / y :=
+@[hott] protected theorem mul_div_mul_right {x z y : ℕ} (zpos : z > 0) : (x * z) / (y * z) = x / y :=
 !mul.comm ▸ !mul.comm ▸ !nat.mul_div_mul_left zpos
 
 @[hott] theorem mul_mod_mul_left (z x y : ℕ) : (z * x) % (z * y) = z * (x % y) :=
@@ -300,11 +300,11 @@ calc
 @[hott] theorem mul_mod_eq_mul_mod_mod (m n k : nat) : (m * n) % k = (m * (n % k)) % k :=
 !mul.comm ▸ !mul.comm ▸ !mul_mod_eq_mod_mul_mod
 
-protected @[hott] theorem div_one (n : ℕ) : n / 1 = n :=
+@[hott] protected theorem div_one (n : ℕ) : n / 1 = n :=
 have n / 1 * 1 + n % 1 = n, from !eq_div_mul_add_mod⁻¹,
 begin rewrite [-this at {2}, mul_one, mod_one] end
 
-protected @[hott] theorem div_self {n : ℕ} (H : n > 0) : n / n = 1 :=
+@[hott] protected theorem div_self {n : ℕ} (H : n > 0) : n / n = 1 :=
 have (n * 1) / (n * 1) = 1 / 1, from !nat.mul_div_mul_left H,
 by rewrite [nat.div_one at this, -this, *mul_one]
 
@@ -328,10 +328,10 @@ iff.intro mod_eq_zero_of_dvd dvd_of_mod_eq_zero
 @[hott] def dvd.decidable_rel [instance] : decidable_rel dvd :=
 take m n, decidable_of_decidable_of_iff _ (iff.symm !dvd_iff_mod_eq_zero)
 
-protected @[hott] theorem div_mul_cancel {m n : ℕ} (H : n ∣ m) : m / n * n = m :=
+@[hott] protected theorem div_mul_cancel {m n : ℕ} (H : n ∣ m) : m / n * n = m :=
 div_mul_cancel_of_mod_eq_zero (mod_eq_zero_of_dvd H)
 
-protected @[hott] theorem mul_div_cancel' {m n : ℕ} (H : n ∣ m) : n * (m / n) = m :=
+@[hott] protected theorem mul_div_cancel' {m n : ℕ} (H : n ∣ m) : n * (m / n) = m :=
 !mul.comm ▸ nat.div_mul_cancel H
 
 @[hott] theorem dvd_of_dvd_add_left {m n₁ n₂ : ℕ} (H₁ : m ∣ n₁ + n₂) (H₂ : m ∣ n₁) : m ∣ n₂ :=
@@ -370,7 +370,7 @@ by_cases_zero_pos n
     have k = 1,           from eq_one_of_mul_eq_one_left this,
     show m = n,           from (mul_one m)⁻¹ ⬝ (this ▸ Hk⁻¹))
 
-protected @[hott] theorem mul_div_assoc (m : ℕ) {n k : ℕ} (H : k ∣ n) : m * n / k = m * (n / k) :=
+@[hott] protected theorem mul_div_assoc (m : ℕ) {n k : ℕ} (H : k ∣ n) : m * n / k = m * (n / k) :=
 sum.elim (eq_zero_sum_pos k)
   (assume H1 : k = 0,
     calc
@@ -409,33 +409,33 @@ sum.elim (eq_zero_sum_pos k)
   (assume H5 : k > 0,
     nat.dvd_of_mul_dvd_mul_right H5 (H3 ▸ H4 ▸ H2))
 
-protected @[hott] theorem div_eq_iff_eq_mul_right {m n : ℕ} (k : ℕ) (H : n > 0) (H' : n ∣ m) :
+@[hott] protected theorem div_eq_iff_eq_mul_right {m n : ℕ} (k : ℕ) (H : n > 0) (H' : n ∣ m) :
   m / n = k ↔ m = n * k :=
 iff.intro
   (assume H1, by rewrite [-H1, nat.mul_div_cancel' H'])
   (assume H1, by rewrite [H1, !nat.mul_div_cancel_left H])
 
-protected @[hott] theorem div_eq_iff_eq_mul_left {m n : ℕ} (k : ℕ) (H : n > 0) (H' : n ∣ m) :
+@[hott] protected theorem div_eq_iff_eq_mul_left {m n : ℕ} (k : ℕ) (H : n > 0) (H' : n ∣ m) :
   m / n = k ↔ m = k * n :=
 !mul.comm ▸ !nat.div_eq_iff_eq_mul_right H H'
 
-protected @[hott] theorem eq_mul_of_div_eq_right {m n k : ℕ} (H1 : n ∣ m) (H2 : m / n = k) :
+@[hott] protected theorem eq_mul_of_div_eq_right {m n k : ℕ} (H1 : n ∣ m) (H2 : m / n = k) :
   m = n * k :=
 calc
   m     = n * (m / n) : nat.mul_div_cancel' H1
     ... = n * k       : H2
 
-protected @[hott] theorem div_eq_of_eq_mul_right {m n k : ℕ} (H1 : n > 0) (H2 : m = n * k) :
+@[hott] protected theorem div_eq_of_eq_mul_right {m n k : ℕ} (H1 : n > 0) (H2 : m = n * k) :
   m / n = k :=
 calc
   m / n = n * k / n : H2
       ... = k       : !nat.mul_div_cancel_left H1
 
-protected @[hott] theorem eq_mul_of_div_eq_left {m n k : ℕ} (H1 : n ∣ m) (H2 : m / n = k) :
+@[hott] protected theorem eq_mul_of_div_eq_left {m n k : ℕ} (H1 : n ∣ m) (H2 : m / n = k) :
   m = k * n :=
 !mul.comm ▸ !nat.eq_mul_of_div_eq_right H1 H2
 
-protected @[hott] theorem div_eq_of_eq_mul_left {m n k : ℕ} (H1 : n > 0) (H2 : m = k * n) :
+@[hott] protected theorem div_eq_of_eq_mul_left {m n k : ℕ} (H1 : n > 0) (H2 : m = k * n) :
   m / n = k :=
 !nat.div_eq_of_eq_mul_right H1 (!mul.comm ▸ H2)
 
@@ -466,7 +466,7 @@ calc
   m = m / n * n + m % n : eq_div_mul_add_mod
     ... ≥ m / n * n       : le_add_right
 
-protected @[hott] theorem div_le_of_le_mul {m n k : ℕ} (H : m ≤ n * k) : m / k ≤ n :=
+@[hott] protected theorem div_le_of_le_mul {m n k : ℕ} (H : m ≤ n * k) : m / k ≤ n :=
 sum.elim (eq_zero_sum_pos k)
   (assume H1 : k = 0,
     calc
@@ -479,7 +479,7 @@ sum.elim (eq_zero_sum_pos k)
         ... = m                     : eq_div_mul_add_mod
         ... ≤ n * k                 : H) H1)
 
-protected @[hott] theorem div_le_self (m n : ℕ) : m / n ≤ m :=
+@[hott] protected theorem div_le_self (m n : ℕ) : m / n ≤ m :=
 nat.cases_on n (!nat.div_zero⁻¹ ▸ !zero_le)
   take n,
   have H : m ≤ m * succ n, from calc
@@ -487,12 +487,12 @@ nat.cases_on n (!nat.div_zero⁻¹ ▸ !zero_le)
       ... ≤ m * succ n : !mul_le_mul_left (succ_le_succ !zero_le),
   nat.div_le_of_le_mul H
 
-protected @[hott] theorem mul_le_of_le_div {m n k : ℕ} (H : m ≤ n / k) : m * k ≤ n :=
+@[hott] protected theorem mul_le_of_le_div {m n k : ℕ} (H : m ≤ n / k) : m * k ≤ n :=
 calc
   m * k ≤ n / k * k : !mul_le_mul_right H
     ... ≤ n           : div_mul_le
 
-protected @[hott] theorem le_div_of_mul_le {m n k : ℕ} (H1 : k > 0) (H2 : m * k ≤ n) : m ≤ n / k :=
+@[hott] protected theorem le_div_of_mul_le {m n k : ℕ} (H1 : k > 0) (H2 : m * k ≤ n) : m ≤ n / k :=
 have H3 : m * k < (succ (n / k)) * k, from
   calc
     m * k ≤ n                  : H2
@@ -501,21 +501,21 @@ have H3 : m * k < (succ (n / k)) * k, from
       ... = (succ (n / k)) * k : succ_mul,
 le_of_lt_succ (lt_of_mul_lt_mul_right H3)
 
-protected @[hott] theorem le_div_iff_mul_le {m n k : ℕ} (H : k > 0) : m ≤ n / k ↔ m * k ≤ n :=
+@[hott] protected theorem le_div_iff_mul_le {m n k : ℕ} (H : k > 0) : m ≤ n / k ↔ m * k ≤ n :=
 iff.intro !nat.mul_le_of_le_div (!nat.le_div_of_mul_le H)
 
-protected @[hott] theorem div_le_div {m n : ℕ} (k : ℕ) (H : m ≤ n) : m / k ≤ n / k :=
+@[hott] protected theorem div_le_div {m n : ℕ} (k : ℕ) (H : m ≤ n) : m / k ≤ n / k :=
 by_cases_zero_pos k
   (by rewrite [*nat.div_zero])
   (take k, assume H1 : k > 0, nat.le_div_of_mul_le H1 (le.trans !div_mul_le H))
 
-protected @[hott] theorem div_lt_of_lt_mul {m n k : ℕ} (H : m < n * k) : m / k < n :=
+@[hott] protected theorem div_lt_of_lt_mul {m n k : ℕ} (H : m < n * k) : m / k < n :=
 lt_of_mul_lt_mul_right (calc
   m / k * k ≤ m / k * k + m % k : le_add_right
     ... = m                     : eq_div_mul_add_mod
     ... < n * k                 : H)
 
-protected @[hott] theorem lt_mul_of_div_lt {m n k : ℕ} (H1 : k > 0) (H2 : m / k < n) : m < n * k :=
+@[hott] protected theorem lt_mul_of_div_lt {m n k : ℕ} (H1 : k > 0) (H2 : m / k < n) : m < n * k :=
 have H3 : succ (m / k) * k ≤ n * k, from !mul_le_mul_right (succ_le_of_lt H2),
 have H4 : m / k * k + k ≤ n * k, by rewrite [succ_mul at H3]; apply H3,
 calc
@@ -523,14 +523,14 @@ calc
     ... < m / k * k + k     : add_lt_add_left (!mod_lt H1)
     ... ≤ n * k             : H4
 
-protected @[hott] theorem div_lt_iff_lt_mul {m n k : ℕ} (H : k > 0) : m / k < n ↔ m < n * k :=
+@[hott] protected theorem div_lt_iff_lt_mul {m n k : ℕ} (H : k > 0) : m / k < n ↔ m < n * k :=
 iff.intro (!nat.lt_mul_of_div_lt H) !nat.div_lt_of_lt_mul
 
-protected @[hott] theorem div_le_iff_le_mul_of_div {m n : ℕ} (k : ℕ) (H : n > 0) (H' : n ∣ m) :
+@[hott] protected theorem div_le_iff_le_mul_of_div {m n : ℕ} (k : ℕ) (H : n > 0) (H' : n ∣ m) :
   m / n ≤ k ↔ m ≤ k * n :=
 by refine iff.trans (!le_iff_mul_le_mul_right H) _; rewrite [!nat.div_mul_cancel H']
 
-protected @[hott] theorem le_mul_of_div_le_of_div {m n k : ℕ} (H1 : n > 0) (H2 : n ∣ m) (H3 : m / n ≤ k) :
+@[hott] protected theorem le_mul_of_div_le_of_div {m n k : ℕ} (H1 : n > 0) (H2 : n ∣ m) (H3 : m / n ≤ k) :
   m ≤ k * n :=
 iff.mp (!nat.div_le_iff_le_mul_of_div H1 H2) H3
 
@@ -591,7 +591,7 @@ nat.strong_rec_on a
      have (k₂ / b) / c      = 0,              by rewrite [e₂, e₃],
      show (a / b) / c = k₁,                     by rewrite [e₁, this]))
 
-protected @[hott] lemma div_div_eq_div_mul (a b c : nat) : (a / b) / c = a / (b * c) :=
+@[hott] protected lemma div_div_eq_div_mul (a b c : nat) : (a / b) / c = a / (b * c) :=
 begin
  cases b with b,
    rewrite [zero_mul, *nat.div_zero, nat.zero_div],

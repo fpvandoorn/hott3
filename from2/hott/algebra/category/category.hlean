@@ -103,7 +103,7 @@ namespace category
   @[hott] def Category.eta (C : Category) : Category.mk C C = C :=
   Category.rec (λob c, idp) C
 
-  protected @[hott] def category.sigma_char.{u v} (ob : Type _)
+  @[hott] protected def category.sigma_char.{u v} (ob : Type _)
     : category.{u v} ob ≃ Σ(C : precategory.{u v} ob), is_univalent C :=
   begin
   fapply equiv.MK,

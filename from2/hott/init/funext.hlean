@@ -257,28 +257,28 @@ namespace eq
   @[hott] def naive_funext_of_ua : naive_funext :=
   λ A P f g h, eq_of_homotopy h
 
-  protected @[hott] def homotopy.rec_on [recursor] {Q : (f ~ g) → Type _} (p : f ~ g)
+  @[hott] protected def homotopy.rec_on [recursor] {Q : (f ~ g) → Type _} (p : f ~ g)
     (H : Π(q : f = g), Q (apd10 q)) : Q p :=
   right_inv apd10 p ▸ H (eq_of_homotopy p)
 
-  protected @[hott] def homotopy.rec_on_idp [recursor] {Q : Π{g}, (f ~ g) → Type _} {g : Π x, P x}
+  @[hott] protected def homotopy.rec_on_idp [recursor] {Q : Π{g}, (f ~ g) → Type _} {g : Π x, P x}
     (p : f ~ g) (H : Q (homotopy.refl f)) : Q p :=
   homotopy.rec_on p (λq, eq.rec_on q H)
 
-  protected @[hott] def homotopy.rec_on' {f f' : Πa, P a} {Q : (f ~ f') → (f = f') → Type _}
+  @[hott] protected def homotopy.rec_on' {f f' : Πa, P a} {Q : (f ~ f') → (f = f') → Type _}
     (p : f ~ f') (H : Π(q : f = f'), Q (apd10 q) q) : Q p (eq_of_homotopy p) :=
   begin
     refine homotopy.rec_on p _,
     intro q, exact (left_inv (apd10) q)⁻¹ ▸ H q
   end
 
-  protected @[hott] def homotopy.rec_on_idp' {f : Πa, P a} {Q : Π{g}, (f ~ g) → (f = g) → Type _}
+  @[hott] protected def homotopy.rec_on_idp' {f : Πa, P a} {Q : Π{g}, (f ~ g) → (f = g) → Type _}
     {g : Πa, P a} (p : f ~ g) (H : Q (homotopy.refl f) idp) : Q p (eq_of_homotopy p) :=
   begin
     refine homotopy.rec_on' p _, intro q, induction q, exact H
   end
 
-  protected @[hott] def homotopy.rec_on_idp_left {A : Type _} {P : A → Type _} {g : Πa, P a}
+  @[hott] protected def homotopy.rec_on_idp_left {A : Type _} {P : A → Type _} {g : Πa, P a}
     {Q : Πf, (f ~ g) → Type _} {f : Π x, P x}
     (p : f ~ g) (H : Q g (homotopy.refl g)) : Q f p :=
   begin

@@ -243,7 +243,7 @@ namespace smash
   variables {A B C : Type*}
 
   /- an induction principle which has only 1 point constructor, but which has bad computation properties -/
-  protected @[hott] def rec' {P : smash A B → Type _} (Pmk : Πa b, P (smash.mk a b))
+  @[hott] protected def rec' {P : smash A B → Type _} (Pmk : Πa b, P (smash.mk a b))
     (Pgl : Πa, Pmk a pt =[gluel' a pt] Pmk pt pt)
     (Pgr : Πb, Pmk pt b =[gluer' b pt] Pmk pt pt) (x : smash' A B) : P x :=
   begin
@@ -255,7 +255,7 @@ namespace smash
     { refine change_path _ (Pgr b ⬝o !pathover_tr), apply inv_con_cancel_right }
   end
 
---   protected @[hott] def rec'_gluel' {P : smash A B → Type _} (Pmk : Πa b, P (smash.mk a b))
+--   @[hott] protected def rec'_gluel' {P : smash A B → Type _} (Pmk : Πa b, P (smash.mk a b))
 --     (Pgl : Πa, Pmk a pt =[gluel' a pt] Pmk pt pt)
 --     (Pgr : Πb, Pmk pt b =[gluer' b pt] Pmk pt pt) (a : A) : apd (smash.rec' Pmk Pgl Pgr) (gluel' a pt) = Pgl a :=
 --   begin
@@ -266,7 +266,7 @@ namespace smash
 -- --      refine change_path_invo
 --   end
 
---   protected @[hott] def rec'_gluer' {P : smash A B → Type _} (Pmk : Πa b, P (smash.mk a b))
+--   @[hott] protected def rec'_gluer' {P : smash A B → Type _} (Pmk : Πa b, P (smash.mk a b))
 --     (Pgl : Πa, Pmk a pt =[gluel' a pt] Pmk pt pt)
 --     (Pgr : Πb, Pmk pt b =[gluer' b pt] Pmk pt pt) (b : B) : apd (smash.rec' Pmk Pgl Pgr) (gluer' b pt) = Pgr b :=
 --   sorry

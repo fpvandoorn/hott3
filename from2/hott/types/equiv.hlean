@@ -51,7 +51,7 @@ namespace is_equiv
 
   omit H
 
-  protected @[hott] def sigma_char : (is_equiv f) ≃
+  @[hott] protected def sigma_char : (is_equiv f) ≃
   (Σ(g : B → A) (ε : f ∘ g ~ id) (η : g ∘ f ~ id), Π(a : A), ε (f a) = ap f (η a)) :=
   equiv.MK (λH, ⟨inv f, right_inv f, left_inv f, adj f⟩)
            (λp, is_equiv.mk f p.1 p.2.1 p.2.2.1 p.2.2.2)
@@ -63,7 +63,7 @@ namespace is_equiv
                 end)
            (λH, by induction H; reflexivity)
 
-  protected @[hott] def sigma_char' : (is_equiv f) ≃
+  @[hott] protected def sigma_char' : (is_equiv f) ≃
   (Σ(u : Σ(g : B → A), f ∘ g ~ id) (η : u.1 ∘ f ~ id), Π(a : A), u.2 (f a) = ap f (η a)) :=
   calc
     (is_equiv f) ≃
@@ -126,7 +126,7 @@ namespace is_equiv
     variables (α : A → C) (β : B → C)
 
     -- homotopy_inv_of_homotopy_pre is in init.equiv
-    protected @[hott] def inv_homotopy_of_homotopy_pre.is_equiv
+    @[hott] protected def inv_homotopy_of_homotopy_pre.is_equiv
       : is_equiv (inv_homotopy_of_homotopy_pre f α β) :=
     adjointify _ (homotopy_of_inv_homotopy_pre f α β)
     abstract begin
@@ -157,7 +157,7 @@ namespace is_equiv
     variables (α : C → A) (β : C → B)
 
     -- homotopy_inv_of_homotopy_post is in init.equiv
-    protected @[hott] def inv_homotopy_of_homotopy_post.is_equiv
+    @[hott] protected def inv_homotopy_of_homotopy_post.is_equiv
       : is_equiv (inv_homotopy_of_homotopy_post f α β) :=
     adjointify _ (homotopy_of_inv_homotopy_post f α β)
     abstract begin
@@ -234,7 +234,7 @@ namespace equiv
   @[hott] def symm_symm (f : A ≃ B) : f⁻¹ᵉ⁻¹ᵉ = f :> (A ≃ B) :=
   equiv_eq' idp
 
-  protected @[hott] def equiv.sigma_char
+  @[hott] protected def equiv.sigma_char
     (A B : Type _) : (A ≃ B) ≃ Σ(f : A → B), is_equiv f :=
   begin
     fapply equiv.MK,

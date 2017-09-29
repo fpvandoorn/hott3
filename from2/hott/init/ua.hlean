@@ -46,7 +46,7 @@ namespace equiv
 
   -- One consequence of UA is that we can transport along equivalencies of types
   -- We can use this for calculation evironments
-  protected @[hott] def transport_of_equiv [subst] (P : Type _ → Type _) {A B : Type _} (H : A ≃ B)
+  @[hott] protected def transport_of_equiv [subst] (P : Type _ → Type _) {A B : Type _} (H : A ≃ B)
     : P A → P B :=
   eq.transport P (ua H)
 

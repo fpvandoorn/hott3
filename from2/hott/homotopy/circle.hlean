@@ -85,7 +85,7 @@ namespace circle
     : transport (elim2_type Pb1 Pb2 Ps1 Ps2) seg2 = Ps2 :=
   by rewrite [tr_eq_cast_ap_fn,↑elim2_type,elim2_seg2];apply cast_ua_fn
 
-  protected @[hott] def rec {P : S¹ → Type _} (Pbase : P base) (Ploop : Pbase =[loop] Pbase)
+  @[hott] protected def rec {P : S¹ → Type _} (Pbase : P base) (Ploop : Pbase =[loop] Pbase)
     (x : S¹) : P x :=
   begin
     fapply (rec2_on x),
@@ -95,7 +95,7 @@ namespace circle
     { apply pathover_tr_of_pathover, exact Ploop}
   end
 
-  protected @[hott] def rec_on [reducible] {P : S¹ → Type _} (x : S¹) (Pbase : P base)
+  @[hott] protected def rec_on [reducible] {P : S¹ → Type _} (x : S¹) (Pbase : P base)
     (Ploop : Pbase =[loop] Pbase) : P x :=
   circle.rec Pbase Ploop x
 
@@ -111,11 +111,11 @@ namespace circle
     apply rec_loop_helper
   end
 
-  protected @[hott] def elim {P : Type _} (Pbase : P) (Ploop : Pbase = Pbase)
+  @[hott] protected def elim {P : Type _} (Pbase : P) (Ploop : Pbase = Pbase)
     (x : S¹) : P :=
   circle.rec Pbase (pathover_of_eq _ Ploop) x
 
-  protected @[hott] def elim_on [reducible] {P : Type _} (x : S¹) (Pbase : P)
+  @[hott] protected def elim_on [reducible] {P : Type _} (x : S¹) (Pbase : P)
     (Ploop : Pbase = Pbase) : P :=
   circle.elim Pbase Ploop x
 
@@ -150,11 +150,11 @@ namespace circle
     apply l
   end
 
-  protected @[hott] def elim_type (Pbase : Type _) (Ploop : Pbase ≃ Pbase)
+  @[hott] protected def elim_type (Pbase : Type _) (Ploop : Pbase ≃ Pbase)
     (x : S¹) : Type _ :=
   circle.elim Pbase (ua Ploop) x
 
-  protected @[hott] def elim_type_on [reducible] (x : S¹) (Pbase : Type _)
+  @[hott] protected def elim_type_on [reducible] (x : S¹) (Pbase : Type _)
     (Ploop : Pbase ≃ Pbase) : Type _ :=
   circle.elim_type Pbase Ploop x
 
@@ -240,7 +240,7 @@ namespace circle
 
   open int
 
-  protected @[hott] def code (x : S¹) : Type :=
+  @[hott] protected def code (x : S¹) : Type :=
   circle.elim_type_on x ℤ equiv_succ
 
   @[hott] def transport_code_loop (a : ℤ) : transport circle.code loop a = succ a :=
@@ -249,10 +249,10 @@ namespace circle
   @[hott] def transport_code_loop_inv (a : ℤ) : transport circle.code loop⁻¹ a = pred a :=
   ap10 !elim_type_loop_inv a
 
-  protected @[hott] def encode {x : S¹} (p : base = x) : circle.code x :=
+  @[hott] protected def encode {x : S¹} (p : base = x) : circle.code x :=
   transport circle.code p (0 : ℤ)
 
-  protected @[hott] def decode {x : S¹} : circle.code x → base = x :=
+  @[hott] protected def decode {x : S¹} : circle.code x → base = x :=
   begin
     induction x,
     { exact power loop},
