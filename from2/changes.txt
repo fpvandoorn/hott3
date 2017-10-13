@@ -1,3 +1,4 @@
+Changes done by regular expressions:
 add @[hott] before definition, lemma, proposition, theorem
 shorten definition to def
 change `intro x y` to `intros x y`
@@ -11,8 +12,12 @@ protected @[hott] -> @[hott] protected
 
 
 Manual changes:
-replace !foo by foo _
+put hott_theory at the top of the file
+replace !foo by foo _ _ 
 replace cases p by induction p
-add arguments to x =[p] y
+replace x =[p] y with x =[p; P] y, where P is the type family
 remove esimp or replace by dsimp
-change rewrite syntax
+change rewrite with rwr, and remove the syntax which is now unsupported (like +), replace -foo with ←foo
+change tac1: tac2 with tac1, all_goals {tac2}
+change generalize e, intro x with hgeneralize : e = x
+fix all remaining errors. The unification algorithm is less powerful, so sometimes you have to give some more information. Also, coercions aren't inserted very well yet.
