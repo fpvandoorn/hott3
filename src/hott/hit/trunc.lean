@@ -132,6 +132,25 @@ namespace trunc
     (H' : ∀ (a : A), p a → B) : B :=
   begin hinduction H with x, induction x with a x, exact H' a x end
 
+-- to do: give induction attribute
+  @[hott] def or.elim {A B C : Type _} [is_prop C] (f : A → C) (g : B → C) (H : A ∨ B) : C :=
+  begin hinduction H with x, induction x with a b, exact f a, exact g b end
+
+  -- @[hott] def or.elim' {A B C : Type _} [is_prop A] [is_prop B] (f : A → C) (g : B → C) 
+  --   (fg : Πa b, f a = g b) (H : A ∨ B) : C :=
+  -- begin 
+  --   have : is_prop (Σ(x : C), (Π(a : A), x = f a) × (Π(b : B), x = g b)),
+  --   { apply is_prop.mk, intros u v, induction u with c p, induction v with c' q,
+  --     refine or.elim _ _ H, 
+  --     { intro a, sorry },
+  --     { intro b, sorry }},
+  --   have : Σ(x : C), (Π(a : A), x = f a) × (Π(b : B), x = g b),
+  --   { refine @or.elim _ _ _ this _ _ H, 
+  --     { intro a, exact ⟨f a, λa', ap f (is_prop.elim a a'), fg a⟩ },
+  --     { intro b, exact ⟨g b, λa, (fg a b)⁻¹, λb', ap g (is_prop.elim b b')⟩ } },
+  --   exact this.1
+  -- end
+
   @[hott] def is_contr_of_merely_prop [H : is_prop A] (aa : merely A) : is_contr A :=
   is_contr_of_inhabited_prop (trunc.rec_on aa id)
 

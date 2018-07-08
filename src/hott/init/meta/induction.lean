@@ -301,7 +301,8 @@ meta def hinduction_whnf (h : expr) (rec : option name) (ns' : list name) : tact
 do t ← infer_type h,
 (hinduction h t rec ns').orelse_plus $
 do t' ← whnf t, if t = t' then return none
-else mtrace "Applying whnf to major premise" >> some <$> hinduction h t' rec ns'
+else mtrace "Applying whnf to major premise" >> 
+  some <$> (hinduction h t' rec ns' <|> do t'' ← whnf t reducible, hinduction h t'' rec ns')
 /- maybe we should apply dsimp? That is what the code below does -/
 -- do let nt := local_pp_name h,
 --   try $ dsimp_hyp h,
